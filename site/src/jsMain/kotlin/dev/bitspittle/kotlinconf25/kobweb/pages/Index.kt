@@ -5,8 +5,8 @@ import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.worker.rememberWorker
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.worker.EchoWorker
-import org.jetbrains.compose.web.dom.Text
 
 @Page
 @Composable
@@ -17,5 +17,22 @@ fun HomePage() {
         worker.postInput("Hello, worker!")
     }
 
-    Text("THIS PAGE INTENTIONALLY LEFT BLANK")
+    CodeBlock(
+        """
+            @Layout
+            @Composable
+            fun PageLayout(ctx: PageContext, content: @Composable () -> Unit) {
+                LaunchedEffect(ctx.route.path) {
+                    // See kobweb config in build.gradle.kts which sets up Prism
+                    js("Prism.highlightAll()")
+                }
+
+                Box(Modifier.fillMaxWidth().minHeight(100.vh), contentAlignment = Alignment.Center) {
+                    content()
+                }
+            }
+        """.trimIndent()
+    )
+
+
 }

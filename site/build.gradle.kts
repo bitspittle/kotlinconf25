@@ -1,5 +1,6 @@
 import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
 import kotlinx.html.link
+import kotlinx.html.script
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -29,6 +30,14 @@ kobweb {
                 link {
                     rel = "stylesheet"
                     href = "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+                }
+
+                link {
+                    rel = "stylesheet"
+                    href = "/prism/prism.css"
+                }
+                script {
+                    src = "/prism/prism.js"
                 }
             }
         }
