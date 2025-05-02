@@ -13,7 +13,7 @@ version = "1.0-SNAPSHOT"
 kobweb {
     app {
         index {
-            description.set("Powered by Kobweb")
+            description.set("KotlinConf 2025 - Build Websites in Kotlin & Compose HTML with Kobweb")
         }
     }
 }
