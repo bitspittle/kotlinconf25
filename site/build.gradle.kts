@@ -1,4 +1,5 @@
 import com.varabyte.kobweb.gradle.application.util.configAsKobwebApplication
+import kotlinx.html.link
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -14,6 +15,22 @@ kobweb {
     app {
         index {
             description.set("KotlinConf 2025 - Build Websites in Kotlin & Compose HTML with Kobweb")
+
+            head.add {
+                link {
+                    rel = "preconnect"
+                    href = "https://fonts.googleapis.com"
+                }
+                link {
+                    rel = "preconnect"
+                    href = "https://fonts.gstatic.com"
+                    attributes["crossorigin"] = ""
+                }
+                link {
+                    rel = "stylesheet"
+                    href = "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+                }
+            }
         }
     }
 }
