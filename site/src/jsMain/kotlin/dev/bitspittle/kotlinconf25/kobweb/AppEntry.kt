@@ -1,6 +1,7 @@
 package dev.bitspittle.kotlinconf25.kobweb
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.compose.css.OverflowWrap
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Color
@@ -16,10 +17,13 @@ import com.varabyte.kobweb.silk.init.registerStyleBase
 import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
+import com.varabyte.kobweb.silk.theme.colors.loadFromLocalStorage
+import com.varabyte.kobweb.silk.theme.colors.saveToLocalStorage
 import dev.bitspittle.kotlinconf25.kobweb.components.style.DividerColor
 
 @InitSilk
 fun initSilk(ctx: InitSilkContext) {
+    ctx.config.initialColorMode = ColorMode.loadFromLocalStorage() ?: ColorMode.DARK
     ctx.stylesheet.apply {
         registerStyleBase("body") {
             Modifier
@@ -36,9 +40,12 @@ fun initSilk(ctx: InitSilkContext) {
 @App
 @Composable
 fun AppEntry(content: @Composable () -> Unit) {
-    val colorMode = ColorMode.current
-
     SilkApp {
+        val colorMode = ColorMode.current
+        LaunchedEffect(colorMode) {
+            colorMode.saveToLocalStorage()
+        }
+
         Surface(
             SmoothColorStyle.toModifier()
                 .setVariable(
