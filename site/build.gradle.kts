@@ -16,6 +16,7 @@ kobweb {
     app {
         index {
             description.set("KotlinConf 2025 - Build Websites in Kotlin & Compose HTML with Kobweb")
+            faviconPath.set("favicon.svg")
 
             head.add {
                 link {
