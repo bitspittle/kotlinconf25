@@ -4,7 +4,6 @@ import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
 import com.varabyte.kobweb.browser.util.invokeLater
 import com.varabyte.kobweb.compose.css.*
-import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
@@ -31,6 +30,7 @@ import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 private val SlideScaleVar by StyleVariable<Float>()
 private val SlidesProgressVar by StyleVariable(0.percent)
@@ -53,11 +53,11 @@ val SlideTransitionKeyframes = Keyframes {
     to { Modifier.opacity(SlideToOpacityVar.value()).translateX(SlideToTranslatePercentVar.value()) }
 }
 
-val SlideLayoutStyle = CssStyle.base {
+val SlideBackgroundStyle = CssStyle.base {
     val prettyDarkPurple = Colors.RebeccaPurple.darkened(0.7f)
     val veryDarkPurple = Colors.RebeccaPurple.darkened(0.9f)
     Modifier
-        .size(TARGET_WIDTH.px, TARGET_HEIGHT.px)
+        .fillMaxSize()
         .thenIf(
             colorMode.isDark,
             Modifier.backgroundImage(
@@ -68,11 +68,15 @@ val SlideLayoutStyle = CssStyle.base {
                 )
             )
         )
+}
+
+
+val SlideLayoutStyle = CssStyle.base {
+    Modifier
+        .size(TARGET_WIDTH.px, TARGET_HEIGHT.px)
         .transformOrigin(TransformOrigin.Center)
         .scale(SlideScaleVar.value())
-        .padding(3.cssRem)
         .overflow(Overflow.Hidden)
-
 }
 
 val SlidesProgressStyle = CssStyle.base {
@@ -176,10 +180,11 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         )
     )
 
-    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center) {
         Box(SlideLayoutStyle.toModifier().setVariable(SlideScaleVar, scale)) {
             Box(
                 Modifier.fillMaxSize()
+                    .padding(3.cssRem)
                     .thenIf(slidingDirection == SlidingDirection.HIDING) {
                         Modifier.opacity(0f)
                     }
@@ -235,6 +240,9 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             }
         }
     }
-
-    Div(SlidesProgressStyle.toModifier().setVariable(SlidesProgressVar, (progressPercent * 100).percent).toAttrs())
+    Div(
+        SlidesProgressStyle.toModifier()
+            .setVariable(SlidesProgressVar, (progressPercent * 100).roundToInt().percent)
+            .toAttrs()
+    )
 }
