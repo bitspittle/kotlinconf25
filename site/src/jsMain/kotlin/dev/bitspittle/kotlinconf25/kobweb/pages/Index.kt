@@ -20,7 +20,7 @@ import org.jetbrains.compose.web.dom.Text
 
 @Page
 @Composable
-@Layout(".components.layouts.PageLayout")
+@Layout(".components.layouts.SlideLayout")
 fun TitlePage() {
     Box(Modifier.fillMaxSize()) {
         Box(Modifier.align(Alignment.TopStart)) {
