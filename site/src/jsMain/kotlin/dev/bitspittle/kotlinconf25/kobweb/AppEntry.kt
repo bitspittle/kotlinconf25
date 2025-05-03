@@ -51,7 +51,7 @@ fun initSilk(ctx: InitSilkContext) {
             .fontWeight(FontWeight.SemiBold)
             // For slides, we use h1 etc. simply to set text sizes, not for section flows like in an article
             .margin(0.px)
-            .lineHeight(1.1)
+            .lineHeight(1.2)
 
         registerStyleBase("h1") {
             headerCommon.fontSize(4.cssRem)
