@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.css.OverflowWrap
+import com.varabyte.kobweb.compose.css.UserSelect
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Color
 import com.varabyte.kobweb.compose.ui.modifiers.*
@@ -39,6 +40,7 @@ fun initSilk(ctx: InitSilkContext) {
             Modifier
                 .fontFamily("Inter", "sans-serif")
                 .overflowWrap(OverflowWrap.BreakWord)
+                .userSelect(UserSelect.None)
         }
 
         registerStyleBase("code, pre") {

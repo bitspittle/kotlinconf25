@@ -4,7 +4,7 @@
     Sources:
     https://github.com/PrismJS/prism-themes/blob/447479fc7b2be2051fe27e561aceed7cc87a589f/themes/prism-one-dark.css
     https://github.com/PrismJS/prism-themes/blob/447479fc7b2be2051fe27e561aceed7cc87a589f/themes/prism-one-dark.css
-    https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+bash+diff+docker+kotlin+toml+typescript+yaml&plugins=line-highlight+toolbar+copy-to-clipboard+diff-highlight
+    https://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript+bash+diff+docker+kotlin+toml+typescript+yaml&plugins=line-highlight+toolbar+diff-highlight
 
     Changes include:
     - Combining the light and dark themes using CSS variables, with values set on the `silk-light/dark` classes
