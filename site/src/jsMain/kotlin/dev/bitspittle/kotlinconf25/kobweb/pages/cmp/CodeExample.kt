@@ -16,9 +16,7 @@ fun CodeExamplePage() {
                             .padding(padding)
                             .fillMaxWidth()
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                           /*...*/
-                        }
+                        Row { /*...*/ }
                         Spacer(Modifier.size(padding))
                         Button(
                            onClick = { /*...*/ },
