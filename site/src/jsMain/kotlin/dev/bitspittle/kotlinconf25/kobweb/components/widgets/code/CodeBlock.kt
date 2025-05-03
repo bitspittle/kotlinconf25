@@ -18,7 +18,7 @@ import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
 import com.varabyte.kobweb.silk.style.toModifier
-import dev.bitspittle.kotlinconf25.kobweb.components.style.DividerColor
+import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColor
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.em

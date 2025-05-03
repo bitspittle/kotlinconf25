@@ -20,7 +20,7 @@ import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import com.varabyte.kobweb.silk.theme.colors.loadFromLocalStorage
 import com.varabyte.kobweb.silk.theme.colors.saveToLocalStorage
-import dev.bitspittle.kotlinconf25.kobweb.components.style.DividerColor
+import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColor
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vh

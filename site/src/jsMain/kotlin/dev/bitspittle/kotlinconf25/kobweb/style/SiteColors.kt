@@ -1,4 +1,4 @@
-package dev.bitspittle.kotlinconf25.kobweb.components.style
+package dev.bitspittle.kotlinconf25.kobweb.style
 
 import com.varabyte.kobweb.compose.ui.graphics.Color
 

@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.silk.components.text.SpanText
-import dev.bitspittle.kotlinconf25.kobweb.components.style.SiteColors
+import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 
 @Composable
 fun KotlinText(value: String) {
