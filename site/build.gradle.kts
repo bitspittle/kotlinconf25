@@ -14,6 +14,15 @@ version = "1.0-SNAPSHOT"
 
 kobweb {
     app {
+        globals.put("slides",
+            listOf(
+                "",
+                "showcase",
+                "cmp/html-vs-wasm1",
+                "cmp/code-example",
+            ).joinToString()
+        )
+
         index {
             description.set("KotlinConf 2025 - Build Websites in Kotlin & Compose HTML with Kobweb")
             faviconPath.set("favicon.svg")
