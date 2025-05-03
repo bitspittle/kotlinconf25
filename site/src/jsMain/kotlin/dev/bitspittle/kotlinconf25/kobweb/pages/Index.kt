@@ -1,38 +1,57 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import com.varabyte.kobweb.compose.foundation.layout.Box
+import com.varabyte.kobweb.compose.foundation.layout.Row
+import com.varabyte.kobweb.compose.ui.Alignment
+import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.layout.Layout
-import com.varabyte.kobweb.worker.rememberWorker
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
-import dev.bitspittle.kotlinconf25.kobweb.worker.EchoWorker
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.kotlinconf.KotlinConfLogo
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.KobwebText
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.KotlinText
+import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.em
+import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.dom.H1
+import org.jetbrains.compose.web.dom.H4
+import org.jetbrains.compose.web.dom.Text
 
 @Page
 @Composable
 @Layout(".components.layouts.PageLayout")
-fun HomePage() {
-    val worker = rememberWorker { EchoWorker { output -> console.log("Echoed: $output") } }
-    LaunchedEffect(Unit) {
-        worker.postInput("Hello, worker!")
-    }
-
-    CodeBlock(
-        """
-            @Layout
-            @Composable
-            fun PageLayout(ctx: PageContext, content: @Composable () -> Unit) {
-                LaunchedEffect(ctx.route.path) {
-                    // See kobweb config in build.gradle.kts which sets up Prism
-                    js("Prism.highlightAll()")
-                }
-
-                Box(Modifier.fillMaxWidth().minHeight(100.vh), contentAlignment = Alignment.Center) {
-                    content()
-                }
+fun TitlePage() {
+    Box(Modifier.fillMaxSize()) {
+        Box(Modifier.align(Alignment.TopStart)) {
+            Row(Modifier.gap(0.5.em), verticalAlignment = Alignment.CenterVertically) {
+                KotlinConfLogo(Modifier.size(1.8.em))
+                H4 { Text("KotlinConf 2025") }
             }
-        """.trimIndent()
-    )
+        }
 
+        Box(
+            Modifier
+                .align(Alignment.BottomStart)
+                .margin(bottom = 4.cssRem)
+                .width(60.percent)
+        ) {
+            H1 {
+                Text("Build Websites in ")
+                KotlinText("Kotlin")
+                Text(" and ")
+                KotlinText("Compose HTML")
+                Text(" with ")
+                KobwebText("Kobweb")
+            }
+        }
 
+        Box(Modifier.align(Alignment.BottomStart)) {
+            Text("David Herman")
+        }
+
+        Box(Modifier.align(Alignment.BottomEnd)) {
+            Text("@bitspittle.bsky.social")
+        }
+    }
 }
