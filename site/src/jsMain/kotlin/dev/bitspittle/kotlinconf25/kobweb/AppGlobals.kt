@@ -5,6 +5,10 @@ import com.varabyte.kobweb.core.AppGlobals
 class Slides(private val slideList: List<String>) {
     private val slideIndices = slideList.mapIndexed { i, v -> v to i }.toMap()
 
+    val size get() = slideList.size
+
+    fun indexOf(path: String) = slideIndices[path] ?: -1
+
     fun contains(path: String): Boolean {
         return slideIndices.containsKey(path)
     }

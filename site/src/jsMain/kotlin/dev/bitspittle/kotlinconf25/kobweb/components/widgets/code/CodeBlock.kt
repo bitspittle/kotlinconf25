@@ -18,7 +18,7 @@ import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
 import com.varabyte.kobweb.silk.style.toModifier
-import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColor
+import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColorVar
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.em
@@ -32,7 +32,7 @@ val CodeBlockStyle = CssStyle.base {
     Modifier
         .borderRadius(10.px)
         .overflow { x(Overflow.Auto) }
-        .border(1.px, LineStyle.Solid, DividerColor.value())
+        .border(1.px, LineStyle.Solid, DividerColorVar.value())
         .padding(1.em)
 }
 

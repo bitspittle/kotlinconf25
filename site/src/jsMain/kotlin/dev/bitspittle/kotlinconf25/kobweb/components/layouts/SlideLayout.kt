@@ -3,10 +3,9 @@ package dev.bitspittle.kotlinconf25.kobweb.components.layouts
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
 import com.varabyte.kobweb.browser.util.invokeLater
-import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
-import com.varabyte.kobweb.compose.css.Overflow
-import com.varabyte.kobweb.compose.css.StyleVariable
-import com.varabyte.kobweb.compose.css.TransformOrigin
+import com.varabyte.kobweb.compose.css.*
+import com.varabyte.kobweb.compose.css.Transition
+import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -15,6 +14,7 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.thenIf
+import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.AppGlobals
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.layout.Layout
@@ -25,16 +25,17 @@ import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import dev.bitspittle.kotlinconf25.kobweb.slides
+import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import kotlinx.browser.window
-import org.jetbrains.compose.web.css.AnimationTimingFunction
-import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.s
+import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.math.min
 
-private val PageScale by StyleVariable<Float>()
+private val SlideScaleVar by StyleVariable<Float>()
+private val SlidesProgressVar by StyleVariable(0.percent)
+
+private val ANIMATION_DURATION = 0.2.s
 
 private val TARGET_WIDTH = 1920
 private val TARGET_HEIGHT = 1080
@@ -68,10 +69,20 @@ val SlideLayoutStyle = CssStyle.base {
             )
         )
         .transformOrigin(TransformOrigin.Center)
-        .scale(PageScale.value())
+        .scale(SlideScaleVar.value())
         .padding(3.cssRem)
         .overflow(Overflow.Hidden)
 
+}
+
+val SlidesProgressStyle = CssStyle.base {
+    Modifier
+        .position(Position.Fixed)
+        .bottom(0.px).left(0.px)
+        .height(3.px)
+        .width(SlidesProgressVar.value())
+        .backgroundColor(SiteColors.Accent)
+        .transition(Transition.of("width", ANIMATION_DURATION, TransitionTimingFunction.Ease))
 }
 
 private enum class SlidingDirection {
@@ -79,6 +90,7 @@ private enum class SlidingDirection {
     IN_FROM_RIGHT,
     OUT_TO_LEFT,
     OUT_TO_RIGHT,
+
     // Necessary to prevent one frame flicker as new frame comes in
     HIDING;
 }
@@ -86,9 +98,13 @@ private enum class SlidingDirection {
 @Layout
 @Composable
 fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
+    var progressPercent by remember { mutableStateOf(0f) }
     LaunchedEffect(ctx.route.path) {
         // See kobweb config in build.gradle.kts which sets up Prism
         js("Prism.highlightAll()")
+
+        progressPercent =
+            AppGlobals.slides.indexOf(ctx.route.path.substringAfter("/")) / (AppGlobals.slides.size - 1).toFloat()
     }
 
     fun calculateScale(): Float {
@@ -155,13 +171,13 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     fun Modifier.slidingAnimation() = animation(
         SlideTransitionKeyframes.toAnimation(
             colorMode,
-            0.2.s,
+            ANIMATION_DURATION,
             timingFunction = AnimationTimingFunction.EaseInOut,
         )
     )
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Box(SlideLayoutStyle.toModifier().setVariable(PageScale, scale)) {
+        Box(SlideLayoutStyle.toModifier().setVariable(SlideScaleVar, scale)) {
             Box(
                 Modifier.fillMaxSize()
                     .thenIf(slidingDirection == SlidingDirection.HIDING) {
@@ -186,7 +202,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideFromOpacityVar, 1f)
                             .setVariable(SlideToOpacityVar, 0f)
                             .setVariable(SlideFromTranslatePercentVar, 0.percent)
-                            .setVariable(SlideToTranslatePercentVar,  100.percent)
+                            .setVariable(SlideToTranslatePercentVar, 100.percent)
                             .onAnimationEnd {
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
@@ -219,4 +235,6 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             }
         }
     }
+
+    Div(SlidesProgressStyle.toModifier().setVariable(SlidesProgressVar, (progressPercent * 100).percent).toAttrs())
 }
