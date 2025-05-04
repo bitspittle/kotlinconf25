@@ -12,14 +12,14 @@ import com.varabyte.kobweb.compose.ui.modifiers.textAlign
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.layout.Layout
-import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.H1
 
 @Layout(".components.layouts.SlideLayout")
 @Composable
-fun SlideSectionHeaderLayout(content: @Composable () -> Unit) {
+fun SectionHeaderSlideLayout(content: @Composable () -> Unit) {
     Box(
-        Modifier.fillMaxSize().textAlign(TextAlign.Center).padding(20.percent),
+        Modifier.fillMaxSize().textAlign(TextAlign.Center).padding(7.cssRem),
         contentAlignment = Alignment.TopCenter
     ) {
         H1(Modifier.width(Width.MaxContent).toAttrs()) {
