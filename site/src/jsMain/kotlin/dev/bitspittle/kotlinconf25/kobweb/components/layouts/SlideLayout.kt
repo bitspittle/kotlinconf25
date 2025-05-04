@@ -22,9 +22,9 @@ import com.varabyte.kobweb.silk.style.animation.Keyframes
 import com.varabyte.kobweb.silk.style.animation.toAnimation
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
-import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import dev.bitspittle.kotlinconf25.kobweb.slides
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
+import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
@@ -35,8 +35,6 @@ import kotlin.math.roundToInt
 private val SlideScaleVar by StyleVariable<Float>()
 private val SlidesProgressVar by StyleVariable(0.percent)
 
-private val ANIMATION_DURATION = 0.2.s
-
 private val TARGET_WIDTH = 1920
 private val TARGET_HEIGHT = 1080
 
@@ -44,13 +42,13 @@ private val TARGET_HEIGHT = 1080
 // Slide in from left: -100% -> 0%
 // Slide out to right: 0% -> 100%
 // Slide out to left: 0% -> -100%
-private val SlideFromOpacityVar by StyleVariable<Float>()
-private val SlideToOpacityVar by StyleVariable<Float>()
-private val SlideFromTranslatePercentVar by StyleVariable<CSSPercentageNumericValue>()
-private val SlideToTranslatePercentVar by StyleVariable<CSSPercentageNumericValue>()
-val SlideTransitionKeyframes = Keyframes {
-    from { Modifier.opacity(SlideFromOpacityVar.value()).translateX(SlideFromTranslatePercentVar.value()) }
-    to { Modifier.opacity(SlideToOpacityVar.value()).translateX(SlideToTranslatePercentVar.value()) }
+private val SlideHorizFromOpacityVar by StyleVariable<Float>()
+private val SlideHorizToOpacityVar by StyleVariable<Float>()
+private val SlideHorizFromTranslatePercentVar by StyleVariable<CSSPercentageNumericValue>()
+private val SlideHorizToTranslatePercentVar by StyleVariable<CSSPercentageNumericValue>()
+val SlideHorizKeyframes = Keyframes {
+    from { Modifier.opacity(SlideHorizFromOpacityVar.value()).translateX(SlideHorizFromTranslatePercentVar.value()) }
+    to { Modifier.opacity(SlideHorizToOpacityVar.value()).translateX(SlideHorizToTranslatePercentVar.value()) }
 }
 
 val SlideBackgroundStyle = CssStyle.base {
@@ -86,16 +84,16 @@ val SlidesProgressStyle = CssStyle.base {
         .height(3.px)
         .width(SlidesProgressVar.value())
         .backgroundColor(SiteColors.Accent)
-        .transition(Transition.of("width", ANIMATION_DURATION, TransitionTimingFunction.Ease))
+        .transition(Transition.of("width", AnimSpeeds.Quick, TransitionTimingFunction.Ease))
 }
 
-private enum class SlidingDirection {
+private enum class SlidingHorizDirection {
     IN_FROM_LEFT,
     IN_FROM_RIGHT,
     OUT_TO_LEFT,
     OUT_TO_RIGHT,
 
-    // Necessary to prevent one frame flicker as new frame comes in
+    // Necessary to prevent one frame flicker as new slide comes in
     HIDING;
 }
 
@@ -119,7 +117,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     }
 
     var scale by remember { mutableStateOf(calculateScale()) }
-    var slidingDirection by remember { mutableStateOf<SlidingDirection?>(null) }
+    var slidingDirection by remember { mutableStateOf<SlidingHorizDirection?>(null) }
     var targetSlide by remember { mutableStateOf<String?>(null) }
 
     DisposableEffect(Unit) {
@@ -146,12 +144,12 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 }
                 if (desiredSlide != null) {
                     targetSlide = "/$desiredSlide"
-                    if (slidingDirection != null) slidingDirection = SlidingDirection.HIDING
+                    if (slidingDirection != null) slidingDirection = SlidingHorizDirection.HIDING
                     window.invokeLater {
                         slidingDirection = if (origDelta < 0) {
-                            SlidingDirection.OUT_TO_RIGHT
+                            SlidingHorizDirection.OUT_TO_RIGHT
                         } else {
-                            SlidingDirection.OUT_TO_LEFT
+                            SlidingHorizDirection.OUT_TO_LEFT
                         }
                     }
                 }
@@ -171,11 +169,10 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         onDispose { manager.clearAllListeners() }
     }
 
-    val colorMode = ColorMode.current
+    @Composable
     fun Modifier.slidingAnimation() = animation(
-        SlideTransitionKeyframes.toAnimation(
-            colorMode,
-            ANIMATION_DURATION,
+        SlideHorizKeyframes.toAnimation(
+            AnimSpeeds.Quick,
             timingFunction = AnimationTimingFunction.EaseInOut,
         )
     )
@@ -185,52 +182,52 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             Box(
                 Modifier.fillMaxSize()
                     .padding(3.cssRem)
-                    .thenIf(slidingDirection == SlidingDirection.HIDING) {
+                    .thenIf(slidingDirection == SlidingHorizDirection.HIDING) {
                         Modifier.opacity(0f)
                     }
-                    .thenIf(slidingDirection == SlidingDirection.OUT_TO_LEFT) {
+                    .thenIf(slidingDirection == SlidingHorizDirection.OUT_TO_LEFT) {
                         Modifier
-                            .setVariable(SlideFromOpacityVar, 1f)
-                            .setVariable(SlideToOpacityVar, 0f)
-                            .setVariable(SlideFromTranslatePercentVar, 0.percent)
-                            .setVariable(SlideToTranslatePercentVar, (-100).percent)
+                            .setVariable(SlideHorizFromOpacityVar, 1f)
+                            .setVariable(SlideHorizToOpacityVar, 0f)
+                            .setVariable(SlideHorizFromTranslatePercentVar, 0.percent)
+                            .setVariable(SlideHorizToTranslatePercentVar, (-100).percent)
                             .onAnimationEnd {
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
-                                slidingDirection = SlidingDirection.HIDING
-                                window.invokeLater { slidingDirection = SlidingDirection.IN_FROM_RIGHT }
+                                slidingDirection = SlidingHorizDirection.HIDING
+                                window.invokeLater { slidingDirection = SlidingHorizDirection.IN_FROM_RIGHT }
                             }
                             .slidingAnimation()
                     }
-                    .thenIf(slidingDirection == SlidingDirection.OUT_TO_RIGHT) {
+                    .thenIf(slidingDirection == SlidingHorizDirection.OUT_TO_RIGHT) {
                         Modifier
-                            .setVariable(SlideFromOpacityVar, 1f)
-                            .setVariable(SlideToOpacityVar, 0f)
-                            .setVariable(SlideFromTranslatePercentVar, 0.percent)
-                            .setVariable(SlideToTranslatePercentVar, 100.percent)
+                            .setVariable(SlideHorizFromOpacityVar, 1f)
+                            .setVariable(SlideHorizToOpacityVar, 0f)
+                            .setVariable(SlideHorizFromTranslatePercentVar, 0.percent)
+                            .setVariable(SlideHorizToTranslatePercentVar, 100.percent)
                             .onAnimationEnd {
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
-                                slidingDirection = SlidingDirection.HIDING
-                                window.invokeLater { slidingDirection = SlidingDirection.IN_FROM_LEFT }
+                                slidingDirection = SlidingHorizDirection.HIDING
+                                window.invokeLater { slidingDirection = SlidingHorizDirection.IN_FROM_LEFT }
                             }
                             .slidingAnimation()
                     }
-                    .thenIf(slidingDirection == SlidingDirection.IN_FROM_LEFT) {
+                    .thenIf(slidingDirection == SlidingHorizDirection.IN_FROM_LEFT) {
                         Modifier
-                            .setVariable(SlideFromOpacityVar, 0f)
-                            .setVariable(SlideToOpacityVar, 1f)
-                            .setVariable(SlideFromTranslatePercentVar, (-100).percent)
-                            .setVariable(SlideToTranslatePercentVar, 0.percent)
+                            .setVariable(SlideHorizFromOpacityVar, 0f)
+                            .setVariable(SlideHorizToOpacityVar, 1f)
+                            .setVariable(SlideHorizFromTranslatePercentVar, (-100).percent)
+                            .setVariable(SlideHorizToTranslatePercentVar, 0.percent)
                             .onAnimationEnd { slidingDirection = null }
                             .slidingAnimation()
                     }
-                    .thenIf(slidingDirection == SlidingDirection.IN_FROM_RIGHT) {
+                    .thenIf(slidingDirection == SlidingHorizDirection.IN_FROM_RIGHT) {
                         Modifier
-                            .setVariable(SlideFromOpacityVar, 0f)
-                            .setVariable(SlideToOpacityVar, 1f)
-                            .setVariable(SlideFromTranslatePercentVar, 100.percent)
-                            .setVariable(SlideToTranslatePercentVar, 0.percent)
+                            .setVariable(SlideHorizFromOpacityVar, 0f)
+                            .setVariable(SlideHorizToOpacityVar, 1f)
+                            .setVariable(SlideHorizFromTranslatePercentVar, 100.percent)
+                            .setVariable(SlideHorizToTranslatePercentVar, 0.percent)
                             .onAnimationEnd { slidingDirection = null }
                             .slidingAnimation()
                     },
