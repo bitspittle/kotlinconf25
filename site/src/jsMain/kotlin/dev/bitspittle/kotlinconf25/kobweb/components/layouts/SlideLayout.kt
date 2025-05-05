@@ -16,6 +16,10 @@ import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.AppGlobals
 import com.varabyte.kobweb.core.PageContext
+import com.varabyte.kobweb.core.data.add
+import com.varabyte.kobweb.core.data.getValue
+import com.varabyte.kobweb.core.init.InitRoute
+import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.animation.Keyframes
@@ -97,6 +101,27 @@ private enum class SlidingHorizDirection {
     HIDING;
 }
 
+
+abstract class Event<T> {
+    abstract fun add(callback: (T) -> Unit)
+    operator fun plusAssign(callback: (T) -> Unit) = add(callback)
+}
+
+class EventImpl<T> : Event<T>() {
+    private val callbacks = mutableListOf<(T) -> Unit>()
+    override fun add(callback: (T) -> Unit) { callbacks.add(callback) }
+    operator fun invoke(param: T) = callbacks.forEach { it(param) }
+}
+
+class SlideEvents {
+    val onNavigating: Event<Unit> = EventImpl()
+}
+
+@InitRoute
+fun initSlideLayout(ctx: InitRouteContext) {
+    ctx.data.add(SlideEvents())
+}
+
 @Layout
 @Composable
 fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
@@ -146,6 +171,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     targetSlide = "/$desiredSlide"
                     if (slidingDirection != null) slidingDirection = SlidingHorizDirection.HIDING
                     window.invokeLater {
+                        (ctx.data.getValue<SlideEvents>().onNavigating as EventImpl<Unit>).invoke(Unit)
                         slidingDirection = if (origDelta < 0) {
                             SlidingHorizDirection.OUT_TO_RIGHT
                         } else {

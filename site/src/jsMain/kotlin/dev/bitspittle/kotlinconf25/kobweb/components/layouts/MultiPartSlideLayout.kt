@@ -17,6 +17,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.PageContext
+import com.varabyte.kobweb.core.data.getValue
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.icons.IconRenderStyle
 import com.varabyte.kobweb.silk.components.icons.createIcon
@@ -125,6 +126,15 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     val slideSections = remember(ctx.route.path) { mutableListOf<@Composable () -> Unit>() }
     var targetSection by remember { mutableStateOf<Int?>(null) }
     var slidingDirection by remember { mutableStateOf<SlidingVertDirection?>(null) }
+    var navigatingOut by remember(ctx.route.path) {
+        mutableStateOf(false)
+            .also { state ->
+                ctx.data.getValue<SlideEvents>().onNavigating += {
+                    state.value = true
+                }
+            }
+    }
+
     LaunchedEffect(getCurrentSection()) {
         window.location.hash = getCurrentSection().toString()
     }
@@ -252,7 +262,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             ) {
                 NavDownIcon(
                     NavigateToNextSectionStyle.toModifier()
-                        .thenIf(getCurrentSection() < slideSections.lastIndex) {
+                        .thenIf(!navigatingOut && getCurrentSection() < slideSections.lastIndex) {
                             Modifier.setVariable(NavigateArrowOpacityVar, 1f)
                         }
                 )
