@@ -1,6 +1,8 @@
 package dev.bitspittle.kotlinconf25.kobweb.components.widgets.list
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.toAttrs
 import org.jetbrains.compose.web.dom.Li
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Ul
@@ -14,14 +16,14 @@ class BulletsScope {
         children.forEach { it() }
     }
 
-    fun Item(value: String) {
-        children.add { Li { Text(value) } }
+    fun Item(value: String, modifier: Modifier = Modifier) {
+        children.add { Li(modifier.toAttrs()) { Text(value) } }
     }
 
-    fun Item(value: String, content: BulletsScope.() -> Unit) {
+    fun Item(value: String, modifier: Modifier = Modifier, content: BulletsScope.() -> Unit) {
         val subscope = BulletsScope().apply(content)
         children.add {
-            Li {
+            Li(modifier.toAttrs()) {
                 Text(value)
                 Ul { subscope.render() }
             }
