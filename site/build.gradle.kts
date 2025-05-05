@@ -29,19 +29,9 @@ kobweb {
 
             head.add {
                 link {
-                    rel = "preconnect"
-                    href = "https://fonts.googleapis.com"
-                }
-                link {
-                    rel = "preconnect"
-                    href = "https://fonts.gstatic.com"
-                    attributes["crossorigin"] = ""
-                }
-                link {
                     rel = "stylesheet"
-                    href = "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+                    href = "/fonts/css2.css"
                 }
-
                 link {
                     rel = "stylesheet"
                     href = "/prism/prism.css"
@@ -49,6 +39,11 @@ kobweb {
                 script {
                     src = "/prism/prism.js"
                 }
+            }
+
+            interceptUrls {
+                replace("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css", "/font-awesome/css/all.min.css")
+                enableSelfHosting()
             }
         }
     }
