@@ -154,6 +154,8 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             when ((event as KeyboardEvent).key) {
                 "ArrowUp" -> tryNavigateToSection(-1)
                 "ArrowDown" -> tryNavigateToSection(+1)
+                "Home" -> tryNavigateToSection(-getCurrentSection())
+                "End" -> tryNavigateToSection(slideSections.lastIndex - getCurrentSection())
                 else -> handled = false
             }
             if (handled) {
