@@ -12,7 +12,7 @@ import org.jetbrains.compose.web.dom.Text
 
 @Page
 @Composable
-@Layout(".components.layouts.SectionHeaderSlideLayout")
+@Layout(".components.layouts.HeaderSlideLayout")
 fun HtmlVsWasm1Page() {
     Text("Compose HTML")
     SpanText(" vs", Modifier.color(Colors.Red))
