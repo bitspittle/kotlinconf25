@@ -3,7 +3,6 @@ package dev.bitspittle.kotlinconf25.kobweb.components.layouts
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
 import com.varabyte.kobweb.browser.util.invokeLater
-import com.varabyte.kobweb.compose.css.AnimationIterationCount
 import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
 import com.varabyte.kobweb.compose.css.StyleVariable
 import com.varabyte.kobweb.compose.css.Transition
@@ -25,7 +24,6 @@ import com.varabyte.kobweb.silk.style.toModifier
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import kotlinx.browser.window
-import org.jetbrains.compose.web.css.AnimationFillMode
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.percent
@@ -76,14 +74,6 @@ val NavigateToNextSectionStyle = CssStyle.base {
         .opacity(NavigateArrowOpacityVar.value())
         .transition(Transition.of("opacity", AnimSpeeds.Quick))
         .color(SiteColors.Accent)
-        .animation(
-            BounceDownKeyframes.toAnimation(
-                AnimSpeeds.Slow,
-                timingFunction = TransitionTimingFunction.EaseOut,
-                fillMode = AnimationFillMode.Both,
-                iterationCount = AnimationIterationCount.Infinite,
-            )
-        )
 }
 
 private enum class SlidingVertDirection {
