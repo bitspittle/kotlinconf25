@@ -16,6 +16,7 @@ import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.H1
 import org.jetbrains.compose.web.dom.H4
+import org.jetbrains.compose.web.dom.H6
 import org.jetbrains.compose.web.dom.Text
 
 @Page
@@ -33,7 +34,7 @@ fun TitlePage() {
         Box(
             Modifier
                 .align(Alignment.BottomStart)
-                .margin(bottom = 4.cssRem)
+                .margin(bottom = 3.2.cssRem)
                 .width(60.percent)
         ) {
             H1 {
@@ -47,11 +48,11 @@ fun TitlePage() {
         }
 
         Box(Modifier.align(Alignment.BottomStart)) {
-            Text("David Herman")
+            H6 { Text("David Herman") }
         }
 
         Box(Modifier.align(Alignment.BottomEnd)) {
-            Text("@bitspittle.bsky.social")
+            H6 { Text("@bitspittle.bsky.social") }
         }
     }
 }

@@ -19,7 +19,7 @@ import org.jetbrains.compose.web.dom.H1
 @Composable
 fun SectionHeaderSlideLayout(content: @Composable () -> Unit) {
     Box(
-        Modifier.fillMaxSize().textAlign(TextAlign.Center).padding(7.cssRem),
+        Modifier.fillMaxSize().textAlign(TextAlign.Center).padding(5.6.cssRem),
         contentAlignment = Alignment.TopCenter
     ) {
         H1(Modifier.width(Width.MaxContent).toAttrs()) {

@@ -181,7 +181,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         Box(SlideLayoutStyle.toModifier().setVariable(SlideScaleVar, scale)) {
             Box(
                 Modifier.fillMaxSize()
-                    .padding(3.cssRem)
+                    .padding(2.4.cssRem)
                     .thenIf(slidingDirection == SlidingHorizDirection.HIDING) {
                         Modifier.opacity(0f)
                     }

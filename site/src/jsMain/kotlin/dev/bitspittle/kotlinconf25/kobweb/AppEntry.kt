@@ -33,7 +33,7 @@ fun initSilk(ctx: InitSilkContext) {
     ctx.stylesheet.apply {
         registerStyleBase("html") {
             // Slide text is big!
-            Modifier.fontSize(32.px)
+            Modifier.fontSize(40.px).lineHeight(1.3)
         }
 
         registerStyleBase("body") {
@@ -45,6 +45,7 @@ fun initSilk(ctx: InitSilkContext) {
 
         registerStyleBase("code, pre") {
             Modifier.fontFamily("Roboto Mono", "monospace")
+                .fontSize(32.px)
         }
 
         val headerCommon = Modifier
@@ -54,19 +55,27 @@ fun initSilk(ctx: InitSilkContext) {
             .lineHeight(1.2)
 
         registerStyleBase("h1") {
-            headerCommon.fontSize(4.cssRem)
+            headerCommon.fontSize(3.2.cssRem)
         }
 
         registerStyleBase("h2") {
-            headerCommon.fontSize(3.5.cssRem)
+            headerCommon.fontSize(2.8.cssRem)
         }
 
         registerStyleBase("h3") {
-            headerCommon.fontSize(2.75.cssRem)
+            headerCommon.fontSize(2.2.cssRem)
         }
 
         registerStyleBase("h4") {
-            headerCommon.fontSize(1.75.cssRem)
+            headerCommon.fontSize(1.4.cssRem)
+        }
+
+        registerStyleBase("h5") {
+            headerCommon.fontSize(1.cssRem).fontWeight(FontWeight.Normal)
+        }
+
+        registerStyleBase("h6") {
+            headerCommon.fontSize(0.8.cssRem).fontWeight(FontWeight.Normal)
         }
     }
 }

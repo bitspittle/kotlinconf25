@@ -247,7 +247,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
         Deferred {
             Box(
-                Modifier.fillMaxWidth().position(Position.Fixed).bottom(0.3.cssRem),
+                Modifier.fillMaxWidth().position(Position.Fixed).bottom(0.25.cssRem),
                 contentAlignment = Alignment.Center
             ) {
                 NavDownIcon(
