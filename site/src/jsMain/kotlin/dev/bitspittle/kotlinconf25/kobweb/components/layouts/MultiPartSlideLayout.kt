@@ -96,21 +96,33 @@ private enum class SlidingVertDirection {
     HIDING;
 }
 
+// Once we visit a multi-part section and leave it, we always want to remember where we left from. (So if we navigate
+// away from it by accident and go back, we'll be back on the same page).
+// We declare this outside the composable to ensure that it doesn't get lost even if you naviagte to another slide that
+// doesn't use this layout, the data won't get lost.
+private val currentSections = mutableStateMapOf<String, Int>()
 
 @Suppress("AssignedValueIsNeverRead") // Setting vars has side effects in compose
 @Layout(".components.layouts.TitledSlideLayout")
 @Composable
 fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
-    var currentSection by remember(ctx.route.path) {
-        mutableStateOf(
-            window.location.hash.substringAfter("#").toIntOrNull() ?: 0
-        )
+    fun getCurrentSection() = currentSections[ctx.route.path] ?: 0
+    fun setCurrentSection(section: Int) { currentSections[ctx.route.path] = section }
+
+    DisposableEffect(ctx.route.path) {
+        if (!currentSections.containsKey(ctx.route.path)) {
+            window.location.hash.substringAfter("#").toIntOrNull()?.let { currentSection ->
+                currentSections[ctx.route.path] = currentSection
+            }
+        }
+        onDispose { }
     }
+
     val slideSections = remember(ctx.route.path) { mutableListOf<@Composable () -> Unit>() }
     var targetSection by remember { mutableStateOf<Int?>(null) }
     var slidingDirection by remember { mutableStateOf<SlidingVertDirection?>(null) }
-    LaunchedEffect(currentSection) {
-        window.location.hash = "$currentSection"
+    LaunchedEffect(getCurrentSection()) {
+        window.location.hash = getCurrentSection().toString()
     }
 
     DisposableEffect(Unit) {
@@ -120,10 +132,11 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             fun tryNavigateToSection(delta: Int) {
                 if (delta == 0) return
 
-                if (targetSection != null) currentSection = targetSection!!
+                // If target section is not null, it means the user keeps pressing the arrow key mid-animation
+                if (targetSection != null) setCurrentSection(targetSection!!)
 
-                val desiredSection = (currentSection + delta).coerceIn(0, slideSections.lastIndex)
-                if (desiredSection == currentSection) return
+                val desiredSection = (getCurrentSection() + delta).coerceIn(0, slideSections.lastIndex)
+                if (desiredSection == getCurrentSection()) return
 
                 targetSection = desiredSection
                 slidingDirection = null
@@ -181,7 +194,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideVertFromOpacityVar, 1f)
                             .setVariable(SlideVertToOpacityVar, 0f)
                             .onAnimationEnd {
-                                currentSection = targetSection!!
+                                setCurrentSection(targetSection!!)
                                 targetSection = null
                                 slidingDirection = SlidingVertDirection.HIDING
                                 window.invokeLater { slidingDirection = SlidingVertDirection.IN_FROM_BOTTOM }
@@ -202,7 +215,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideVertFromTranslatePercentVar, 0.percent)
                             .setVariable(SlideVertToTranslatePercentVar, 100.percent)
                             .onAnimationEnd {
-                                currentSection = targetSection!!
+                                setCurrentSection(targetSection!!)
                                 targetSection = null
                                 slidingDirection = SlidingVertDirection.HIDING
                                 window.invokeLater { slidingDirection = SlidingVertDirection.FADE_IN }
@@ -220,7 +233,9 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     },
                 contentAlignment = Alignment.Center
             ) {
-                (slideSections.getOrNull(currentSection) ?: slideSections.last()).invoke()
+                // Should never be null but might be in development if you remove a section, or if someone puts in an
+                // invalid hash fragment manually
+                (slideSections.getOrNull(getCurrentSection()) ?: slideSections.last()).invoke()
             }
         }
 
@@ -231,7 +246,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             ) {
                 ChevronDownIcon(
                     NavigateToNextSectionStyle.toModifier()
-                        .thenIf(currentSection < slideSections.lastIndex) {
+                        .thenIf(getCurrentSection() < slideSections.lastIndex) {
                             Modifier.setVariable(NavigateArrowOpacityVar, 1f)
                         }
                 )
