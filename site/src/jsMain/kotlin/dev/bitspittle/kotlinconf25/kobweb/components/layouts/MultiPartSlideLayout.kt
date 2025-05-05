@@ -7,14 +7,19 @@ import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
 import com.varabyte.kobweb.compose.css.StyleVariable
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
+import com.varabyte.kobweb.compose.dom.svg.Path
+import com.varabyte.kobweb.compose.dom.svg.SVGFillRule
+import com.varabyte.kobweb.compose.dom.svg.ViewBox
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.thenIf
+import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.layout.Layout
-import com.varabyte.kobweb.silk.components.icons.ChevronDownIcon
+import com.varabyte.kobweb.silk.components.icons.IconRenderStyle
+import com.varabyte.kobweb.silk.components.icons.createIcon
 import com.varabyte.kobweb.silk.defer.Deferred
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.animation.Keyframes
@@ -54,20 +59,6 @@ val SlideVertKeyframes = Keyframes {
     to { Modifier.opacity(SlideVertToOpacityVar.value()).translateY(SlideVertToTranslatePercentVar.value()) }
 }
 
-val BounceDownKeyframes = Keyframes {
-    each(0.percent, 10.percent, 25.percent, 40.percent, 50.percent) {
-        Modifier.translateY(0.percent)
-    }
-
-    20.percent {
-        Modifier.translateY(0.5.cssRem)
-    }
-
-    30.percent {
-        Modifier.translateY((-0.25).cssRem)
-    }
-}
-
 private val NavigateArrowOpacityVar by StyleVariable(0f)
 val NavigateToNextSectionStyle = CssStyle.base {
     Modifier
@@ -84,6 +75,29 @@ private enum class SlidingVertDirection {
 
     // Necessary to prevent one frame flicker as new section comes in
     HIDING;
+}
+
+@Composable
+private fun NavDownIcon(modifier: Modifier = Modifier) {
+    // From https://icons.getbootstrap.com/icons/chevron-down/
+    // It's a bit thinner than the default SVG provided by Kobweb
+    createIcon(viewBox = ViewBox.sized(16), renderStyle = IconRenderStyle.Stroke(1), attrs = modifier.toAttrs()) {
+        Path {
+            fillRule(SVGFillRule.EvenOdd)
+            d {
+                moveTo(1.646, 4.646)
+                ellipticalArc(0.5, 0.5, 0, 0, 1, 0.708, 0, isRelative = true)
+                lineTo(8, 10.293)
+                lineTo(5.646, -5.647, isRelative = true)
+                ellipticalArc(0.5, 0.5, 0, 0, 1, 0.708, 0.708, isRelative = true)
+                lineTo(-6, 6, true)
+                ellipticalArc(0.5, 0.5, 0, 0, 1, -0.708, 0, isRelative = true)
+                lineTo(-6, -6, true)
+                ellipticalArc(0.5, 0.5, 0, 0, 1, 0, -0.708, isRelative = true)
+                closePath()
+            }
+        }
+    }
 }
 
 // Once we visit a multi-part section and leave it, we always want to remember where we left from. (So if we navigate
@@ -234,7 +248,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 Modifier.fillMaxWidth().position(Position.Fixed).bottom(0.3.cssRem),
                 contentAlignment = Alignment.Center
             ) {
-                ChevronDownIcon(
+                NavDownIcon(
                     NavigateToNextSectionStyle.toModifier()
                         .thenIf(getCurrentSection() < slideSections.lastIndex) {
                             Modifier.setVariable(NavigateArrowOpacityVar, 1f)
