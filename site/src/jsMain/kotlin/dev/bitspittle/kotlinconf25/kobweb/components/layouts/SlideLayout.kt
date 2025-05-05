@@ -101,20 +101,25 @@ private enum class SlidingHorizDirection {
     HIDING;
 }
 
+interface EventArgs
 
-abstract class Event<T> {
-    abstract fun add(callback: (T) -> Unit)
-    operator fun plusAssign(callback: (T) -> Unit) = add(callback)
+abstract class Event<A: EventArgs, R> {
+    abstract fun add(callback: (A) -> R)
+    operator fun plusAssign(callback: (A) -> R) = add(callback)
 }
 
-class EventImpl<T> : Event<T>() {
-    private val callbacks = mutableListOf<(T) -> Unit>()
-    override fun add(callback: (T) -> Unit) { callbacks.add(callback) }
-    operator fun invoke(param: T) = callbacks.forEach { it(param) }
+class EventImpl<A: EventArgs, R> : Event<A, R>() {
+    private val callbacks = mutableListOf<(A) -> R>()
+    override fun add(callback: (A) -> R) { callbacks.add(callback) }
+    operator fun invoke(param: A): Sequence<R> = callbacks.asSequence().map { it(param) }
 }
+
+object EmptyEventArgs : EventArgs
+class StepEventArgs(val forward: Boolean) : EventArgs
 
 class SlideEvents {
-    val onNavigating: Event<Unit> = EventImpl()
+    val onNavigating: Event<EmptyEventArgs, Unit> = EventImpl()
+    val onStepRequested: Event<StepEventArgs, Boolean> = EventImpl()
 }
 
 @InitRoute
@@ -171,7 +176,8 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     targetSlide = "/$desiredSlide"
                     if (slidingDirection != null) slidingDirection = SlidingHorizDirection.HIDING
                     window.invokeLater {
-                        (ctx.data.getValue<SlideEvents>().onNavigating as EventImpl<Unit>).invoke(Unit)
+                        (ctx.data.getValue<SlideEvents>().onNavigating as EventImpl<EmptyEventArgs, Unit>)
+                            .invoke(EmptyEventArgs)
                         slidingDirection = if (origDelta < 0) {
                             SlidingHorizDirection.OUT_TO_RIGHT
                         } else {
@@ -185,6 +191,16 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             when ((event as KeyboardEvent).key) {
                 "ArrowLeft" -> tryNavigateToSlide(-1)
                 "ArrowRight" -> tryNavigateToSlide(+1)
+                " " -> {
+                    val args = StepEventArgs(forward = !event.shiftKey)
+                    val stepHandled = (ctx.data.getValue<SlideEvents>().onStepRequested as EventImpl<StepEventArgs, Boolean>)
+                        .invoke(args)
+                        .any { it }
+
+                    if (!stepHandled) {
+                        tryNavigateToSlide(if (args.forward) +1 else -1)
+                    }
+                }
                 else -> handled = false
             }
             if (handled) {

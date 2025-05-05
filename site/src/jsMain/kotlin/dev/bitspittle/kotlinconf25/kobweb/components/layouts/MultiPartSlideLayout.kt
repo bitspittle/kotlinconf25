@@ -139,27 +139,35 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         window.location.hash = getCurrentSection().toString()
     }
 
+    fun tryNavigateToSection(delta: Int): Boolean {
+        if (delta == 0) return false
+
+        // If target section is not null, it means the user keeps pressing the arrow key mid-animation
+        if (targetSection != null) setCurrentSection(targetSection!!)
+
+        val desiredSection = (getCurrentSection() + delta).coerceIn(0, slideSections.lastIndex)
+        if (desiredSection == getCurrentSection()) return false
+
+        targetSection = desiredSection
+        slidingDirection = null
+        window.invokeLater {
+            slidingDirection =
+                if (delta < 0) SlidingVertDirection.OUT_TO_BOTTOM else SlidingVertDirection.FADE_OUT
+        }
+
+        return true
+    }
+
+    LaunchedEffect(ctx.route.path) {
+        ctx.data.getValue<SlideEvents>().onStepRequested += { args ->
+            tryNavigateToSection(if (args.forward) +1 else -1)
+        }
+    }
+
     DisposableEffect(Unit) {
         val manager = EventListenerManager(window)
 
         manager.addEventListener("keydown") { event ->
-            fun tryNavigateToSection(delta: Int) {
-                if (delta == 0) return
-
-                // If target section is not null, it means the user keeps pressing the arrow key mid-animation
-                if (targetSection != null) setCurrentSection(targetSection!!)
-
-                val desiredSection = (getCurrentSection() + delta).coerceIn(0, slideSections.lastIndex)
-                if (desiredSection == getCurrentSection()) return
-
-                targetSection = desiredSection
-                slidingDirection = null
-                window.invokeLater {
-                    slidingDirection =
-                        if (delta < 0) SlidingVertDirection.OUT_TO_BOTTOM else SlidingVertDirection.FADE_OUT
-                }
-            }
-
             var handled = true
             when ((event as KeyboardEvent).key) {
                 "ArrowUp" -> tryNavigateToSection(-1)
