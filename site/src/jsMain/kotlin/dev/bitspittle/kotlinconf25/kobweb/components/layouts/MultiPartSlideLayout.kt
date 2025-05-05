@@ -237,8 +237,8 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     },
                 contentAlignment = Alignment.Center
             ) {
-                // Should never be null but might be in development if you remove a section, or if someone puts in an
-                // invalid hash fragment manually
+                // Should never be null but might happen in development if you remove a section and then a reload
+                // happens, or if someone manually enters an invalid hash fragment
                 (slideSections.getOrNull(getCurrentSection()) ?: slideSections.last()).invoke()
             }
         }
