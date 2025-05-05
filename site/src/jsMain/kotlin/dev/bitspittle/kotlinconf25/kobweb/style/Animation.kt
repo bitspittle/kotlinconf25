@@ -1,8 +1,8 @@
 package dev.bitspittle.kotlinconf25.kobweb.style
 
-import org.jetbrains.compose.web.css.s
+import kotlin.time.Duration.Companion.seconds
 
 object AnimSpeeds {
-    val Quick = 0.2.s
-    val Slow = 2.s
+    val Quick = 0.2.seconds
+    val Slow = 2.seconds
 }

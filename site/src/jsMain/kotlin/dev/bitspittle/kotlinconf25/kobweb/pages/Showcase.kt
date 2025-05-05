@@ -14,8 +14,9 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.TitledSlideData
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.step
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import org.jetbrains.compose.web.dom.H1
-import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
@@ -34,15 +35,43 @@ fun ShowcasePage() {
     }
 
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Red)) { Text("1") }
+        CenteredBox(Modifier.backgroundColor(Colors.Red)) {
+            Bullets {
+                Item("1*", Modifier.step(auto = true))
+                Item("2", Modifier.step())
+                Item("3", Modifier.step())
+                Item("4", Modifier.step())
+            }
+        }
     }
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Green)) { Text("2") }
+        CenteredBox(Modifier.backgroundColor(Colors.Green)) {
+            Bullets {
+                Item("5*", Modifier.step(auto = true))
+                Item("6*", Modifier.step(auto = true))
+                Item("7*", Modifier.step(auto = true))
+                Item("8*", Modifier.step(auto = true))
+            }
+        }
     }
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Blue)) { Text("3") }
+        CenteredBox(Modifier.backgroundColor(Colors.Blue)) {
+            Bullets {
+                Item("9", Modifier.step())
+                Item("10*", Modifier.step(auto = true))
+                Item("11*", Modifier.step(auto = true))
+                Item("12", Modifier.step())
+            }
+        }
     }
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Orange)) { Text("4") }
+        CenteredBox(Modifier.backgroundColor(Colors.Orange)) {
+            Bullets {
+                Item("13", Modifier.step())
+                Item("14", Modifier.step())
+                Item("15", Modifier.step())
+                Item("16*", Modifier.step(auto = true))
+            }
+        }
     }
 }

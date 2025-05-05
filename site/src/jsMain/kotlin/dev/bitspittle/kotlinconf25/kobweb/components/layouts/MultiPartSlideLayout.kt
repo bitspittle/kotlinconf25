@@ -29,6 +29,7 @@ import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
+import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
@@ -64,7 +65,7 @@ private val NavigateArrowOpacityVar by StyleVariable(0f)
 val NavigateToNextSectionStyle = CssStyle.base {
     Modifier
         .opacity(NavigateArrowOpacityVar.value())
-        .transition(Transition.of("opacity", AnimSpeeds.Quick))
+        .transition(Transition.of("opacity", AnimSpeeds.Quick.toCssUnit()))
         .color(SiteColors.Accent)
 }
 
@@ -195,7 +196,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             @Composable
             fun Modifier.fadingAnimation() = animation(
                 FadeKeyframes.toAnimation(
-                    AnimSpeeds.Quick,
+                    AnimSpeeds.Quick.toCssUnit(),
                     timingFunction = TransitionTimingFunction.EaseInOut,
                 )
             )
@@ -203,7 +204,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             @Composable
             fun Modifier.slidingAnimation() = animation(
                 SlideVertKeyframes.toAnimation(
-                    AnimSpeeds.Quick,
+                    AnimSpeeds.Quick.toCssUnit(),
                     timingFunction = TransitionTimingFunction.EaseInOut,
                 )
             )

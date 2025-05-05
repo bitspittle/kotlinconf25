@@ -2,11 +2,14 @@ package dev.bitspittle.kotlinconf25.kobweb.components.layouts
 
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
+import com.varabyte.kobweb.browser.util.CancellableActionHandle
 import com.varabyte.kobweb.browser.util.invokeLater
+import com.varabyte.kobweb.browser.util.setTimeout
 import com.varabyte.kobweb.compose.css.*
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
+import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -29,18 +32,25 @@ import com.varabyte.kobweb.silk.style.toModifier
 import dev.bitspittle.kotlinconf25.kobweb.slides
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
+import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.MutationObserver
+import org.w3c.dom.MutationObserverInit
+import org.w3c.dom.asList
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.math.min
 import kotlin.math.roundToInt
+import kotlin.time.Duration
+import kotlin.time.Duration.Companion.milliseconds
 
 private val SlideScaleVar by StyleVariable<Float>()
 private val SlidesProgressVar by StyleVariable(0.percent)
 
-private val TARGET_WIDTH = 1920
-private val TARGET_HEIGHT = 1080
+private const val TARGET_WIDTH = 1920
+private const val TARGET_HEIGHT = 1080
 
 // Slide in from right: 100% -> 0%
 // Slide in from left: -100% -> 0%
@@ -88,7 +98,7 @@ val SlidesProgressStyle = CssStyle.base {
         .height(3.px)
         .width(SlidesProgressVar.value())
         .backgroundColor(SiteColors.Accent)
-        .transition(Transition.of("width", AnimSpeeds.Quick, TransitionTimingFunction.Ease))
+        .transition(Transition.of("width", AnimSpeeds.Quick.toCssUnit(), TransitionTimingFunction.Ease))
 }
 
 private enum class SlidingHorizDirection {
@@ -103,14 +113,17 @@ private enum class SlidingHorizDirection {
 
 interface EventArgs
 
-abstract class Event<A: EventArgs, R> {
+abstract class Event<A : EventArgs, R> {
     abstract fun add(callback: (A) -> R)
     operator fun plusAssign(callback: (A) -> R) = add(callback)
 }
 
-class EventImpl<A: EventArgs, R> : Event<A, R>() {
+class EventImpl<A : EventArgs, R> : Event<A, R>() {
     private val callbacks = mutableListOf<(A) -> R>()
-    override fun add(callback: (A) -> R) { callbacks.add(callback) }
+    override fun add(callback: (A) -> R) {
+        callbacks.add(callback)
+    }
+
     operator fun invoke(param: A): Sequence<R> = callbacks.asSequence().map { it(param) }
 }
 
@@ -149,6 +162,100 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var scale by remember { mutableStateOf(calculateScale()) }
     var slidingDirection by remember { mutableStateOf<SlidingHorizDirection?>(null) }
     var targetSlide by remember { mutableStateOf<String?>(null) }
+    var contentContainer by remember { mutableStateOf<HTMLElement?>(null) }
+    val stepElements = remember { mutableListOf<HTMLElement>() }
+
+    var cancelHandle: CancellableActionHandle? = null
+    fun enqueueWithDelay(delay: Duration, action: () -> Unit) {
+        cancelHandle?.cancel()
+        cancelHandle = window.setTimeout(delay) {
+            action()
+            cancelHandle = null
+        }
+    }
+
+    fun HTMLElement.enqueueWithDelayIfAuto(force: Boolean = false, action: () -> Unit) {
+        if (force) {
+            action()
+        } else {
+            val delay =
+                getAttribute("data-step-delay")?.toIntOrNull()?.milliseconds?.takeUnless { force }
+                    ?: AnimSpeeds.Quick
+
+            if (classList.contains("auto")) enqueueWithDelay(delay, action)
+        }
+    }
+
+    // If force is true, automatically activate / deactivate everything all at once. Useful if wanting to show all
+    // steps instantly while debugging, or if you accidentally go too far and want to go back
+    fun tryStep(forward: Boolean, force: Boolean = false): Boolean {
+        if (stepElements.isEmpty()) return false
+
+        return if (forward) {
+            var stepActivated = false
+            for (stepElement in stepElements) {
+                if (!stepElement.classList.contains("active")) {
+                    if (stepActivated) {
+                        stepElement.enqueueWithDelayIfAuto(force) { tryStep(forward, force) }
+                        break
+                    } else {
+                        stepElement.classList.add("active")
+                        stepActivated = true
+                    }
+                }
+            }
+            stepActivated
+        } else {
+            var stepDeactivated = false
+            // Remove all grouped auto steps in one fell swoop
+            for (stepElement in stepElements.asReversed()) {
+                if (stepElement.classList.contains("active")) {
+                    stepElement.classList.remove("active")
+                    stepDeactivated = true
+
+                    if (!force && !stepElement.classList.contains("auto")) {
+                        break
+                    }
+                }
+            }
+
+            // If the last element we deactivate is auto, that means we should actually go further and retreat to the
+            // previous section / slide. Even though we actually changed stuff here, just say it wasn't handled so the
+            // calling code will continue.
+            if (!stepElements.first().classList.contains("active") && stepElements.first().classList.contains("auto")) {
+                false
+            } else {
+                stepDeactivated
+            }
+        }
+    }
+
+    DisposableEffect(contentContainer) {
+        val contentContainer = contentContainer ?: return@DisposableEffect onDispose {}
+        stepElements.clear()
+        stepElements.addAll(contentContainer.getElementsByClassName("step")
+            .asList()
+            .filterIsInstance<HTMLElement>()
+        )
+
+        fun onStepsChanged() {
+            stepElements.firstOrNull()?.let { stepElement ->
+                stepElement.enqueueWithDelayIfAuto { tryStep(true) }
+            }
+        }
+        onStepsChanged()
+
+        val observer = MutationObserver { mutations, observer ->
+            stepElements.clear()
+            mutations.forEach { mutation ->
+                stepElements.addAll(mutation.addedNodes.asList().filterIsInstance<HTMLElement>().flatMap {
+                    it.getElementsByClassName("step").asList().filterIsInstance<HTMLElement>() })
+                onStepsChanged()
+            }
+        }
+        observer.observe(contentContainer, MutationObserverInit(childList = true, subtree = true))
+        onDispose { observer.disconnect() }
+    }
 
     DisposableEffect(Unit) {
         val manager = EventListenerManager(window)
@@ -193,14 +300,20 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 "ArrowRight" -> tryNavigateToSlide(+1)
                 " " -> {
                     val args = StepEventArgs(forward = !event.shiftKey)
-                    val stepHandled = (ctx.data.getValue<SlideEvents>().onStepRequested as EventImpl<StepEventArgs, Boolean>)
-                        .invoke(args)
-                        .any { it }
+                    handled = tryStep(args.forward, force = event.ctrlKey)
 
-                    if (!stepHandled) {
-                        tryNavigateToSlide(if (args.forward) +1 else -1)
+                    if (!handled) {
+                        handled =
+                            (ctx.data.getValue<SlideEvents>().onStepRequested as EventImpl<StepEventArgs, Boolean>)
+                                .invoke(args)
+                                .any { it }
+
+                        if (!handled) {
+                            tryNavigateToSlide(if (args.forward) +1 else -1)
+                        }
                     }
                 }
+
                 else -> handled = false
             }
             if (handled) {
@@ -214,12 +327,12 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     @Composable
     fun Modifier.slidingAnimation() = animation(
         SlideHorizKeyframes.toAnimation(
-            AnimSpeeds.Quick,
+            AnimSpeeds.Quick.toCssUnit(),
             timingFunction = AnimationTimingFunction.EaseInOut,
         )
     )
 
-    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center) {
+    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center, ref = ref { contentContainer = it }) {
         Box(SlideLayoutStyle.toModifier().setVariable(SlideScaleVar, scale)) {
             Box(
                 Modifier.fillMaxSize()
@@ -273,7 +386,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .onAnimationEnd { slidingDirection = null }
                             .slidingAnimation()
                     },
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 content()
             }

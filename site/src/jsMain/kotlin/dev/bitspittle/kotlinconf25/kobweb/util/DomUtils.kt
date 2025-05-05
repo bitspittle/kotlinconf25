@@ -2,22 +2,30 @@ package dev.bitspittle.kotlinconf25.kobweb.util
 
 import org.w3c.dom.*
 
-fun HTMLCollection.walk(onEach: (Element) -> Unit) {
+fun HTMLCollection.walkWhile(onEach: (Element) -> Boolean) {
     (0 until length)
         .mapNotNull { i: Int -> this[i] }
         .forEach { child ->
-            onEach(child)
-            child.children.walk(onEach)
+            if (!onEach(child)) return
+            child.children.walkWhile(onEach)
+        }
+}
+
+fun HTMLCollection.walk(onEach: (Element) -> Unit) {
+    walkWhile { onEach(it); true }
+}
+
+fun NodeList.walkWhile(onEach: (Node) -> Boolean) {
+    (0 until length)
+        .mapNotNull { i: Int -> this[i] }
+        .forEach { node ->
+            if (!onEach(node)) return
+            node.childNodes.walkWhile(onEach)
         }
 }
 
 fun NodeList.walk(onEach: (Node) -> Unit) {
-    (0 until length)
-        .mapNotNull { i: Int -> this[i] }
-        .forEach { node ->
-            onEach(node)
-            node.childNodes.walk(onEach)
-        }
+    walkWhile { onEach(it); true }
 }
 
 val HTMLElement.ancestors: Sequence<HTMLElement>
