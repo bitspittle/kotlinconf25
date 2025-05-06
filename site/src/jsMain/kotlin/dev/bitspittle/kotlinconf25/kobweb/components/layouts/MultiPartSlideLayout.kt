@@ -196,10 +196,16 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     }
                 }
                 "Home" -> {
-                    tryNavigateToSection(-getCurrentSection())
+                    if (!tryNavigateToSection(-getCurrentSection())) {
+                        // If we failed, we're already on the top section
+                        containerElement!!.deactivateAllSteps()
+                    }
                 }
                 "End" -> {
-                    tryNavigateToSection(slideSections.lastIndex - getCurrentSection())
+                    if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
+                        // If we failed, we're already on the bottom section
+                        containerElement!!.activateAllSteps()
+                    }
                 }
                 else -> handled = false
             }
