@@ -51,8 +51,24 @@ fun initStepStyles(ctx: InitSilkContext) {
     }
 }
 
-fun HTMLElement.activateAllSteps() {
+fun HTMLElement.activateAllSteps(): Boolean {
+    var anyActivated = false
     getElementsByClassName("step").asList().filterIsInstance<HTMLElement>().forEach { step ->
-        step.classList.add("active")
+        if (!step.classList.contains("active")) {
+            step.classList.add("active")
+            anyActivated = true
+        }
     }
+    return anyActivated
+}
+
+fun HTMLElement.deactivateAllSteps(): Boolean {
+    var anyDeactivated = false
+    getElementsByClassName("step").asList().filterIsInstance<HTMLElement>().forEach { step ->
+        if (step.classList.contains("active")) {
+            step.classList.remove("active")
+            anyDeactivated = true
+        }
+    }
+    return anyDeactivated
 }

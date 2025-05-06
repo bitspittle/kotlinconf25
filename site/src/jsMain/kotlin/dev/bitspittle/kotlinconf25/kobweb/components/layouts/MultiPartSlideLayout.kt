@@ -132,12 +132,23 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var navigatingOut by remember(ctx.route.path) {
         mutableStateOf(false)
             .also { state ->
-                ctx.data.getValue<SlideEvents>().onNavigating += {
+                ctx.data.getValue<SlideEvents>().onNavigating += { args ->
                     state.value = true
                 }
             }
     }
     var containerElement by remember(ctx.route.path) { mutableStateOf<HTMLElement?>(null) }
+
+    LaunchedEffect(ctx.route.path) {
+        ctx.data.getValue<SlideEvents>().onNavigated += { args ->
+            if (!args.forward) {
+                // If we leave off to the left, return back to the first slide when coming back.
+                currentSections.remove(ctx.route.path)
+            } else {
+                currentSections[ctx.route.path] = slideSections.lastIndex
+            }
+        }
+    }
 
     LaunchedEffect(getCurrentSection()) {
         window.location.hash = getCurrentSection().toString()
@@ -174,10 +185,22 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         manager.addEventListener("keydown") { event ->
             var handled = true
             when ((event as KeyboardEvent).key) {
-                "ArrowUp" -> tryNavigateToSection(-1)
-                "ArrowDown" -> tryNavigateToSection(+1)
-                "Home" -> tryNavigateToSection(-getCurrentSection())
-                "End" -> tryNavigateToSection(slideSections.lastIndex - getCurrentSection())
+                "ArrowUp" -> {
+                    if (!containerElement!!.deactivateAllSteps()) {
+                        tryNavigateToSection(-1)
+                    }
+                }
+                "ArrowDown" -> {
+                    if (!containerElement!!.activateAllSteps()) {
+                        tryNavigateToSection(+1)
+                    }
+                }
+                "Home" -> {
+                    tryNavigateToSection(-getCurrentSection())
+                }
+                "End" -> {
+                    tryNavigateToSection(slideSections.lastIndex - getCurrentSection())
+                }
                 else -> handled = false
             }
             if (handled) {
@@ -234,7 +257,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideVertFromOpacityVar, 0f)
                             .setVariable(SlideVertToOpacityVar, 1f)
                             .onAnimationStart {
-                                // We're going back to a previous slide, so activate all steps
+                                // We're returning to a previously visited slide, so ensure all steps are active
                                 containerElement!!.activateAllSteps()
                             }
                             .onAnimationEnd { slidingDirection = null }

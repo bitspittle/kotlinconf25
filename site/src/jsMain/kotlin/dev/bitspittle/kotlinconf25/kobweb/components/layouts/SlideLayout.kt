@@ -107,7 +107,7 @@ private enum class SlidingHorizDirection {
     OUT_TO_LEFT,
     OUT_TO_RIGHT,
 
-    // Necessary to prevent one frame flicker as new slide comes in
+    // Necessary to prevent one frame flicker as a new slide comes in
     HIDING;
 }
 
@@ -120,19 +120,24 @@ abstract class Event<A : EventArgs, R> {
 
 class EventImpl<A : EventArgs, R> : Event<A, R>() {
     private val callbacks = mutableListOf<(A) -> R>()
-    override fun add(callback: (A) -> R) {
-        callbacks.add(callback)
-    }
+    override fun add(callback: (A) -> R) { callbacks.add(callback) }
 
-    operator fun invoke(param: A): Sequence<R> = callbacks.asSequence().map { it(param) }
+    fun asSequence(param: A): Sequence<R> = callbacks.asSequence().map { it(param) }
+
+    operator fun invoke(param: A) {
+        // Convert to list which consumes the sequence as a side effect
+        asSequence(param).toList()
+    }
 }
 
+@Suppress("unused")
 object EmptyEventArgs : EventArgs
-class StepEventArgs(val forward: Boolean) : EventArgs
+class DirectionArgs(val forward: Boolean) : EventArgs
 
 class SlideEvents {
-    val onNavigating: Event<EmptyEventArgs, Unit> = EventImpl()
-    val onStepRequested: Event<StepEventArgs, Boolean> = EventImpl()
+    val onNavigating: Event<DirectionArgs, Unit> = EventImpl()
+    val onNavigated: Event<DirectionArgs, Unit> = EventImpl()
+    val onStepRequested: Event<DirectionArgs, Boolean> = EventImpl()
 }
 
 @InitRoute
@@ -174,21 +179,17 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
-    fun HTMLElement.enqueueWithDelayIfAuto(force: Boolean = false, action: () -> Unit) {
-        if (force) {
-            action()
-        } else {
+    fun HTMLElement.enqueueWithDelayIfAuto(action: () -> Unit) {
+        if (classList.contains("auto")) {
             val delay =
-                getAttribute("data-step-delay")?.toIntOrNull()?.milliseconds?.takeUnless { force }
-                    ?: AnimSpeeds.Quick
-
-            if (classList.contains("auto")) enqueueWithDelay(delay, action)
+                getAttribute("data-step-delay")?.toIntOrNull()?.milliseconds ?: AnimSpeeds.Quick
+            enqueueWithDelay(delay, action)
         }
     }
 
     // If force is true, automatically activate / deactivate everything all at once. Useful if wanting to show all
     // steps instantly while debugging, or if you accidentally go too far and want to go back
-    fun tryStep(forward: Boolean, force: Boolean = false): Boolean {
+    fun tryStep(forward: Boolean): Boolean {
         if (stepElements.isEmpty()) return false
 
         return if (forward) {
@@ -196,7 +197,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             for (stepElement in stepElements) {
                 if (!stepElement.classList.contains("active")) {
                     if (stepActivated) {
-                        stepElement.enqueueWithDelayIfAuto(force) { tryStep(forward, force) }
+                        stepElement.enqueueWithDelayIfAuto { tryStep(forward) }
                         break
                     } else {
                         stepElement.classList.add("active")
@@ -213,7 +214,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     stepElement.classList.remove("active")
                     stepDeactivated = true
 
-                    if (!force && !stepElement.classList.contains("auto")) {
+                    if (!stepElement.classList.contains("auto")) {
                         break
                     }
                 }
@@ -260,9 +261,9 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     DisposableEffect(Unit) {
         val manager = EventListenerManager(window)
 
-        manager.addEventListener("resize", {
+        manager.addEventListener("resize") {
             scale = calculateScale()
-        })
+        }
 
         manager.addEventListener("keydown") { event ->
             fun tryNavigateToSlide(delta: Int) {
@@ -282,9 +283,11 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 if (desiredSlide != null) {
                     targetSlide = "/$desiredSlide"
                     if (slidingDirection != null) slidingDirection = SlidingHorizDirection.HIDING
+
+                    val args = DirectionArgs(forward = origDelta > 0)
+                    (ctx.data.getValue<SlideEvents>().onNavigating as EventImpl).invoke(args)
+
                     window.invokeLater {
-                        (ctx.data.getValue<SlideEvents>().onNavigating as EventImpl<EmptyEventArgs, Unit>)
-                            .invoke(EmptyEventArgs)
                         slidingDirection = if (origDelta < 0) {
                             SlidingHorizDirection.OUT_TO_RIGHT
                         } else {
@@ -296,16 +299,22 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
             var handled = true
             when ((event as KeyboardEvent).key) {
-                "ArrowLeft" -> tryNavigateToSlide(-1)
-                "ArrowRight" -> tryNavigateToSlide(+1)
+                "ArrowLeft" -> {
+                    containerElement!!.deactivateAllSteps()
+                    tryNavigateToSlide(-1)
+                }
+                "ArrowRight" -> {
+                    containerElement!!.activateAllSteps()
+                    tryNavigateToSlide(+1)
+                }
                 " " -> {
-                    val args = StepEventArgs(forward = !event.shiftKey)
-                    handled = tryStep(args.forward, force = event.ctrlKey)
+                    val args = DirectionArgs(forward = !event.shiftKey)
+                    handled = tryStep(args.forward)
 
                     if (!handled) {
                         handled =
-                            (ctx.data.getValue<SlideEvents>().onStepRequested as EventImpl<StepEventArgs, Boolean>)
-                                .invoke(args)
+                            (ctx.data.getValue<SlideEvents>().onStepRequested as EventImpl)
+                                .asSequence(args)
                                 .any { it }
 
                         if (!handled) {
@@ -347,6 +356,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizFromTranslatePercentVar, 0.percent)
                             .setVariable(SlideHorizToTranslatePercentVar, (-100).percent)
                             .onAnimationEnd {
+                                (ctx.data.getValue<SlideEvents>().onNavigated as EventImpl).invoke(DirectionArgs(forward = true))
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
                                 slidingDirection = SlidingHorizDirection.HIDING
@@ -361,6 +371,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizFromTranslatePercentVar, 0.percent)
                             .setVariable(SlideHorizToTranslatePercentVar, 100.percent)
                             .onAnimationEnd {
+                                (ctx.data.getValue<SlideEvents>().onNavigated as EventImpl).invoke(DirectionArgs(forward = false))
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
                                 slidingDirection = SlidingHorizDirection.HIDING
