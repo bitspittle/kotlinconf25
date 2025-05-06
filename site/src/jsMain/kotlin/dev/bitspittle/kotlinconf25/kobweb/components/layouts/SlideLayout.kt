@@ -162,7 +162,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var scale by remember { mutableStateOf(calculateScale()) }
     var slidingDirection by remember { mutableStateOf<SlidingHorizDirection?>(null) }
     var targetSlide by remember { mutableStateOf<String?>(null) }
-    var contentContainer by remember { mutableStateOf<HTMLElement?>(null) }
+    var containerElement by remember { mutableStateOf<HTMLElement?>(null) }
     val stepElements = remember { mutableListOf<HTMLElement>() }
 
     var cancelHandle: CancellableActionHandle? = null
@@ -230,8 +230,8 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
-    DisposableEffect(contentContainer) {
-        val contentContainer = contentContainer ?: return@DisposableEffect onDispose {}
+    DisposableEffect(containerElement) {
+        val contentContainer = containerElement ?: return@DisposableEffect onDispose {}
         stepElements.clear()
         stepElements.addAll(contentContainer.getElementsByClassName("step")
             .asList()
@@ -332,7 +332,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         )
     )
 
-    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center, ref = ref { contentContainer = it }) {
+    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center, ref = ref { containerElement = it }) {
         Box(SlideLayoutStyle.toModifier().setVariable(SlideScaleVar, scale)) {
             Box(
                 Modifier.fillMaxSize()
@@ -374,6 +374,10 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizToOpacityVar, 1f)
                             .setVariable(SlideHorizFromTranslatePercentVar, (-100).percent)
                             .setVariable(SlideHorizToTranslatePercentVar, 0.percent)
+                            .onAnimationStart {
+                                // We are going back to a previous slide, so show all steps
+                                containerElement!!.activateAllSteps()
+                            }
                             .onAnimationEnd { slidingDirection = null }
                             .slidingAnimation()
                     }

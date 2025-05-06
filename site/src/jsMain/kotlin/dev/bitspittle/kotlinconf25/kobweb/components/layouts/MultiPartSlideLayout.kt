@@ -7,6 +7,7 @@ import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
 import com.varabyte.kobweb.compose.css.StyleVariable
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
+import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.SVGFillRule
 import com.varabyte.kobweb.compose.dom.svg.ViewBox
@@ -34,6 +35,7 @@ import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.percent
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 
 @Composable
@@ -135,6 +137,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 }
             }
     }
+    var containerElement by remember(ctx.route.path) { mutableStateOf<HTMLElement?>(null) }
 
     LaunchedEffect(getCurrentSection()) {
         window.location.hash = getCurrentSection().toString()
@@ -230,6 +233,10 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                         Modifier
                             .setVariable(SlideVertFromOpacityVar, 0f)
                             .setVariable(SlideVertToOpacityVar, 1f)
+                            .onAnimationStart {
+                                // We're going back to a previous slide, so activate all steps
+                                containerElement!!.activateAllSteps()
+                            }
                             .onAnimationEnd { slidingDirection = null }
                             .fadingAnimation()
                     }
@@ -256,7 +263,8 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .onAnimationEnd { slidingDirection = null }
                             .slidingAnimation()
                     },
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
+                ref = ref { containerElement = it },
             ) {
                 // Should never be null but might happen in development if you remove a section and then a reload
                 // happens, or if someone manually enters an invalid hash fragment

@@ -11,6 +11,8 @@ import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
+import org.w3c.dom.HTMLElement
+import org.w3c.dom.asList
 import kotlin.time.Duration
 
 // A step is a small unit of progress. Pressing SPACE repeatedly will keep activating the next step.
@@ -46,5 +48,11 @@ fun initStepStyles(ctx: InitSilkContext) {
             Modifier
                 .opacity(1)
         }
+    }
+}
+
+fun HTMLElement.activateAllSteps() {
+    getElementsByClassName("step").asList().filterIsInstance<HTMLElement>().forEach { step ->
+        step.classList.add("active")
     }
 }
