@@ -28,6 +28,7 @@ import com.varabyte.kobweb.silk.style.animation.Keyframes
 import com.varabyte.kobweb.silk.style.animation.toAnimation
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
+import dev.bitspittle.kotlinconf25.kobweb.bindings.prismjs.Prism
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
@@ -152,9 +153,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
     LaunchedEffect(getCurrentSection()) {
         window.location.hash = getCurrentSection().toString()
-
-        // See kobweb config in build.gradle.kts which sets up Prism
-        js("Prism.highlightAll()")
+        Prism.highlightAll()
     }
 
     fun tryNavigateToSection(delta: Int): Boolean {
@@ -206,9 +205,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!tryNavigateToSection(-getCurrentSection())) {
                         // If we failed, we're already on the top section
                         containerElement!!.deactivateAllSteps()
-                        // See kobweb config in build.gradle.kts which sets up Prism
-                        js("Prism.highlightAll()")
-
+                        Prism.highlightAll()
                     }
                 }
                 "End" -> {
@@ -216,8 +213,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
                         // If we failed, we're already on the bottom section
                         containerElement!!.activateAllSteps()
-                        // See kobweb config in build.gradle.kts which sets up Prism
-                        js("Prism.highlightAll()")
+                        Prism.highlightAll()
                     }
                 }
                 else -> handled = false

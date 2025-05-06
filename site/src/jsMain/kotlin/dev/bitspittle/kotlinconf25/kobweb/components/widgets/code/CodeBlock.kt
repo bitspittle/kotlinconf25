@@ -34,10 +34,10 @@ import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
 import com.varabyte.kobweb.silk.style.toModifier
+import dev.bitspittle.kotlinconf25.kobweb.bindings.prismjs.Prism
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColorVar
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
-import kotlinx.browser.window
 import org.jetbrains.compose.web.css.DisplayStyle
 import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.em
@@ -123,7 +123,7 @@ fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotl
     }
 
     LaunchedEffect(activeHighlightPart) {
-        js("Prism.highlightAll()")
+        Prism.highlightAll()
     }
 
     Pre(CodeBlockStyle.toModifier()

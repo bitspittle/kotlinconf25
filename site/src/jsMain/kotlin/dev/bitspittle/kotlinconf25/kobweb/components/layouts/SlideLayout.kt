@@ -29,6 +29,7 @@ import com.varabyte.kobweb.silk.style.animation.Keyframes
 import com.varabyte.kobweb.silk.style.animation.toAnimation
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
+import dev.bitspittle.kotlinconf25.kobweb.bindings.prismjs.Prism
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.activeSubstepIndex
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.substepCount
 import dev.bitspittle.kotlinconf25.kobweb.slides
@@ -163,8 +164,7 @@ fun initSlideLayout(ctx: InitRouteContext) {
 fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var progressPercent by remember { mutableStateOf(0f) }
     LaunchedEffect(ctx.route.path) {
-        // See kobweb config in build.gradle.kts which sets up Prism
-        js("Prism.highlightAll()")
+        Prism.highlightAll()
 
         progressPercent =
             AppGlobals.slides.indexOf(ctx.route.path.substringAfter("/")) / (AppGlobals.slides.size - 1).toFloat()
