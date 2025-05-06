@@ -164,8 +164,6 @@ fun initSlideLayout(ctx: InitRouteContext) {
 fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var progressPercent by remember { mutableStateOf(0f) }
     LaunchedEffect(ctx.route.path) {
-        Prism.highlightAll()
-
         progressPercent =
             AppGlobals.slides.indexOf(ctx.route.path.substringAfter("/")) / (AppGlobals.slides.size - 1).toFloat()
     }
@@ -182,6 +180,11 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var targetSlide by remember { mutableStateOf<String?>(null) }
     var containerElement by remember { mutableStateOf<HTMLElement?>(null) }
     val stepElements = remember { mutableListOf<HTMLElement>() }
+
+    LaunchedEffect(containerElement, ctx.route.path) {
+        val containerElement = containerElement ?: return@LaunchedEffect
+        Prism.highlightAllUnder(containerElement)
+    }
 
     // Remember this handle so that later when we capture it in a closer, it's definitely the same handle
     var cancelHandle by remember { mutableStateOf<CancellableActionHandle?>(null) }

@@ -153,7 +153,11 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
     LaunchedEffect(getCurrentSection()) {
         window.location.hash = getCurrentSection().toString()
-        Prism.highlightAll()
+    }
+
+    LaunchedEffect(containerElement, getCurrentSection()) {
+        val containerElement = containerElement ?: return@LaunchedEffect
+        Prism.highlightAllUnder(containerElement)
     }
 
     fun tryNavigateToSection(delta: Int): Boolean {
@@ -205,7 +209,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!tryNavigateToSection(-getCurrentSection())) {
                         // If we failed, we're already on the top section
                         containerElement!!.deactivateAllSteps()
-                        Prism.highlightAll()
+                        Prism.highlightAllUnder(containerElement!!)
                     }
                 }
                 "End" -> {
@@ -213,7 +217,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
                         // If we failed, we're already on the bottom section
                         containerElement!!.activateAllSteps()
-                        Prism.highlightAll()
+                        Prism.highlightAllUnder(containerElement!!)
                     }
                 }
                 else -> handled = false

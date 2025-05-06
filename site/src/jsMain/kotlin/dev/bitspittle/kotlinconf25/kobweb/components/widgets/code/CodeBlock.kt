@@ -70,6 +70,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 @Composable
 fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotlin", highlightLines: String? = null) {
     var preElement by remember { mutableStateOf<HTMLElement?>(null) }
+    var codeElement by remember { mutableStateOf<HTMLElement?>(null) }
 
     val highlightLineParts = remember(highlightLines) { highlightLines?.split("|") }
     var activeHighlightPart by remember(highlightLineParts) { mutableStateOf<String?>(null) }
@@ -90,8 +91,9 @@ fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotl
         activeHighlightPart = highlightLineParts?.getOrNull(activePartIndex)?.takeIf { it != "0" }.orEmpty()
     }
 
-    LaunchedEffect(activeHighlightPart) {
-        Prism.highlightAll()
+    LaunchedEffect(codeElement, activeHighlightPart) {
+        val codeElement = codeElement ?: return@LaunchedEffect
+        Prism.highlightElement(codeElement)
     }
 
     Pre(CodeBlockStyle.toModifier()
@@ -121,6 +123,7 @@ fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotl
                 .then(modifier)
                 .toAttrs()
         ) {
+            registerRefScope(ref { codeElement = it })
             Text(code)
         }
     }
