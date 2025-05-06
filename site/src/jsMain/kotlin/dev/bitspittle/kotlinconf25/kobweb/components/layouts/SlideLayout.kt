@@ -183,7 +183,8 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var containerElement by remember { mutableStateOf<HTMLElement?>(null) }
     val stepElements = remember { mutableListOf<HTMLElement>() }
 
-    var cancelHandle: CancellableActionHandle? = null
+    // Remember this handle so that later when we capture it in a closer, it's definitely the same handle
+    var cancelHandle by remember { mutableStateOf<CancellableActionHandle?>(null) }
     fun enqueueWithDelay(delay: Duration, action: () -> Unit) {
         cancelHandle?.cancel()
         cancelHandle = window.setTimeout(delay) {
