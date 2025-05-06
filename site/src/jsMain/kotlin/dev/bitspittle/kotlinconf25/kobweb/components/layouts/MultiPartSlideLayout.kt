@@ -206,6 +206,9 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!tryNavigateToSection(-getCurrentSection())) {
                         // If we failed, we're already on the top section
                         containerElement!!.deactivateAllSteps()
+                        // See kobweb config in build.gradle.kts which sets up Prism
+                        js("Prism.highlightAll()")
+
                     }
                 }
                 "End" -> {
@@ -213,6 +216,8 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
                         // If we failed, we're already on the bottom section
                         containerElement!!.activateAllSteps()
+                        // See kobweb config in build.gradle.kts which sets up Prism
+                        js("Prism.highlightAll()")
                     }
                 }
                 else -> handled = false

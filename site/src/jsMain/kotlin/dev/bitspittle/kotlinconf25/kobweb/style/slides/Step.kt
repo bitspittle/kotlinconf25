@@ -9,6 +9,8 @@ import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.silk.init.InitSilk
 import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.activeSubstepIndex
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.substepCount
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import org.w3c.dom.HTMLElement
@@ -58,6 +60,10 @@ fun HTMLElement.activateAllSteps(): Boolean {
             step.classList.add("active")
             anyActivated = true
         }
+
+        if (step.substepCount > 0) {
+            step.activeSubstepIndex = step.substepCount - 1
+        }
     }
     return anyActivated
 }
@@ -68,6 +74,10 @@ fun HTMLElement.deactivateAllSteps(): Boolean {
         if (step.classList.contains("active")) {
             step.classList.remove("active")
             anyDeactivated = true
+        }
+
+        if (step.substepCount > 0) {
+            step.activeSubstepIndex = 0
         }
     }
     return anyDeactivated

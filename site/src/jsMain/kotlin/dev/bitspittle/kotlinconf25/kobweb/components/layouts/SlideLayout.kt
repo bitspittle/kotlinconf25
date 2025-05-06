@@ -29,9 +29,11 @@ import com.varabyte.kobweb.silk.style.animation.Keyframes
 import com.varabyte.kobweb.silk.style.animation.toAnimation
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toModifier
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.activeSubstepIndex
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.substepCount
 import dev.bitspittle.kotlinconf25.kobweb.slides
-import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
+import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
@@ -216,6 +218,15 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                         stepActivated = true
                     }
                 }
+
+                // Handle multi-part steps if this is one (basically, even if it is active, it keeps consuming steps)
+                if (stepElement.substepCount > 1) {
+                    if (stepElement.activeSubstepIndex < stepElement.substepCount - 1) {
+                        stepElement.activeSubstepIndex++
+                        stepActivated = true
+                        break
+                    }
+                }
             }
             stepActivated
         } else {
@@ -223,6 +234,16 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             // Remove all grouped auto steps in one fell swoop
             for (stepElement in stepElements.asReversed()) {
                 if (stepElement.classList.contains("active")) {
+                    // Handle multi-part steps if this is one
+                    if (stepElement.substepCount > 1) {
+                        if (stepElement.activeSubstepIndex > 0) {
+                            stepElement.activeSubstepIndex--
+                            stepDeactivated = true
+                            // If still more substeps to go, break for now until the next attempt to step
+                            if (stepElement.activeSubstepIndex > 0) break
+                        }
+                    }
+
                     stepElement.classList.remove("active")
                     stepDeactivated = true
 
@@ -259,10 +280,16 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         onStepsChanged()
 
         val observer = MutationObserver { mutations, observer ->
-            stepElements.clear()
             mutations.forEach { mutation ->
-                stepElements.addAll(mutation.addedNodes.asList().filterIsInstance<HTMLElement>().flatMap {
-                    it.getElementsByClassName("step").asList().filterIsInstance<HTMLElement>() })
+                stepElements.removeAll(mutation.removedNodes.asList().filterIsInstance<HTMLElement>().flatMap {
+                    it.getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
+                })
+                mutation.addedNodes.asList().filterIsInstance<HTMLElement>().flatMap {
+                    it.getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
+                }.forEach { stepElement ->
+                    // Some elements are repeated multiple times (by different parents I guess?)
+                    if (stepElement !in stepElements) stepElements.add(stepElement)
+                }
                 onStepsChanged()
             }
         }

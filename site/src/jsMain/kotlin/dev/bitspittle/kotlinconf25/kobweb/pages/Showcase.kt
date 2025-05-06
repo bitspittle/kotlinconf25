@@ -2,19 +2,23 @@ package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.foundation.layout.Box
+import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
+import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.TitledSlideData
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.step
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import org.jetbrains.compose.web.dom.H1
 
@@ -35,13 +39,33 @@ fun ShowcasePage() {
     }
 
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Red)) {
-            Bullets {
-                Item("1*", Modifier.step(auto = true))
-                Item("2", Modifier.step())
-                Item("3", Modifier.step())
-                Item("4", Modifier.step())
-            }
+        Column(Modifier.fillMaxSize().backgroundColor(Colors.Transparent), horizontalAlignment = Alignment.CenterHorizontally) {
+            CodeBlock(
+                """
+                    fun main() {
+                        val x = 10
+                        println("Hello ${'$'}x")
+                        println((x + 10).toString())
+                    }
+                """.trimIndent(),
+                Modifier.fillMaxWidth(),
+                highlightLines = "0|1|2|3|4|5|0"
+            )
+
+            CodeBlock(
+                """
+                    fun main() {
+                        val names = listOf("Alice", "Bob", "Cindy", "Dan")
+                        names.forEach { name ->
+                            println("Hello ${'$'}name!")
+                        }
+                    }
+                """.trimIndent(),
+                Modifier.fillMaxWidth(),
+                highlightLines = "0|1-6|2-5|3,4|1,3,5"
+            )
+
+            SpanText("DONE!", Modifier.step())
         }
     }
     SlideSection {
