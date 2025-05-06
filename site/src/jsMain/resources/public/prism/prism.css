@@ -59,7 +59,8 @@
     /*--syntax-accent: hsl(220, 100%, 66%);*/
     --syntax-selection-color: hsl(220, 13%, 28%);
     --syntax-gutter-background-color-selected: hsl(220, 13%, 26%);
-    --syntax-cursor-line: hsla(220, 100%, 80%, 0.04);
+    /* Custom change: increase alpha (used to be 0.04), highlights were too hard to see */
+    --syntax-cursor-line: hsla(220, 100%, 80%, 0.2);
     /* An extra color used but not defined in the original variable list */
     --syntax-extra-1: var(--syntax-selection-color);
 }

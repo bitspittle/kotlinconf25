@@ -1,32 +1,12 @@
 package dev.bitspittle.kotlinconf25.kobweb.components.widgets.code
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import com.varabyte.kobweb.browser.util.invokeLater
+import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.css.MinWidth
 import com.varabyte.kobweb.compose.css.Overflow
-import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.dom.registerRefScope
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.attr
-import com.varabyte.kobweb.compose.ui.modifiers.border
-import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
-import com.varabyte.kobweb.compose.ui.modifiers.classNames
-import com.varabyte.kobweb.compose.ui.modifiers.display
-import com.varabyte.kobweb.compose.ui.modifiers.minWidth
-import com.varabyte.kobweb.compose.ui.modifiers.overflow
-import com.varabyte.kobweb.compose.ui.modifiers.padding
-import com.varabyte.kobweb.compose.ui.modifiers.transition
-import com.varabyte.kobweb.compose.ui.styleModifier
-import com.varabyte.kobweb.compose.ui.thenIf
-import com.varabyte.kobweb.compose.ui.thenIfNotNull
-import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.compose.ui.*
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.silk.init.InitSilk
 import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
@@ -35,14 +15,8 @@ import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
 import com.varabyte.kobweb.silk.style.toModifier
 import dev.bitspittle.kotlinconf25.kobweb.bindings.prismjs.Prism
-import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColorVar
-import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
-import org.jetbrains.compose.web.css.DisplayStyle
-import org.jetbrains.compose.web.css.LineStyle
-import org.jetbrains.compose.web.css.em
-import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Code
 import org.jetbrains.compose.web.dom.Pre
 import org.jetbrains.compose.web.dom.Text
@@ -81,18 +55,12 @@ val CodeBlockStyle = CssStyle.base {
 @InitSilk
 fun initStepStyles(ctx: InitSilkContext) {
     ctx.stylesheet.apply {
-        registerStyleBase(".step.highlight-lines") {
-            Modifier
-                .transition(Transition.of("background-color", AnimSpeeds.Quick.toCssUnit()))
-        }
-
         registerStyleBase("pre[data-line]") {
             // Prism.js adds a bunch of left padding room for line numbers that we never show. Override it.
             Modifier.defaultPadding()
         }
     }
 }
-
 
 /**
  * Creates a code block that is colored by PrismJs
