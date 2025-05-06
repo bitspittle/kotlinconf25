@@ -152,6 +152,9 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
     LaunchedEffect(getCurrentSection()) {
         window.location.hash = getCurrentSection().toString()
+
+        // See kobweb config in build.gradle.kts which sets up Prism
+        js("Prism.highlightAll()")
     }
 
     fun tryNavigateToSection(delta: Int): Boolean {
