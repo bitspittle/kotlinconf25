@@ -182,6 +182,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
+    val slideUtils = SlideUtilsLocal.current
     DisposableEffect(Unit) {
         val manager = EventListenerManager(window)
 
@@ -189,22 +190,26 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             var handled = true
             when ((event as KeyboardEvent).key) {
                 "ArrowUp" -> {
+                    slideUtils.cancelRunningSteps()
                     if (!containerElement!!.deactivateAllSteps()) {
                         tryNavigateToSection(-1)
                     }
                 }
                 "ArrowDown" -> {
+                    slideUtils.cancelRunningSteps()
                     if (!containerElement!!.activateAllSteps()) {
                         tryNavigateToSection(+1)
                     }
                 }
                 "Home" -> {
+                    slideUtils.cancelRunningSteps()
                     if (!tryNavigateToSection(-getCurrentSection())) {
                         // If we failed, we're already on the top section
                         containerElement!!.deactivateAllSteps()
                     }
                 }
                 "End" -> {
+                    slideUtils.cancelRunningSteps()
                     if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
                         // If we failed, we're already on the bottom section
                         containerElement!!.activateAllSteps()

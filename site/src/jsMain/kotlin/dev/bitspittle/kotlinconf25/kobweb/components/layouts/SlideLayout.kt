@@ -130,6 +130,17 @@ class EventImpl<A : EventArgs, R> : Event<A, R>() {
     }
 }
 
+interface SlideUtils {
+    fun cancelRunningSteps()
+
+    companion object {
+        @get:Composable
+        val instance get() = SlideUtilsLocal.current
+    }
+}
+
+val SlideUtilsLocal = compositionLocalOf<SlideUtils> { error("SlideUtils can only be accessed within a SlideLayout") }
+
 @Suppress("unused")
 object EmptyEventArgs : EventArgs
 class DirectionArgs(val forward: Boolean) : EventArgs
@@ -174,8 +185,9 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     fun enqueueWithDelay(delay: Duration, action: () -> Unit) {
         cancelHandle?.cancel()
         cancelHandle = window.setTimeout(delay) {
-            action()
+            if (cancelHandle == null) return@setTimeout
             cancelHandle = null
+            action()
         }
     }
 
@@ -403,7 +415,14 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     },
                 contentAlignment = Alignment.Center,
             ) {
-                content()
+                CompositionLocalProvider(SlideUtilsLocal provides object : SlideUtils {
+                    override fun cancelRunningSteps() {
+                        cancelHandle?.cancel()
+                        cancelHandle = null
+                    }
+                }) {
+                    content()
+                }
             }
         }
     }
