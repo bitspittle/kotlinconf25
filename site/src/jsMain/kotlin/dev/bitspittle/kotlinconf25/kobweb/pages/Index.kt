@@ -1,11 +1,14 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.css.height
+import com.varabyte.kobweb.compose.css.width
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.kotlinconf.KotlinConfLogo
@@ -14,10 +17,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.KotlinText
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.dom.H1
-import org.jetbrains.compose.web.dom.H4
-import org.jetbrains.compose.web.dom.H6
-import org.jetbrains.compose.web.dom.Text
+import org.jetbrains.compose.web.dom.*
 
 @Page
 @Composable
@@ -29,6 +29,15 @@ fun TitlePage() {
                 KotlinConfLogo(Modifier.size(1.8.em))
                 H4 { Text("KotlinConf 2025") }
             }
+        }
+
+        Box(
+            Modifier.align(Alignment.CenterEnd)
+        ) {
+            Img("/images/kotlinconf-line-art.png", attrs = Modifier.toAttrs {
+                width(900)
+                height(900)
+            })
         }
 
         Box(
