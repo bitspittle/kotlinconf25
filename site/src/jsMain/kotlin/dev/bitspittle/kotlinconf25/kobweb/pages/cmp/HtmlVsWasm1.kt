@@ -16,7 +16,7 @@ import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initHtmlVsWasm1Page(ctx: InitRouteContext) {
-    ctx.data.add(HeaderBackground("/images/html-code.jpg"))
+    ctx.data.add(HeaderBackground("/assets/images/html-code.jpg"))
 }
 
 @Page

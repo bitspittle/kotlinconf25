@@ -34,7 +34,7 @@ fun TitlePage() {
         Box(
             Modifier.align(Alignment.CenterEnd)
         ) {
-            Img("/images/kotlinconf-line-art.png", attrs = Modifier.toAttrs {
+            Img("/assets/images/kotlinconf-line-art.png", attrs = Modifier.toAttrs {
                 width(900)
                 height(900)
             })
