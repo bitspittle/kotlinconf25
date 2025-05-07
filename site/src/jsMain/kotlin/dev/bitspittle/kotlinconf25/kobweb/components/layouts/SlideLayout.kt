@@ -138,6 +138,8 @@ class EventImpl<A : EventArgs, R> : Event<A, R>() {
 
 interface SlideUtils {
     fun cancelRunningSteps()
+    fun deactivateAllSteps()
+    fun activateAllSteps()
 
     companion object {
         @get:Composable
@@ -165,10 +167,13 @@ fun initSlideLayout(ctx: InitRouteContext) {
 @Layout
 @Composable
 fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
+    fun currentSlidePath() = ctx.route.path.substringAfter("/")
+    fun currentSlideIndex() = AppGlobals.slides.indexOf(currentSlidePath())
+    fun numSlides() = AppGlobals.slides.size
+
     var progressPercent by remember { mutableStateOf(0f) }
     LaunchedEffect(ctx.route.path) {
-        progressPercent =
-            AppGlobals.slides.indexOf(ctx.route.path.substringAfter("/")) / (AppGlobals.slides.size - 1).toFloat()
+        progressPercent = currentSlideIndex() / (numSlides() - 1).toFloat()
     }
 
     fun calculateScale(): Float {
@@ -192,6 +197,25 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
     // Remember this handle so that later when we capture it in a closer, it's definitely the same handle
     var cancelHandle by remember { mutableStateOf<CancellableActionHandle?>(null) }
+    val slideUtils = remember {
+        object : SlideUtils {
+            override fun cancelRunningSteps() {
+                cancelHandle?.cancel()
+                cancelHandle = null
+            }
+
+            override fun deactivateAllSteps() {
+                containerElement!!.deactivateAllSteps()
+                Prism.highlightAllUnder(containerElement!!)
+            }
+
+            override fun activateAllSteps() {
+                containerElement!!.activateAllSteps()
+                Prism.highlightAllUnder(containerElement!!)
+            }
+        }
+    }
+
     fun enqueueWithDelay(delay: Duration, action: () -> Unit) {
         cancelHandle?.cancel()
         cancelHandle = window.setTimeout(delay) {
@@ -313,8 +337,8 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
 
         manager.addEventListener("keydown") { event ->
-            fun tryNavigateToSlide(delta: Int) {
-                if (delta == 0) return
+            fun tryNavigateToSlide(delta: Int): Boolean {
+                if (delta == 0) return false
                 val origDelta = delta
                 var delta = delta
                 // If we request to navigate while mid-navigation, use the next target slide as the starting point
@@ -327,7 +351,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     desiredSlide = AppGlobals.slides.prev(desiredSlide)
                     ++delta
                 }
-                if (desiredSlide != null) {
+                return if (desiredSlide != null) {
                     targetSlide = "/$desiredSlide"
                     if (slidingDirection != null) slidingDirection = SlidingHorizDirection.HIDING
 
@@ -341,7 +365,9 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             SlidingHorizDirection.OUT_TO_LEFT
                         }
                     }
-                }
+                    true
+                } else
+                    false
             }
 
             var handled = true
@@ -367,6 +393,28 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                         if (!handled) {
                             tryNavigateToSlide(if (args.forward) +1 else -1)
                         }
+                    }
+                }
+                "Home" -> {
+                    if (event.shiftKey) {
+                        slideUtils.cancelRunningSteps()
+                        if (!tryNavigateToSlide(-currentSlideIndex())) {
+                            // If we failed, we're already on the first slide
+                            slideUtils.deactivateAllSteps()
+                        }
+                    } else {
+                        handled = false
+                    }
+                }
+                "End" -> {
+                    if (event.shiftKey) {
+                        slideUtils.cancelRunningSteps()
+                        if (!tryNavigateToSlide(numSlides() - currentSlideIndex() - 1)) {
+                            // If we failed, we're already on the last slide
+                            slideUtils.activateAllSteps()
+                        }
+                    } else {
+                        handled = false
                     }
                 }
 
@@ -471,12 +519,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     },
                 contentAlignment = Alignment.Center,
             ) {
-                CompositionLocalProvider(SlideUtilsLocal provides object : SlideUtils {
-                    override fun cancelRunningSteps() {
-                        cancelHandle?.cancel()
-                        cancelHandle = null
-                    }
-                }) {
+                CompositionLocalProvider(SlideUtilsLocal provides slideUtils) {
                     content()
                 }
             }

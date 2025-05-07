@@ -206,19 +206,25 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     }
                 }
                 "Home" -> {
-                    slideUtils.cancelRunningSteps()
-                    if (!tryNavigateToSection(-getCurrentSection())) {
-                        // If we failed, we're already on the top section
-                        containerElement!!.deactivateAllSteps()
-                        Prism.highlightAllUnder(containerElement!!)
+                    if (!event.shiftKey) {
+                        slideUtils.cancelRunningSteps()
+                        if (!tryNavigateToSection(-getCurrentSection())) {
+                            // If we failed, we're already on the top section
+                            slideUtils.deactivateAllSteps()
+                        }
+                    } else {
+                        handled = false
                     }
                 }
                 "End" -> {
-                    slideUtils.cancelRunningSteps()
-                    if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
-                        // If we failed, we're already on the bottom section
-                        containerElement!!.activateAllSteps()
-                        Prism.highlightAllUnder(containerElement!!)
+                    if (!event.shiftKey) {
+                        slideUtils.cancelRunningSteps()
+                        if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
+                            // If we failed, we're already on the bottom section
+                            slideUtils.activateAllSteps()
+                        }
+                    } else {
+                        handled = false
                     }
                 }
                 else -> handled = false
