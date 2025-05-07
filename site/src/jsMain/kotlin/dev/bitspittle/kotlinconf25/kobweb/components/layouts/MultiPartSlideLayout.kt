@@ -69,7 +69,7 @@ private val NavigateArrowOpacityVar by StyleVariable(0f)
 val NavigateToNextSectionStyle = CssStyle.base {
     Modifier
         .opacity(NavigateArrowOpacityVar.value())
-        .transition(Transition.of("opacity", AnimSpeeds.Quick.toCssUnit()))
+        .transition(Transition.of("opacity", AnimSpeeds.VeryQuick.toCssUnit()))
         .color(SiteColors.Accent)
 }
 
@@ -248,7 +248,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             @Composable
             fun Modifier.fadingAnimation() = animation(
                 FadeKeyframes.toAnimation(
-                    AnimSpeeds.Quick.toCssUnit(),
+                    AnimSpeeds.VeryQuick.toCssUnit(),
                     timingFunction = TransitionTimingFunction.EaseInOut,
                 )
             )
@@ -256,7 +256,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             @Composable
             fun Modifier.slidingAnimation() = animation(
                 SlideVertKeyframes.toAnimation(
-                    AnimSpeeds.Quick.toCssUnit(),
+                    AnimSpeeds.VeryQuick.toCssUnit(),
                     timingFunction = TransitionTimingFunction.EaseInOut,
                 )
             )

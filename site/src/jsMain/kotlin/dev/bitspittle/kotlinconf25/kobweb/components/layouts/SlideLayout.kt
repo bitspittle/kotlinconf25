@@ -228,7 +228,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     fun HTMLElement.enqueueWithDelayIfAuto(action: () -> Unit) {
         if (classList.contains("auto")) {
             val delay =
-                getAttribute("data-step-delay")?.toIntOrNull()?.milliseconds ?: AnimSpeeds.Quick
+                getAttribute("data-step-delay")?.toIntOrNull()?.milliseconds ?: AnimSpeeds.VeryQuick
             enqueueWithDelay(delay, action)
         }
     }
@@ -432,7 +432,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     fun Modifier.slidingAnimation() = animation(
         SlideHorizKeyframes.toAnimation(
             AnimSpeeds.Quick.toCssUnit(),
-            timingFunction = AnimationTimingFunction.EaseInOut,
+            timingFunction = AnimationTimingFunction.EaseOut,
         )
     )
 
@@ -448,7 +448,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     .transition(
                         Transition.of(
                             "opacity",
-                            duration = AnimSpeeds.Quick.toCssUnit(),
+                            duration = AnimSpeeds.VeryQuick.toCssUnit(),
                             timingFunction = AnimationTimingFunction.Ease
                         )
                     ),
