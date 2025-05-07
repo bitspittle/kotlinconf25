@@ -47,7 +47,9 @@ fun TitlePage() {
                 .width(60.percent)
         ) {
             H2 {
-                Text("Build Websites in ")
+                Text("Build Websites")
+                Br()
+                Text("in ")
                 KotlinText("Kotlin")
                 Text(" and ")
                 KotlinText("Compose HTML")
