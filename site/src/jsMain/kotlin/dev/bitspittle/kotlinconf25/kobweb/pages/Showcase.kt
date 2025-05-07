@@ -20,7 +20,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.step
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
-import org.jetbrains.compose.web.dom.H1
+import org.jetbrains.compose.web.dom.H3
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
@@ -34,24 +34,12 @@ fun ShowcasePage() {
     @Composable
     fun CenteredBox(modifier: Modifier, content: @Composable () -> Unit) {
         Box(Modifier.fillMaxSize().then(modifier), contentAlignment = Alignment.Center) {
-            H1 { content() }
+            H3 { content() }
         }
     }
 
     SlideSection {
         Column(Modifier.fillMaxSize().backgroundColor(Colors.Transparent), horizontalAlignment = Alignment.CenterHorizontally) {
-            CodeBlock(
-                """
-                    fun main() {
-                        val x = 10
-                        println("Hello ${'$'}x")
-                        println((x + 10).toString())
-                    }
-                """.trimIndent(),
-                Modifier.fillMaxWidth(),
-                highlightLines = "0|1|2|3|4|5|0"
-            )
-
             CodeBlock(
                 """
                     fun main() {

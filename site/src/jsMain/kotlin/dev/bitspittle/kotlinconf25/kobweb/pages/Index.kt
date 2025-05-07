@@ -46,7 +46,7 @@ fun TitlePage() {
                 .margin(bottom = 3.2.cssRem)
                 .width(60.percent)
         ) {
-            H1 {
+            H2 {
                 Text("Build Websites in ")
                 KotlinText("Kotlin")
                 Text(" and ")

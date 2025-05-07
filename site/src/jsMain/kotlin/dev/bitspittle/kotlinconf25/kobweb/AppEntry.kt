@@ -55,11 +55,11 @@ fun initSilk(ctx: InitSilkContext) {
             .lineHeight(1.2)
 
         registerStyleBase("h1") {
-            headerCommon.fontSize(3.2.cssRem)
+            headerCommon.fontSize(3.7.cssRem)
         }
 
         registerStyleBase("h2") {
-            headerCommon.fontSize(2.8.cssRem)
+            headerCommon.fontSize(3.2.cssRem)
         }
 
         registerStyleBase("h3") {
