@@ -141,11 +141,11 @@ interface SlideUtils {
 
     companion object {
         @get:Composable
-        val instance get() = SlideUtilsLocal.current
+        val Instance get() = SlideUtilsLocal.current
     }
 }
 
-val SlideUtilsLocal = compositionLocalOf<SlideUtils> { error("SlideUtils can only be accessed within a SlideLayout") }
+private val SlideUtilsLocal = compositionLocalOf<SlideUtils> { error("SlideUtils can only be accessed within a SlideLayout") }
 
 @Suppress("unused")
 object EmptyEventArgs : EventArgs

@@ -185,7 +185,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
-    val slideUtils = SlideUtilsLocal.current
+    val slideUtils = SlideUtils.Instance
     DisposableEffect(Unit) {
         val manager = EventListenerManager(window)
 
