@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
 import com.varabyte.kobweb.browser.util.invokeLater
 import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
+import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.css.StyleVariable
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
@@ -256,6 +257,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
             Box(
                 Modifier.fillMaxSize()
+                    .overflow(Overflow.Hidden)
                     .thenIf(slidingDirection == SlidingVertDirection.HIDING) {
                         Modifier.opacity(0)
                     }
