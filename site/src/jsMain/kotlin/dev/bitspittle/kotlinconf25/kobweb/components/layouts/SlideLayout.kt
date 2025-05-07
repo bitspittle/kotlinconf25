@@ -9,6 +9,7 @@ import com.varabyte.kobweb.compose.css.*
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.css.functions.LinearGradient
 import com.varabyte.kobweb.compose.css.functions.linearGradient
+import com.varabyte.kobweb.compose.css.functions.url
 import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -20,6 +21,7 @@ import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.AppGlobals
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.add
+import com.varabyte.kobweb.core.data.get
 import com.varabyte.kobweb.core.data.getValue
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
@@ -85,7 +87,6 @@ val SlideBackgroundStyle = CssStyle.base {
         )
 }
 
-
 val SlideLayoutStyle = CssStyle.base {
     Modifier
         .size(TARGET_WIDTH.px, TARGET_HEIGHT.px)
@@ -113,6 +114,8 @@ private enum class SlidingHorizDirection {
     // Necessary to prevent one frame flicker as a new slide comes in
     HIDING;
 }
+
+class HeaderBackground(val path: String)
 
 interface EventArgs
 
@@ -175,6 +178,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         )
     }
 
+    var backgroundOpacity by remember(ctx.route.path) { mutableStateOf(0f) }
     var scale by remember { mutableStateOf(calculateScale()) }
     var slidingDirection by remember { mutableStateOf<SlidingHorizDirection?>(null) }
     var targetSlide by remember { mutableStateOf<String?>(null) }
@@ -385,6 +389,25 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     )
 
     Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center, ref = ref { containerElement = it }) {
+        ctx.data.get<HeaderBackground>()?.let { headerBackground ->
+            Box(
+                Modifier.fillMaxSize()
+                    .backgroundImage(url(headerBackground.path))
+                    .backgroundSize(BackgroundSize.Cover)
+                    .backgroundRepeat(BackgroundRepeat.NoRepeat)
+                    .backgroundPosition(BackgroundPosition.of(CSSPosition.Center))
+                    .opacity(backgroundOpacity)
+                    .transition(
+                        Transition.of(
+                            "opacity",
+                            duration = AnimSpeeds.Quick.toCssUnit(),
+                            timingFunction = AnimationTimingFunction.Ease
+                        )
+                    ),
+                ref = ref { window.invokeLater { backgroundOpacity = 1f } }
+            )
+        }
+
         Box(SlideLayoutStyle.toModifier().setVariable(SlideScaleVar, scale)) {
             Box(
                 Modifier.fillMaxSize()
@@ -398,6 +421,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizToOpacityVar, 0f)
                             .setVariable(SlideHorizFromTranslatePercentVar, 0.percent)
                             .setVariable(SlideHorizToTranslatePercentVar, (-100).percent)
+                            .onAnimationStart { backgroundOpacity = 0f }
                             .onAnimationEnd {
                                 (ctx.data.getValue<SlideEvents>().onNavigated as EventImpl).invoke(DirectionArgs(forward = true))
                                 ctx.router.tryRoutingTo(targetSlide!!)
@@ -413,6 +437,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizToOpacityVar, 0f)
                             .setVariable(SlideHorizFromTranslatePercentVar, 0.percent)
                             .setVariable(SlideHorizToTranslatePercentVar, 100.percent)
+                            .onAnimationStart { backgroundOpacity = 0f }
                             .onAnimationEnd {
                                 (ctx.data.getValue<SlideEvents>().onNavigated as EventImpl).invoke(DirectionArgs(forward = false))
                                 ctx.router.tryRoutingTo(targetSlide!!)

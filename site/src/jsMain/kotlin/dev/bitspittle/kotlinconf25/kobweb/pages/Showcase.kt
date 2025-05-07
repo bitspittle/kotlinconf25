@@ -16,7 +16,7 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.TitledSlideData
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.step
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
@@ -24,7 +24,7 @@ import org.jetbrains.compose.web.dom.H1
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
-    ctx.data.add(TitledSlideData("TODO: Showcase"))
+    ctx.data.add(SlideTitle("TODO: Showcase"))
 }
 
 @Page

@@ -6,12 +6,12 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.TitledSlideData
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
-    ctx.data.add(TitledSlideData("Compose Code Example"))
+    ctx.data.add(SlideTitle("Compose Code Example"))
 }
 
 @Page

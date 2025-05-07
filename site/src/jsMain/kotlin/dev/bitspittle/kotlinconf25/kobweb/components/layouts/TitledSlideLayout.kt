@@ -12,7 +12,7 @@ import com.varabyte.kobweb.core.layout.Layout
 import org.jetbrains.compose.web.dom.H2
 import org.jetbrains.compose.web.dom.Text
 
-class TitledSlideData(
+class SlideTitle(
     val renderTitle: @Composable () -> Unit,
 ) {
     constructor(title: String) : this({ Text(title) })
@@ -23,7 +23,7 @@ class TitledSlideData(
 fun TitledSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         H2 {
-            ctx.data.getValue<TitledSlideData>().renderTitle.invoke()
+            ctx.data.getValue<SlideTitle>().renderTitle.invoke()
         }
 
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
