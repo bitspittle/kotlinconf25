@@ -1,14 +1,11 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
-import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.ui.Alignment
+import com.varabyte.kobweb.compose.css.FontStyle
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Colors
-import com.varabyte.kobweb.compose.ui.modifiers.backgroundColor
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
+import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
+import com.varabyte.kobweb.compose.ui.modifiers.scale
+import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -17,73 +14,59 @@ import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.step
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.TypedText
+import org.jetbrains.compose.web.dom.H2
 import org.jetbrains.compose.web.dom.H3
+import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
-    ctx.data.add(SlideTitle("TODO: Showcase"))
+    ctx.data.add(SlideTitle("Showcase"))
 }
 
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
 fun ShowcasePage() {
-    @Composable
-    fun CenteredBox(modifier: Modifier, content: @Composable () -> Unit) {
-        Box(Modifier.fillMaxSize().then(modifier), contentAlignment = Alignment.Center) {
-            H3 { content() }
-        }
+//    @Composable
+//    fun CenteredBox(modifier: Modifier, content: @Composable () -> Unit) {
+//        Box(Modifier.fillMaxSize().then(modifier), contentAlignment = Alignment.Center) {
+//            H3 { content() }
+//        }
+//    }
+
+    SlideSection {
+        // Intentionally empty for first slide; give speaker time to talk before moving on
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize().backgroundColor(Colors.Transparent), horizontalAlignment = Alignment.CenterHorizontally) {
-            CodeBlock(
-                """
-                    fun main() {
-                        val names = listOf("Alice", "Bob", "Cindy", "Dan")
-                        names.forEach { name ->
-                            println("Hello ${'$'}name!")
-                        }
-                    }
-                """.trimIndent(),
-                Modifier.fillMaxWidth(),
-                highlightLines = "0|1-6|2-5|3,4|1,3,5"
-            )
-
-            SpanText("DONE!", Modifier.step())
-        }
+        Video("/assets/showcase/yt-reimagined.mp4", scale = 0.6f)
     }
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Green)) {
-            Bullets {
-                Item("5*", Modifier.step(auto = true))
-                Item("6*", Modifier.step(auto = true))
-                Item("7*", Modifier.step(auto = true))
-                Item("8*", Modifier.step(auto = true))
-            }
-        }
+        Video("/assets/showcase/kotfolio.mp4", scale = 1.1f)
     }
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Blue)) {
-            Bullets {
-                Item("9", Modifier.step())
-                Item("10*", Modifier.step(auto = true))
-                Item("11*", Modifier.step(auto = true))
-                Item("12", Modifier.step())
-            }
-        }
+        Video("/assets/showcase/kore.mp4", scale = 1.2f)
     }
     SlideSection {
-        CenteredBox(Modifier.backgroundColor(Colors.Orange)) {
-            Bullets {
-                Item("13", Modifier.step())
-                Item("14", Modifier.step())
-                Item("15", Modifier.step())
-                Item("16*", Modifier.step(auto = true))
-            }
-        }
+        Video("/assets/showcase/chess-playground.mp4", scale = 1.3f)
+    }
+    SlideSection {
+        Video("/assets/showcase/phoenix-red-wolf.mp4")
+    }
+    SlideSection {
+        Video("/assets/showcase/rodrigo-wedding.mp4", scale = 1.1f)
+    }
+    SlideSection {
+        Video("/assets/showcase/fluense.mp4", scale = 1.1f)
+    }
+    SlideSection {
+        Video("/assets/showcase/kobweb-docs.mp4", scale = 1.3f)
+    }
+    SlideSection {
+        H3(Modifier.fontStyle(FontStyle.Italic).toAttrs()) { TypedText("This presentation??!") }
     }
 }
+
+
