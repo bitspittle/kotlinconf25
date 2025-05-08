@@ -20,7 +20,7 @@ kobweb {
                 "showcase",
                 "caution",
                 "html/header",
-                "cmp/code-example",
+                "html/html-to-kotlin",
             ).joinToString()
         )
 
