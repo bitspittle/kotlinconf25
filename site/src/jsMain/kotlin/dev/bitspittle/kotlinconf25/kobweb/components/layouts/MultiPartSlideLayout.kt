@@ -36,6 +36,7 @@ import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.percent
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
@@ -87,7 +88,7 @@ private enum class SlidingVertDirection {
 private fun NavDownIcon(modifier: Modifier = Modifier) {
     // From https://icons.getbootstrap.com/icons/chevron-down/
     // It's a bit thinner than the default SVG provided by Kobweb
-    createIcon(viewBox = ViewBox.sized(16), renderStyle = IconRenderStyle.Stroke(1), attrs = modifier.toAttrs()) {
+    createIcon(viewBox = ViewBox.sized(16), width = 0.7.em, renderStyle = IconRenderStyle.Stroke(1), attrs = modifier.toAttrs()) {
         Path {
             fillRule(SVGFillRule.EvenOdd)
             d {
