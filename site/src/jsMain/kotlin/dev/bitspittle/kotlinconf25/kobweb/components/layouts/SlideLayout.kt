@@ -154,8 +154,13 @@ object EmptyEventArgs : EventArgs
 class DirectionArgs(val forward: Boolean) : EventArgs
 
 class SlideEvents {
+    /** Fired the moment a slide navigation begins */
     val onNavigating: Event<DirectionArgs, Unit> = EventImpl()
-    val onNavigated: Event<DirectionArgs, Unit> = EventImpl()
+    /** Fired the last frame before the current slide is about to exit the screen. */
+    val onExiting: Event<DirectionArgs, Unit> = EventImpl()
+    /** Fired when we JUST entered a new slide (still transitioning in) */
+    val onEntered: Event<DirectionArgs, Unit> = EventImpl()
+    /** Fired by the parent layout giving children a chance to handle a request to step. If they don't take it, we will. */
     val onStepRequested: Event<DirectionArgs, Boolean> = EventImpl()
 }
 
@@ -471,11 +476,14 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizToTranslatePercentVar, (-100).percent)
                             .onAnimationStart { backgroundOpacity = 0f }
                             .onAnimationEnd {
-                                (ctx.data.getValue<SlideEvents>().onNavigated as EventImpl).invoke(DirectionArgs(forward = true))
+                                (ctx.data.getValue<SlideEvents>().onExiting as EventImpl).invoke(DirectionArgs(forward = true))
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
                                 slidingDirection = SlidingHorizDirection.HIDING
-                                window.invokeLater { slidingDirection = SlidingHorizDirection.IN_FROM_RIGHT }
+                                window.invokeLater {
+                                    (ctx.data.getValue<SlideEvents>().onEntered as EventImpl).invoke(DirectionArgs(forward = true))
+                                    slidingDirection = SlidingHorizDirection.IN_FROM_RIGHT
+                                }
                             }
                             .slidingAnimation()
                     }
@@ -487,11 +495,14 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             .setVariable(SlideHorizToTranslatePercentVar, 100.percent)
                             .onAnimationStart { backgroundOpacity = 0f }
                             .onAnimationEnd {
-                                (ctx.data.getValue<SlideEvents>().onNavigated as EventImpl).invoke(DirectionArgs(forward = false))
+                                (ctx.data.getValue<SlideEvents>().onExiting as EventImpl).invoke(DirectionArgs(forward = false))
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
                                 slidingDirection = SlidingHorizDirection.HIDING
-                                window.invokeLater { slidingDirection = SlidingHorizDirection.IN_FROM_LEFT }
+                                window.invokeLater {
+                                    (ctx.data.getValue<SlideEvents>().onEntered as EventImpl).invoke(DirectionArgs(forward = false))
+                                    slidingDirection = SlidingHorizDirection.IN_FROM_LEFT
+                                }
                             }
                             .slidingAnimation()
                     }

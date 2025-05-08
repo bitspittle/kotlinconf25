@@ -123,7 +123,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     DisposableEffect(ctx.route.path) {
         if (!currentSections.containsKey(ctx.route.path)) {
             window.location.hash.substringAfter("#").toIntOrNull()?.let { currentSection ->
-                currentSections[ctx.route.path] = currentSection
+                setCurrentSection(currentSection)
             }
         }
         onDispose { }
@@ -143,12 +143,19 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     var containerElement by remember(ctx.route.path) { mutableStateOf<HTMLElement?>(null) }
 
     LaunchedEffect(ctx.route.path) {
-        ctx.data.getValue<SlideEvents>().onNavigated += { args ->
+        ctx.data.getValue<SlideEvents>().onEntered += { args ->
             if (!args.forward) {
-                // If we leave off to the left, return back to the first slide when coming back.
+                // If we are coming in from the right, that means we passed the last section and are now coming back to
+                // it.
+                setCurrentSection(slideSections.lastIndex)
+            }
+        }
+
+        ctx.data.getValue<SlideEvents>().onExiting += { args ->
+            if (!args.forward) {
+                // If we leave off to the left, then reset the current section so next time we come in we're back
+                // at the beginning again.
                 currentSections.remove(ctx.route.path)
-            } else {
-                currentSections[ctx.route.path] = slideSections.lastIndex
             }
         }
     }
