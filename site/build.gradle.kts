@@ -18,7 +18,8 @@ kobweb {
             listOf(
                 "",
                 "showcase",
-                "cmp/html-vs-wasm1",
+                "caution",
+                "html/header",
                 "cmp/code-example",
             ).joinToString()
         )

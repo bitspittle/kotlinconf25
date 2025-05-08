@@ -12,6 +12,7 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.AnimatedText
 import org.jetbrains.compose.web.dom.H3
@@ -51,10 +52,10 @@ fun ShowcasePage() {
         Video("/assets/showcase/fluense.mp4", scale = 1.1f)
     }
     SlideSection {
-        Video("/assets/showcase/kobweb-docs.mp4", scale = 1.3f)
+        Video("/assets/showcase/kobweb-docs.mp4", scale = 1.3f, loop = true)
     }
     SlideSection {
-        H3(Modifier.fontStyle(FontStyle.Italic).toAttrs()) { AnimatedText("This presentation??!") }
+        Image("/assets/showcase/presentation-title.png", scale = 0.7f)
     }
 }
 

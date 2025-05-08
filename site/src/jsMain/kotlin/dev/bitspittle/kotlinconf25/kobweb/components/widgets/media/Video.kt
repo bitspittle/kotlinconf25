@@ -9,10 +9,13 @@ import kotlin.math.roundToInt
 
 // ONLY MP4's supported! Easy to add more later, but this is all we need for now.
 @Composable
-fun Video(src: String, modifier: Modifier = Modifier, autoplay: Boolean = true, scale: Float? = null) {
+fun Video(src: String, modifier: Modifier = Modifier, autoplay: Boolean = true, loop: Boolean = false, scale: Float? = null) {
     Video(attrs = modifier.toAttrs {
         if (autoplay) {
             attr("autoplay", "")
+        }
+        if (loop) {
+            attr("loop", "")
         }
         if (scale != null)
             ref { videoElement ->

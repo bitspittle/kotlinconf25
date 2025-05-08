@@ -2,10 +2,22 @@ package dev.bitspittle.kotlinconf25.kobweb.components.widgets.list
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.modifiers.padding
 import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.silk.style.CssStyle
+import com.varabyte.kobweb.silk.style.base
+import com.varabyte.kobweb.silk.style.toAttrs
+import com.varabyte.kobweb.silk.style.toModifier
+import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.Li
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Ul
+
+val BulletsLiStyle = CssStyle.base {
+    Modifier.padding(topBottom = 0.1.cssRem)
+}
+
+val BulletsUlStyle = CssStyle.base { Modifier }
 
 @Suppress("FunctionName") // Ape composable naming convention
 class BulletsScope {
@@ -17,18 +29,27 @@ class BulletsScope {
     }
 
     fun Item(value: String, modifier: Modifier = Modifier) {
-        children.add { Li(modifier.toAttrs()) { Text(value) } }
+        RenderedItem(modifier) { Text(value) }
+    }
+
+    fun RenderedItem(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
+        RenderedItem(modifier, content) {}
     }
 
     fun Item(value: String, modifier: Modifier = Modifier, content: BulletsScope.() -> Unit) {
-        val subscope = BulletsScope().apply(content)
+        RenderedItem(modifier, { Text(value) }, content)
+    }
+
+    fun RenderedItem(modifier: Modifier = Modifier, content: @Composable () -> Unit, childrenContent: BulletsScope.() -> Unit) {
+        val subscope = BulletsScope().apply(childrenContent)
         children.add {
-            Li(modifier.toAttrs()) {
-                Text(value)
-                Ul { subscope.render() }
+            Li(BulletsLiStyle.toModifier().then(modifier).toAttrs()) {
+                content()
+                Ul(BulletsUlStyle.toAttrs()) { subscope.render() }
             }
         }
     }
+
 }
 
 @Composable

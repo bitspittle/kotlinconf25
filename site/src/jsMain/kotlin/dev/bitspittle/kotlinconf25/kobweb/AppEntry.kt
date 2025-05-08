@@ -68,7 +68,7 @@ fun initSilk(ctx: InitSilkContext) {
         }
 
         registerStyleBase("h4") {
-            headerCommon.fontSize(1.4.cssRem)
+            headerCommon.fontSize(1.4.cssRem).fontWeight(FontWeight.Normal)
         }
 
         registerStyleBase("h5") {
