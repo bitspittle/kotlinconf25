@@ -167,13 +167,13 @@ fun initSlideLayout(ctx: InitRouteContext) {
 @Layout
 @Composable
 fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
-    fun currentSlidePath() = ctx.route.path.substringAfter("/")
-    fun currentSlideIndex() = AppGlobals.slides.indexOf(currentSlidePath())
-    fun numSlides() = AppGlobals.slides.size
+    fun getCurrentSlidePath() = ctx.route.path.substringAfter("/")
+    fun getCurrentSlideIndex() = AppGlobals.slides.indexOf(getCurrentSlidePath())
+    fun getNumSlides() = AppGlobals.slides.size
 
     var progressPercent by remember { mutableStateOf(0f) }
     LaunchedEffect(ctx.route.path) {
-        progressPercent = currentSlideIndex() / (numSlides() - 1).toFloat()
+        progressPercent = getCurrentSlideIndex() / (getNumSlides() - 1).toFloat()
     }
 
     fun calculateScale(): Float {
@@ -398,7 +398,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 "Home" -> {
                     if (event.shiftKey) {
                         slideUtils.cancelRunningSteps()
-                        if (!tryNavigateToSlide(-currentSlideIndex())) {
+                        if (!tryNavigateToSlide(-getCurrentSlideIndex())) {
                             // If we failed, we're already on the first slide
                             slideUtils.deactivateAllSteps()
                         }
@@ -409,7 +409,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 "End" -> {
                     if (event.shiftKey) {
                         slideUtils.cancelRunningSteps()
-                        if (!tryNavigateToSlide(numSlides() - currentSlideIndex() - 1)) {
+                        if (!tryNavigateToSlide(getNumSlides() - getCurrentSlideIndex() - 1)) {
                             // If we failed, we're already on the last slide
                             slideUtils.activateAllSteps()
                         }
