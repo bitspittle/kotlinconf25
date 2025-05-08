@@ -1,10 +1,6 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
-import com.varabyte.kobweb.compose.css.FontStyle
-import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
-import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -14,8 +10,6 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.AnimatedText
-import org.jetbrains.compose.web.dom.H3
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
@@ -26,10 +20,6 @@ fun initCodeExamplePage(ctx: InitRouteContext) {
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
 fun ShowcasePage() {
-    SlideSection {
-        // Intentionally empty for first slide; give speaker time to talk before moving on
-    }
-
     SlideSection {
         Video("/assets/showcase/yt-reimagined.mp4", scale = 0.6f)
     }

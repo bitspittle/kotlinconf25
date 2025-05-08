@@ -3,6 +3,7 @@ package dev.bitspittle.kotlinconf25.kobweb.components.layouts
 import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
 import com.varabyte.kobweb.browser.util.invokeLater
+import com.varabyte.kobweb.compose.css.CSSLengthOrPercentageNumericValue
 import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
 import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.css.StyleVariable
@@ -13,6 +14,7 @@ import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.SVGFillRule
 import com.varabyte.kobweb.compose.dom.svg.ViewBox
 import com.varabyte.kobweb.compose.foundation.layout.Box
+import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
@@ -38,6 +40,8 @@ import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.H2
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 
@@ -64,6 +68,13 @@ val FadeKeyframes = Keyframes {
 val SlideVertKeyframes = Keyframes {
     from { Modifier.opacity(SlideVertFromOpacityVar.value()).translateY(SlideVertFromTranslatePercentVar.value()) }
     to { Modifier.opacity(SlideVertToOpacityVar.value()).translateY(SlideVertToTranslatePercentVar.value()) }
+}
+
+private val MultiPartTitleTranslateYVar by StyleVariable<CSSLengthOrPercentageNumericValue>(0.px)
+val MultiPartTitleStyle = CssStyle.base {
+    Modifier
+        .translateY(MultiPartTitleTranslateYVar.value())
+        .transition(Transition.of("translate", AnimSpeeds.VeryQuick.toCssUnit(), timingFunction = TransitionTimingFunction.EaseInOut))
 }
 
 private val NavigateArrowOpacityVar by StyleVariable(0f)
@@ -114,15 +125,15 @@ private fun NavDownIcon(modifier: Modifier = Modifier) {
 private val currentSections = mutableStateMapOf<String, Int>()
 
 @Suppress("AssignedValueIsNeverRead") // Setting vars has side effects in compose
-@Layout(".components.layouts.TitledSlideLayout")
+@Layout(".components.layouts.SlideLayout")
 @Composable
 fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
-    fun getCurrentSection() = currentSections[ctx.route.path] ?: 0
+    fun getCurrentSection() = currentSections[ctx.route.path] ?: -1
     fun setCurrentSection(section: Int) { currentSections[ctx.route.path] = section }
 
     DisposableEffect(ctx.route.path) {
         if (!currentSections.containsKey(ctx.route.path)) {
-            window.location.hash.substringAfter("#").toIntOrNull()?.let { currentSection ->
+            window.location.hash.substringAfter("#").toIntOrNull()?.takeIf { it >= 0 }?.let { currentSection ->
                 setCurrentSection(currentSection)
             }
         }
@@ -161,10 +172,11 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     }
 
     LaunchedEffect(getCurrentSection()) {
-        window.location.hash = getCurrentSection().toString()
+        window.location.hash = getCurrentSection().takeIf { it >= 0 }?.let { "$it" }.orEmpty()
     }
 
     LaunchedEffect(containerElement, getCurrentSection()) {
+        if (getCurrentSection() < 0) return@LaunchedEffect
         val containerElement = containerElement ?: return@LaunchedEffect
         Prism.highlightAllUnder(containerElement)
     }
@@ -175,7 +187,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         // If target section is not null, it means the user keeps pressing the arrow key mid-animation
         if (targetSection != null) setCurrentSection(targetSection!!)
 
-        val desiredSection = (getCurrentSection() + delta).coerceIn(0, slideSections.lastIndex)
+        val desiredSection = (getCurrentSection() + delta).coerceIn(-1, slideSections.lastIndex)
         if (desiredSection == getCurrentSection()) return false
 
         targetSection = desiredSection
@@ -216,10 +228,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 "Home" -> {
                     if (!event.shiftKey) {
                         slideUtils.cancelRunningSteps()
-                        if (!tryNavigateToSection(-getCurrentSection())) {
-                            // If we failed, we're already on the top section
-                            slideUtils.deactivateAllSteps()
-                        }
+                        tryNavigateToSection(-getCurrentSection() - 1)
                     } else {
                         handled = false
                     }
@@ -228,7 +237,8 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (!event.shiftKey) {
                         slideUtils.cancelRunningSteps()
                         if (!tryNavigateToSection(slideSections.lastIndex - getCurrentSection())) {
-                            // If we failed, we're already on the bottom section
+                            // If we failed, we're already on the bottom section (but with steps not yet triggered).
+                            // Go ahead and trigger them all.
                             slideUtils.activateAllSteps()
                         }
                     } else {
@@ -245,88 +255,101 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         onDispose { manager.clearAllListeners() }
     }
 
-    CompositionLocalProvider(LocalSlideSections provides slideSections) {
-        var contentCalled by remember(ctx.route.path) { mutableStateOf(false) }
-        if (!contentCalled) {
-            content()
-            contentCalled = true
+    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        H2(MultiPartTitleStyle.toModifier()
+            .thenIf(getCurrentSection() == -1) {
+                Modifier.setVariable(MultiPartTitleTranslateYVar, 350.px)
+            }
+            .toAttrs()
+        ) {
+            ctx.data.getValue<SlideTitle>().renderTitle.invoke()
         }
 
-        if (slideSections.isNotEmpty()) {
-            @Composable
-            fun Modifier.fadingAnimation() = animation(
-                FadeKeyframes.toAnimation(
-                    AnimSpeeds.VeryQuick.toCssUnit(),
-                    timingFunction = TransitionTimingFunction.EaseInOut,
-                )
-            )
+        CompositionLocalProvider(LocalSlideSections provides slideSections) {
+            var contentCalled by remember(ctx.route.path) { mutableStateOf(false) }
+            if (!contentCalled) {
+                content()
+                contentCalled = true
+            }
 
-            @Composable
-            fun Modifier.slidingAnimation() = animation(
-                SlideVertKeyframes.toAnimation(
-                    AnimSpeeds.VeryQuick.toCssUnit(),
-                    timingFunction = TransitionTimingFunction.EaseInOut,
+            if (slideSections.isNotEmpty()) {
+                @Composable
+                fun Modifier.fadingAnimation() = animation(
+                    FadeKeyframes.toAnimation(
+                        AnimSpeeds.VeryQuick.toCssUnit(),
+                        timingFunction = TransitionTimingFunction.EaseInOut,
+                    )
                 )
-            )
 
-            Box(
-                Modifier.fillMaxSize()
-                    .overflow(Overflow.Hidden)
-                    .thenIf(slidingDirection == SlidingVertDirection.HIDING) {
-                        Modifier.opacity(0)
+                @Composable
+                fun Modifier.slidingAnimation() = animation(
+                    SlideVertKeyframes.toAnimation(
+                        AnimSpeeds.VeryQuick.toCssUnit(),
+                        timingFunction = TransitionTimingFunction.EaseInOut,
+                    )
+                )
+
+                Box(
+                    Modifier.fillMaxSize()
+                        .overflow(Overflow.Hidden)
+                        .thenIf(slidingDirection == SlidingVertDirection.HIDING) {
+                            Modifier.opacity(0)
+                        }
+                        .thenIf(slidingDirection == SlidingVertDirection.FADE_OUT) {
+                            Modifier
+                                .setVariable(SlideVertFromOpacityVar, 1f)
+                                .setVariable(SlideVertToOpacityVar, 0f)
+                                .onAnimationEnd {
+                                    setCurrentSection(targetSection!!)
+                                    targetSection = null
+                                    slidingDirection = SlidingVertDirection.HIDING
+                                    window.invokeLater { slidingDirection = SlidingVertDirection.IN_FROM_BOTTOM }
+                                }
+                                .fadingAnimation()
+                        }
+                        .thenIf(slidingDirection == SlidingVertDirection.FADE_IN) {
+                            Modifier
+                                .setVariable(SlideVertFromOpacityVar, 0f)
+                                .setVariable(SlideVertToOpacityVar, 1f)
+                                .onAnimationStart {
+                                    // We're returning to a previously visited slide, so ensure all steps are active
+                                    containerElement!!.activateAllSteps()
+                                }
+                                .onAnimationEnd { slidingDirection = null }
+                                .fadingAnimation()
+                        }
+                        .thenIf(slidingDirection == SlidingVertDirection.OUT_TO_BOTTOM) {
+                            Modifier
+                                .setVariable(SlideVertFromOpacityVar, 1f)
+                                .setVariable(SlideVertToOpacityVar, 0f)
+                                .setVariable(SlideVertFromTranslatePercentVar, 0.percent)
+                                .setVariable(SlideVertToTranslatePercentVar, 100.percent)
+                                .onAnimationEnd {
+                                    setCurrentSection(targetSection!!)
+                                    targetSection = null
+                                    slidingDirection = SlidingVertDirection.HIDING
+                                    window.invokeLater { slidingDirection = SlidingVertDirection.FADE_IN }
+                                }
+                                .slidingAnimation()
+                        }
+                        .thenIf(slidingDirection == SlidingVertDirection.IN_FROM_BOTTOM) {
+                            Modifier
+                                .setVariable(SlideVertFromOpacityVar, 0f)
+                                .setVariable(SlideVertToOpacityVar, 1f)
+                                .setVariable(SlideVertFromTranslatePercentVar, 100.percent)
+                                .setVariable(SlideVertToTranslatePercentVar, 0.percent)
+                                .onAnimationEnd { slidingDirection = null }
+                                .slidingAnimation()
+                        },
+                    contentAlignment = Alignment.Center,
+                    ref = ref { containerElement = it },
+                ) {
+                    if (getCurrentSection() >= 0) {
+                        // Should never be null but might happen in development if you remove a section and then a reload
+                        // happens, or if someone manually enters an invalid hash fragment
+                        (slideSections.getOrNull(getCurrentSection()) ?: slideSections.last()).invoke()
                     }
-                    .thenIf(slidingDirection == SlidingVertDirection.FADE_OUT) {
-                        Modifier
-                            .setVariable(SlideVertFromOpacityVar, 1f)
-                            .setVariable(SlideVertToOpacityVar, 0f)
-                            .onAnimationEnd {
-                                setCurrentSection(targetSection!!)
-                                targetSection = null
-                                slidingDirection = SlidingVertDirection.HIDING
-                                window.invokeLater { slidingDirection = SlidingVertDirection.IN_FROM_BOTTOM }
-                            }
-                            .fadingAnimation()
-                    }
-                    .thenIf(slidingDirection == SlidingVertDirection.FADE_IN) {
-                        Modifier
-                            .setVariable(SlideVertFromOpacityVar, 0f)
-                            .setVariable(SlideVertToOpacityVar, 1f)
-                            .onAnimationStart {
-                                // We're returning to a previously visited slide, so ensure all steps are active
-                                containerElement!!.activateAllSteps()
-                            }
-                            .onAnimationEnd { slidingDirection = null }
-                            .fadingAnimation()
-                    }
-                    .thenIf(slidingDirection == SlidingVertDirection.OUT_TO_BOTTOM) {
-                        Modifier
-                            .setVariable(SlideVertFromOpacityVar, 1f)
-                            .setVariable(SlideVertToOpacityVar, 0f)
-                            .setVariable(SlideVertFromTranslatePercentVar, 0.percent)
-                            .setVariable(SlideVertToTranslatePercentVar, 100.percent)
-                            .onAnimationEnd {
-                                setCurrentSection(targetSection!!)
-                                targetSection = null
-                                slidingDirection = SlidingVertDirection.HIDING
-                                window.invokeLater { slidingDirection = SlidingVertDirection.FADE_IN }
-                            }
-                            .slidingAnimation()
-                    }
-                    .thenIf(slidingDirection == SlidingVertDirection.IN_FROM_BOTTOM) {
-                        Modifier
-                            .setVariable(SlideVertFromOpacityVar, 0f)
-                            .setVariable(SlideVertToOpacityVar, 1f)
-                            .setVariable(SlideVertFromTranslatePercentVar, 100.percent)
-                            .setVariable(SlideVertToTranslatePercentVar, 0.percent)
-                            .onAnimationEnd { slidingDirection = null }
-                            .slidingAnimation()
-                    },
-                contentAlignment = Alignment.Center,
-                ref = ref { containerElement = it },
-            ) {
-                // Should never be null but might happen in development if you remove a section and then a reload
-                // happens, or if someone manually enters an invalid hash fragment
-                (slideSections.getOrNull(getCurrentSection()) ?: slideSections.last()).invoke()
+                }
             }
         }
 
