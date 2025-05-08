@@ -12,7 +12,7 @@ import kotlin.time.Duration.Companion.milliseconds
 
 // Initial delay default chosen so that text doesn't start animating in while slides / sections are transitioning.
 @Composable
-fun TypedText(
+fun AnimatedText(
     value: String,
     modifier: Modifier = Modifier,
     keystrokeDelay: Duration = 50.milliseconds,

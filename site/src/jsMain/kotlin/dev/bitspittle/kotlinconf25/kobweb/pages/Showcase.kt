@@ -4,21 +4,17 @@ import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.FontStyle
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
-import com.varabyte.kobweb.compose.ui.modifiers.scale
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.TypedText
-import org.jetbrains.compose.web.dom.H2
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.AnimatedText
 import org.jetbrains.compose.web.dom.H3
-import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
@@ -65,7 +61,7 @@ fun ShowcasePage() {
         Video("/assets/showcase/kobweb-docs.mp4", scale = 1.3f)
     }
     SlideSection {
-        H3(Modifier.fontStyle(FontStyle.Italic).toAttrs()) { TypedText("This presentation??!") }
+        H3(Modifier.fontStyle(FontStyle.Italic).toAttrs()) { AnimatedText("This presentation??!") }
     }
 }
 
