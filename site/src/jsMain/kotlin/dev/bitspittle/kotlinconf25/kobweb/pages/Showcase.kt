@@ -25,13 +25,6 @@ fun initCodeExamplePage(ctx: InitRouteContext) {
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
 fun ShowcasePage() {
-//    @Composable
-//    fun CenteredBox(modifier: Modifier, content: @Composable () -> Unit) {
-//        Box(Modifier.fillMaxSize().then(modifier), contentAlignment = Alignment.Center) {
-//            H3 { content() }
-//        }
-//    }
-
     SlideSection {
         // Intentionally empty for first slide; give speaker time to talk before moving on
     }
