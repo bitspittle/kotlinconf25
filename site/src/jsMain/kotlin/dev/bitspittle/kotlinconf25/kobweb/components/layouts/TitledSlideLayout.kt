@@ -25,7 +25,7 @@ class SlideTitle(
 @Composable
 fun TitledSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        H2(Modifier.margin(bottom = 1.cssRem).toAttrs()) {
+        H2(Modifier.margin(bottom = 0.2.cssRem).toAttrs()) {
             ctx.data.getValue<SlideTitle>().renderTitle.invoke()
         }
 
