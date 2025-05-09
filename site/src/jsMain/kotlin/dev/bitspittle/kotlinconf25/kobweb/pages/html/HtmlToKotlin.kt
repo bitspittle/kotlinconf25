@@ -12,6 +12,9 @@ import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.gap
+import com.varabyte.kobweb.compose.ui.modifiers.grid
+import com.varabyte.kobweb.compose.ui.modifiers.width
+import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -28,6 +31,7 @@ import org.jetbrains.compose.web.css.StyleSheet
 import org.jetbrains.compose.web.css.backgroundColor
 import org.jetbrains.compose.web.css.borderRadius
 import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.fr
 import org.jetbrains.compose.web.css.height
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
@@ -73,10 +77,8 @@ fun HtmlToKotlinPage() {
                     <div
                         id="example"
                         style="
-                            width:400px;
-                            height:200px;
-                            background-color:red;
-                            border-radius:5px;
+                            width:400px; height:200px;
+                            background-color:red; border-radius:5px;
                         "
                     >
                     """.trimIndent(),
@@ -108,7 +110,11 @@ fun HtmlToKotlinPage() {
     // A little bit of CSS
     SlideSection {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Row(Modifier.gap(1.cssRem), verticalAlignment = Alignment.Top) {
+            Div(Modifier.grid {
+                columns {
+                    repeat(2) { size(1.fr) }
+                }
+            }.gap(2.cssRem).toAttrs()) {
                 CodeBlock(
                     // language=css
                     """
@@ -121,17 +127,16 @@ fun HtmlToKotlinPage() {
                         """.trimIndent(),
                     lang = "css",
                 )
-                Spacer()
                 CodeBlock(
                     // language=html
                     """
-                        
+
                         <div
                             id="example"
                             class="red-rect"
                         >
-                                                
-                        
+
+
                         """.trimIndent(),
                     lang = "html",
                 )

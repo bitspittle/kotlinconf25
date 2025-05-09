@@ -1,6 +1,7 @@
 package dev.bitspittle.kotlinconf25.kobweb.components.widgets.code
 
 import androidx.compose.runtime.*
+import com.varabyte.kobweb.compose.css.BoxSizing
 import com.varabyte.kobweb.compose.css.MinWidth
 import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.dom.ref
@@ -45,9 +46,11 @@ var HTMLElement.activeSubstepIndex
 val CodeBlockStyle = CssStyle.base {
     Modifier
         .borderRadius(10.px)
+        .maxSize(100.percent)
+        .boxSizing(BoxSizing.BorderBox)
         // Prismjs sometimes causes unnecessary scrollbars to appear. Anyway, we shouldn't allow scrolling because
         // this is a slide presentation and users can't scroll anyway.
-        .overflow { x(Overflow.Hidden) }
+        .overflow { x(Overflow.Hidden); y(Overflow.Auto) }
         .border(1.px, LineStyle.Solid, DividerColorVar.value())
         .defaultPadding()
 }
