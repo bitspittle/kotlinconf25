@@ -25,6 +25,9 @@ kobweb {
                 "kobweb/basics/header",
                 "kobweb/basics/why",
                 "kobweb/basics/architecture",
+                "kobweb/basics/install",
+                "kobweb/basics/create",
+                "kobweb/basics/export",
             ).joinToString()
         )
 
