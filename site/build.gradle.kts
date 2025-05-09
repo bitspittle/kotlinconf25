@@ -22,6 +22,9 @@ kobweb {
                 "html/header",
                 "html/html-to-kotlin",
                 "html/wasm-vs-html",
+                "kobweb/basics/header",
+                "kobweb/basics/why",
+                "kobweb/basics/architecture",
             ).joinToString()
         )
 

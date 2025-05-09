@@ -7,6 +7,7 @@ import com.varabyte.kobweb.compose.css.CSSLengthOrPercentageNumericValue
 import com.varabyte.kobweb.compose.css.CSSPercentageNumericValue
 import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.css.StyleVariable
+import com.varabyte.kobweb.compose.css.TextAlign
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.dom.ref
@@ -73,6 +74,7 @@ val SlideVertKeyframes = Keyframes {
 private val MultiPartTitleTranslateYVar by StyleVariable<CSSLengthOrPercentageNumericValue>(0.px)
 val MultiPartTitleStyle = CssStyle.base {
     Modifier
+        .textAlign(TextAlign.Center)
         .translateY(MultiPartTitleTranslateYVar.value())
         .transition(Transition.of("translate", AnimSpeeds.Quick.toCssUnit(), timingFunction = TransitionTimingFunction.EaseInOut))
 }
@@ -292,6 +294,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 Box(
                     Modifier.fillMaxSize()
                         .overflow(Overflow.Hidden)
+                        .padding(top = 1.cssRem) // Space between title and content
                         .thenIf(slidingDirection == SlidingVertDirection.HIDING) {
                             Modifier.opacity(0)
                         }

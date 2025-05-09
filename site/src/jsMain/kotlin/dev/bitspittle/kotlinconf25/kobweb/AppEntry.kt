@@ -13,10 +13,12 @@ import com.varabyte.kobweb.silk.SilkApp
 import com.varabyte.kobweb.silk.components.layout.Surface
 import com.varabyte.kobweb.silk.init.InitSilk
 import com.varabyte.kobweb.silk.init.InitSilkContext
+import com.varabyte.kobweb.silk.init.layer
 import com.varabyte.kobweb.silk.init.registerStyleBase
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
+import com.varabyte.kobweb.silk.style.layer.SilkLayer
 import com.varabyte.kobweb.silk.style.toModifier
 import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import com.varabyte.kobweb.silk.theme.colors.loadFromLocalStorage
@@ -77,6 +79,12 @@ fun initSilk(ctx: InitSilkContext) {
 
         registerStyleBase("h6") {
             headerCommon.fontSize(0.8.cssRem).fontWeight(FontWeight.Normal)
+        }
+
+        layer(SilkLayer.RESET) {
+            registerStyleBase("ul") {
+                Modifier.marginBlock(0.px)
+            }
         }
     }
 }

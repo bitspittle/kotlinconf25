@@ -5,18 +5,24 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
+import org.jetbrains.compose.web.css.CSSColorValue
 
 @Composable
 fun KotlinText(value: String) {
-    SpanText(value, Modifier.color(SiteColors.KotlinPurple))
+    SiteColors.KotlinPurple.Text(value)
 }
 
 @Composable
 fun KobwebText(value: String) {
-    SpanText(value, Modifier.color(SiteColors.KobwebBlue))
+    SiteColors.KobwebBlue.Text(value)
 }
 
 @Composable
 fun HtmlText(value: String) {
-    SpanText(value, Modifier.color(SiteColors.HtmlOrange))
+    SiteColors.HtmlOrange.Text(value)
+}
+
+@Composable
+fun CSSColorValue.Text(value: String) {
+    SpanText(value, Modifier.color(this))
 }

@@ -53,7 +53,7 @@ class BulletsScope {
 }
 
 @Composable
-fun Bullets(content: BulletsScope.() -> Unit) {
+fun Bullets(modifier: Modifier = Modifier, content: BulletsScope.() -> Unit) {
     val scope = BulletsScope().apply(content)
-    Ul { scope.render() }
+    Ul(modifier.toAttrs()) { scope.render() }
 }
