@@ -18,6 +18,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
 import com.varabyte.kobweb.compose.ui.modifiers.gap
+import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.DefaultStyleSheet.style
 import com.varabyte.kobweb.core.Page
@@ -64,7 +65,9 @@ fun initWasmVsHtmlPage(ctx: InitRouteContext) {
 @Layout(".components.layouts.TitledSlideLayout")
 fun WasmVsHtmlPage() {
     Column {
-        H3 { SpanText("Why Compose HTML?", Modifier.color(SiteColors.OffWhite)) }
+        H3(Modifier.color(SiteColors.OffWhite).margin(bottom = 0.8.cssRem).toAttrs()) {
+            Text("Why Compose HTML?")
+        }
         Bullets {
             Item("Avoid large canvas buffer", Modifier.step(auto = true))
             Item("Smaller site download size", Modifier.step(auto = true))
