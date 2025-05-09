@@ -25,7 +25,7 @@ gradle.settingsEvaluated {
     dependencyResolutionManagement.repositories { kobwebSnapshots() }
 }
 
-rootProject.name = "kobweb"
+rootProject.name = "kotlinconf25"
 
 include(":site")
 include(":worker")
