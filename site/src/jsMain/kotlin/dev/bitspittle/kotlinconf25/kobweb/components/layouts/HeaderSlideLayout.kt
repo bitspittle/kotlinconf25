@@ -1,7 +1,9 @@
 package dev.bitspittle.kotlinconf25.kobweb.components.layouts
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.css.CSSLengthNumericValue
 import com.varabyte.kobweb.compose.css.TextAlign
+import com.varabyte.kobweb.compose.css.TextShadow
 import com.varabyte.kobweb.compose.css.Width
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -18,10 +20,13 @@ import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.H1
 
-private fun Modifier.fullTextShadow() =
-    listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1).fold(this) { modifier, (x, y) ->
-        modifier.textShadow(x.px, y.px, 20.px, Colors.Black)
-    }
+private fun Modifier.fullTextShadow(thickness: CSSLengthNumericValue = 20.px) =
+    listOf(-1 to -1, -1 to 1, 1 to -1, 1 to 1)
+        .map { (x, y) ->
+            TextShadow.of(x.px, y.px, thickness, Colors.Black)
+        }.let { shadows ->
+            this.textShadow(shadows)
+        }
 
 @Layout(".components.layouts.SlideLayout")
 @Composable
