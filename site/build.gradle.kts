@@ -21,6 +21,7 @@ kobweb {
                 "caution",
                 "html/header",
                 "html/html-to-kotlin",
+                "html/wasm-vs-html",
             ).joinToString()
         )
 
