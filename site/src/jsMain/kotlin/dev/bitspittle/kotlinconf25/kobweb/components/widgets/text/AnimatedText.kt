@@ -16,7 +16,7 @@ fun AnimatedText(
     value: String,
     modifier: Modifier = Modifier,
     keystrokeDelay: Duration = 50.milliseconds,
-    initialDelay: Duration = AnimSpeeds.Quick
+    initialDelay: Duration = AnimSpeeds.Fast
 ) {
     var currText by remember { mutableStateOf("") }
     SpanText(currText, modifier, ref = ref {

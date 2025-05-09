@@ -74,14 +74,14 @@ private val MultiPartTitleTranslateYVar by StyleVariable<CSSLengthOrPercentageNu
 val MultiPartTitleStyle = CssStyle.base {
     Modifier
         .translateY(MultiPartTitleTranslateYVar.value())
-        .transition(Transition.of("translate", AnimSpeeds.VeryQuick.toCssUnit(), timingFunction = TransitionTimingFunction.EaseInOut))
+        .transition(Transition.of("translate", AnimSpeeds.Quick.toCssUnit(), timingFunction = TransitionTimingFunction.EaseInOut))
 }
 
 private val NavigateArrowOpacityVar by StyleVariable(0f)
 val NavigateToNextSectionStyle = CssStyle.base {
     Modifier
         .opacity(NavigateArrowOpacityVar.value())
-        .transition(Transition.of("opacity", AnimSpeeds.VeryQuick.toCssUnit()))
+        .transition(Transition.of("opacity", AnimSpeeds.Quick.toCssUnit()))
         .color(SiteColors.Accent)
 }
 
@@ -276,7 +276,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 @Composable
                 fun Modifier.fadingAnimation() = animation(
                     FadeKeyframes.toAnimation(
-                        AnimSpeeds.VeryQuick.toCssUnit(),
+                        AnimSpeeds.Quick.toCssUnit(),
                         timingFunction = TransitionTimingFunction.EaseInOut,
                     )
                 )
@@ -284,7 +284,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 @Composable
                 fun Modifier.slidingAnimation() = animation(
                     SlideVertKeyframes.toAnimation(
-                        AnimSpeeds.VeryQuick.toCssUnit(),
+                        AnimSpeeds.Quick.toCssUnit(),
                         timingFunction = TransitionTimingFunction.EaseInOut,
                     )
                 )

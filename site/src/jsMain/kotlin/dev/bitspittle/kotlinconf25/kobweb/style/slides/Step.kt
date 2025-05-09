@@ -42,7 +42,7 @@ fun initStepStyles(ctx: InitSilkContext) {
     ctx.stylesheet.apply {
         registerStyleBase(".step.fade-in") {
             Modifier
-                .transition(Transition.of("opacity", AnimSpeeds.Quick.toCssUnit()))
+                .transition(Transition.of("opacity", AnimSpeeds.Fast.toCssUnit()))
                 .opacity(0)
         }
 

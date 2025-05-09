@@ -102,7 +102,7 @@ val SlidesProgressStyle = CssStyle.base {
         .height(3.px)
         .width(SlidesProgressVar.value())
         .backgroundColor(SiteColors.Accent)
-        .transition(Transition.of("width", AnimSpeeds.Quick.toCssUnit(), TransitionTimingFunction.Ease))
+        .transition(Transition.of("width", AnimSpeeds.Fast.toCssUnit(), TransitionTimingFunction.Ease))
 }
 
 private enum class SlidingHorizDirection {
@@ -436,7 +436,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     @Composable
     fun Modifier.slidingAnimation() = animation(
         SlideHorizKeyframes.toAnimation(
-            AnimSpeeds.Quick.toCssUnit(),
+            AnimSpeeds.Fast.toCssUnit(),
             timingFunction = AnimationTimingFunction.EaseOut,
         )
     )
@@ -453,7 +453,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     .transition(
                         Transition.of(
                             "opacity",
-                            duration = AnimSpeeds.VeryQuick.toCssUnit(),
+                            duration = AnimSpeeds.Quick.toCssUnit(),
                             timingFunction = AnimationTimingFunction.Ease
                         )
                     ),

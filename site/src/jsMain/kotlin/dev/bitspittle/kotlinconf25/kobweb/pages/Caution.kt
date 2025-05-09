@@ -6,7 +6,6 @@ import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
@@ -31,7 +30,7 @@ fun CautionPage() {
         H2 { Text("⚠\uFE0F Caution ⚠\uFE0F") }
         H4 {
             Bullets {
-                Item("Not 1.0 yet", Modifier.color(Colors.Yellow))
+                Item("Not 1.0 yet", Modifier.color(SiteColors.Warning))
                 RenderedItem(Modifier) {
                     SpanText("Kobweb", Modifier.color(SiteColors.KobwebBlue))
                     Text(" is ")
