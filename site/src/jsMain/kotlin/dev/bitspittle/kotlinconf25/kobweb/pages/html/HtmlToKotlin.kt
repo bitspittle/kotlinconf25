@@ -3,6 +3,7 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.html
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.foundation.layout.Spacer
@@ -20,11 +21,14 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
+import com.varabyte.kobweb.silk.components.layout.SimpleGrid
+import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
+import kotlinx.browser.document
 import org.jetbrains.compose.web.css.Color
 import org.jetbrains.compose.web.css.Style
 import org.jetbrains.compose.web.css.StyleSheet
@@ -37,6 +41,7 @@ import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.width
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
+import org.w3c.dom.HTMLElement
 
 @InitRoute
 fun initHtmlToKotlinPage(ctx: InitRouteContext) {
@@ -110,11 +115,7 @@ fun HtmlToKotlinPage() {
     // A little bit of CSS
     SlideSection {
         Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            Div(Modifier.grid {
-                columns {
-                    repeat(2) { size(1.fr) }
-                }
-            }.gap(2.cssRem).toAttrs()) {
+            SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
                 CodeBlock(
                     // language=css
                     """
@@ -160,6 +161,70 @@ fun HtmlToKotlinPage() {
                 id("example")
                 classes(AppStyleSheet.redRect)
             })
+        }
+    }
+
+
+    // Accessing the raw element
+    SlideSection {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
+                CodeBlock(
+                    // language=html
+                    """
+                        <div
+                            id="example"
+                            class="red-rect"
+                        >
+                        """.trimIndent(),
+                    lang = "css",
+                )
+                CodeBlock(
+                    // language=javascript
+                    """
+                        document.getElementById('example')
+                            .style
+                            .opacity = 0.5;
+                        """.trimIndent(),
+                    lang = "javascript",
+                )
+            }
+
+
+            // .red-rect {
+            //   width: 400px;
+            //   height: 200px;
+            //   background-color: red;
+            //   border-radius: 5px;
+            // }
+            //
+            // <div
+            //   id="example"
+            //   class="red-rect"
+            // >
+
+            Style(AppStyleSheet)
+
+            // Approach #1
+//             Div(attrs = {
+//                id("example")
+//                classes(AppStyleSheet.redRect)
+//            })
+//            LaunchedEffect(Unit) {
+//                (document.getElementById("example") as? HTMLElement)
+//                    ?.style?.opacity = "0.5"
+//            }
+
+            // Approach #2
+            Div(attrs = {
+                id("example")
+                classes(AppStyleSheet.redRect)
+                ref { element ->
+                    element.style.opacity = "0.5"
+                    onDispose { }
+                }
+            })
+
         }
     }
 }
