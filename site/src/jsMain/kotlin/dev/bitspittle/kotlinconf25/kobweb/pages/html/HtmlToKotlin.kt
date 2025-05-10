@@ -143,7 +143,6 @@ fun HtmlToKotlinPage() {
                 )
             }
 
-
             // .red-rect {
             //   width: 400px;
             //   height: 200px;
@@ -191,17 +190,14 @@ fun HtmlToKotlinPage() {
             }
 
 
-            // .red-rect {
-            //   width: 400px;
-            //   height: 200px;
-            //   background-color: red;
-            //   border-radius: 5px;
-            // }
-            //
             // <div
             //   id="example"
             //   class="red-rect"
             // >
+            //
+            // document.getElementById('example')
+            //   .style
+            //   .opacity = 0.5;
 
             Style(AppStyleSheet)
 
@@ -224,7 +220,6 @@ fun HtmlToKotlinPage() {
                     onDispose { }
                 }
             })
-
         }
     }
 }
