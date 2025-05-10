@@ -76,7 +76,7 @@ val MultiPartTitleStyle = CssStyle.base {
     Modifier
         .textAlign(TextAlign.Center)
         .translateY(MultiPartTitleTranslateYVar.value())
-        .transition(Transition.of("translate", AnimSpeeds.Quick.toCssUnit(), timingFunction = TransitionTimingFunction.EaseInOut))
+        .transition(Transition.of("translate", AnimSpeeds.Fast.toCssUnit(), timingFunction = TransitionTimingFunction.EaseOut))
 }
 
 private val NavigateArrowOpacityVar by StyleVariable(0f)
