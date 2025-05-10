@@ -24,6 +24,7 @@ import kotlin.time.Duration
 
 object StepTypes {
     const val FadeIn = "fade-in"
+    const val FadeInThenSemiOut = "fade-in-then-semi-out"
     const val OneAtATime = "one-at-a-time"
 }
 
@@ -42,18 +43,38 @@ fun Modifier.step(stepType: String = StepTypes.FadeIn, delay: Duration, index: I
 @InitSilk
 fun initStepStyles(ctx: InitSilkContext) {
     ctx.stylesheet.apply {
-        registerStyleBase(".step.fade-in") {
+        registerStyleBase(".step.${StepTypes.FadeIn}") {
             Modifier
                 .transition(Transition.of("opacity", AnimSpeeds.Fast.toCssUnit()))
                 .opacity(0)
         }
 
-        registerStyleBase(".step.fade-in.active") {
+        registerStyleBase(".step.${StepTypes.FadeIn}.active") {
             Modifier
                 .opacity(1)
         }
 
-        registerStyleBase(".step.one-at-a-time:not(.current)") {
+        registerStyleBase(".step.${StepTypes.FadeInThenSemiOut}") {
+            Modifier
+                .transition(Transition.of("opacity", AnimSpeeds.Quick.toCssUnit()))
+        }
+
+        registerStyleBase(".step.${StepTypes.FadeInThenSemiOut}:not(.active)") {
+            Modifier
+                .opacity(0)
+        }
+
+        registerStyleBase(".step.${StepTypes.FadeInThenSemiOut}.active.current") {
+            Modifier
+                .opacity(1)
+        }
+
+        registerStyleBase(".step.${StepTypes.FadeInThenSemiOut}.active:not(.current)") {
+            Modifier
+                .opacity(0.5)
+        }
+
+        registerStyleBase(".step.${StepTypes.OneAtATime}:not(.current)") {
             Modifier.display(DisplayStyle.None)
         }
     }
