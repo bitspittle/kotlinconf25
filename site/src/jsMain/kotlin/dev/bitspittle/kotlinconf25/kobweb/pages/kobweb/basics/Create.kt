@@ -3,9 +3,11 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontSize
+import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -19,6 +21,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
+import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -77,7 +80,6 @@ fun CreatePage() {
         }
     }
 
-
     SlideSection {
         CodeBlock(
             //language=kotlin
@@ -105,6 +107,30 @@ fun CreatePage() {
                 }
             }
         """.trimIndent(), highlightLines = "0|4|8-14|17"
+        )
+    }
+
+    SlideSection {
+        CodeBlock(
+            //language=yaml
+            """
+                # .kobweb/conf.yaml
+                site:
+                  title: "App"
+                
+                server:
+                  port: 8080
+                
+                  files:
+                    dev:
+                      contentRoot: "build/processedResources/js/main/public"
+                      script: "build/dist/js/developmentExecutable/app.js"
+                      api: "build/libs/app.jar"
+                    prod:
+                      script: "build/dist/js/productionExecutable/app.js"
+                      siteRoot: ".kobweb/site"
+              """.trimIndent(), highlightLines = "0|6|0",
+            preModifier = Modifier.overflow { y(Overflow.Hidden) }
         )
     }
 }

@@ -74,7 +74,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 // Note: To enable this widget to work, we needed to add PrismJs support to this project. See the kobweb
 // block in our build.gradle.kts file to see how this was done.
 @Composable
-fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotlin", highlightLines: String? = null) {
+fun CodeBlock(code: String, modifier: Modifier = Modifier, preModifier: Modifier = Modifier, lang: String? = "kotlin", highlightLines: String? = null) {
     var preElement by remember { mutableStateOf<HTMLElement?>(null) }
     var codeElement by remember { mutableStateOf<HTMLElement?>(null) }
 
@@ -132,6 +132,7 @@ fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotl
         }
         .thenIfNotNull(activePartIndex) { Modifier.attr("data-active-substep", it.toString()) }
         .thenIfNotNull(activeHighlightPart) { Modifier.attr("data-line", it) }
+        .then(preModifier)
         .toAttrs()
     ) {
         registerRefScope(ref { preElement = it})
