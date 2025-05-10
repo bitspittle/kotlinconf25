@@ -4,6 +4,7 @@ import androidx.compose.runtime.*
 import com.varabyte.kobweb.compose.css.BoxSizing
 import com.varabyte.kobweb.compose.css.MinWidth
 import com.varabyte.kobweb.compose.css.Overflow
+import com.varabyte.kobweb.compose.css.ScrollBehavior
 import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.dom.registerRefScope
 import com.varabyte.kobweb.compose.ui.*
@@ -21,6 +22,7 @@ import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Code
 import org.jetbrains.compose.web.dom.Pre
 import org.jetbrains.compose.web.dom.Text
+import org.w3c.dom.Element
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.MutationObserver
 import org.w3c.dom.MutationObserverInit
@@ -48,6 +50,7 @@ val CodeBlockStyle = CssStyle.base {
         .borderRadius(10.px)
         .maxSize(100.percent)
         .boxSizing(BoxSizing.BorderBox)
+        .scrollBehavior(ScrollBehavior.Smooth)
         // Prismjs sometimes causes unnecessary scrollbars to appear. Anyway, we shouldn't allow scrolling because
         // this is a slide presentation and users can't scroll anyway.
         .overflow { x(Overflow.Hidden); y(Overflow.Auto) }
@@ -97,6 +100,24 @@ fun CodeBlock(code: String, modifier: Modifier = Modifier, lang: String? = "kotl
     LaunchedEffect(codeElement, activeHighlightPart) {
         val codeElement = codeElement ?: return@LaunchedEffect
         Prism.highlightElement(codeElement)
+    }
+
+    LaunchedEffect(preElement, activeHighlightPart) {
+        val preElement = preElement ?: return@LaunchedEffect
+
+        val lineHighlight = preElement.querySelector(".line-highlight")
+        if (lineHighlight != null) {
+            fun Element.isInViewVertically(): Boolean {
+                val selfRect = getBoundingClientRect()
+                val containerRect = preElement.getBoundingClientRect()
+
+                return (selfRect.top >= containerRect.top && selfRect.bottom <= containerRect.bottom)
+            }
+
+            if (!lineHighlight.isInViewVertically()) lineHighlight.scrollIntoView()
+        } else {
+            preElement.scrollTop = 0.0
+        }
     }
 
     Pre(CodeBlockStyle.toModifier()
