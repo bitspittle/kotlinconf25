@@ -42,16 +42,16 @@ object StepTypes {
     const val Default = FadeIn
 }
 
-fun Modifier.step(stepType: String = StepTypes.Default, auto: Boolean = false, index: Int? = null) =
+fun Modifier.step(stepType: String = StepTypes.Default, auto: Boolean = false, order: Int? = null) =
     classNames(buildList {
         add("step")
         add(stepType)
         if (auto) add("auto")
-    }).thenIfNotNull(index) { Modifier.attr("data-step-index", it.toString())}
+    }).thenIfNotNull(order) { Modifier.attr("data-step-order", it.toString())}
 
-fun Modifier.step(stepType: String = StepTypes.Default, delay: Duration, index: Int? = null) =
+fun Modifier.step(stepType: String = StepTypes.Default, delay: Duration, order: Int? = null) =
     attr("data-step-delay", "${delay.inWholeMilliseconds}")
-        .step(stepType, auto = true, index = index)
+        .step(stepType, auto = true, order = order)
 
 val DefaultStepSpeed = AnimSpeeds.Fast.toCssUnit()
 
