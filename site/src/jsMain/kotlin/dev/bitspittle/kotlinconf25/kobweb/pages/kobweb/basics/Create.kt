@@ -18,7 +18,9 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
+import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import org.jetbrains.compose.web.css.px
+import kotlin.time.Duration.Companion.milliseconds
 
 @InitRoute
 fun initCreatePage(ctx: InitRouteContext) {
@@ -36,37 +38,38 @@ fun CreatePage() {
 
     SlideSection {
         Folders {
+            fun Modifier.superQuickStep() = this.step(delay = AnimSpeeds.SuperQuick)
             Bullets(Modifier.fontSize(18.px)) {
-                Item(".kobweb/conf.yaml", Modifier.step(auto = true))
-                Item("build.gradle.kts", Modifier.step(auto = true))
-                Item("gradle/libs.versions.toml", Modifier.step(auto = true))
-                Item("site", Modifier.step(auto = true)) {
-                    Item("build.gradle.kts", Modifier.step(auto = true))
-                    Item("src", Modifier.step(auto = true)) {
-                        Item("jsMain", Modifier.step(auto = true)) {
-                            Item("kotlin", Modifier.step(auto = true)) {
-                                Item("components", Modifier.step(auto = true)) {
-                                    Item("layouts", Modifier.step(auto = true)) {
-                                        Item("MarkdownLayout.kt", Modifier.step(auto = true))
-                                        Item("PageLayout.kt", Modifier.step(auto = true))
+                Item(".kobweb/conf.yaml", Modifier.superQuickStep())
+                Item("build.gradle.kts", Modifier.superQuickStep())
+                Item("gradle/libs.versions.toml", Modifier.superQuickStep())
+                Item("site", Modifier.superQuickStep()) {
+                    Item("build.gradle.kts", Modifier.superQuickStep())
+                    Item("src", Modifier.superQuickStep()) {
+                        Item("jsMain", Modifier.superQuickStep()) {
+                            Item("kotlin", Modifier.superQuickStep()) {
+                                Item("components", Modifier.superQuickStep()) {
+                                    Item("layouts", Modifier.superQuickStep()) {
+                                        Item("MarkdownLayout.kt", Modifier.superQuickStep())
+                                        Item("PageLayout.kt", Modifier.superQuickStep())
                                     }
-                                    Item("sections", Modifier.step(auto = true)) {
-                                        Item("Footer.kt", Modifier.step(auto = true))
-                                        Item("NavHeader.kt", Modifier.step(auto = true))
+                                    Item("sections", Modifier.superQuickStep()) {
+                                        Item("Footer.kt", Modifier.superQuickStep())
+                                        Item("NavHeader.kt", Modifier.superQuickStep())
                                     }
-                                    Item("widgets", Modifier.step(auto = true)) {
-                                        Item("IconButton.kt", Modifier.step(auto = true))
+                                    Item("widgets", Modifier.superQuickStep()) {
+                                        Item("IconButton.kt", Modifier.superQuickStep())
                                     }
                                 }
-                                Item("pages", Modifier.step(auto = true)) {
-                                    Item("Index.kt", Modifier.step(auto = true))
+                                Item("pages", Modifier.superQuickStep()) {
+                                    Item("Index.kt", Modifier.superQuickStep())
                                 }
-                                Item("AppEntry.kt", Modifier.step(auto = true))
+                                Item("AppEntry.kt", Modifier.superQuickStep())
                             }
                         }
-                        Item("resources", Modifier.step(auto = true)) {
-                            Item("markdown/About.md", Modifier.step(auto = true))
-                            Item("public/favicon.ico", Modifier.step(auto = true))
+                        Item("resources", Modifier.superQuickStep()) {
+                            Item("markdown/About.md", Modifier.superQuickStep())
+                            Item("public/favicon.ico", Modifier.superQuickStep())
                         }
                     }
                 }
