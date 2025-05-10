@@ -3,11 +3,6 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.varabyte.kobweb.compose.css.FontWeight
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -16,18 +11,17 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
-import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.add
-import com.varabyte.kobweb.core.data.getValue
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideEvents
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.dom.H3
 
 @InitRoute
@@ -38,7 +32,7 @@ fun initOrganizationPage(ctx: InitRouteContext) {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun OrganizationPage(ctx: PageContext) {
+fun OrganizationPage() {
     @Composable
     fun TopStartH3(content: @Composable () -> Unit) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {
@@ -47,10 +41,6 @@ fun OrganizationPage(ctx: PageContext) {
             }
         }
     }
-
-    val slideEvents = ctx.data.getValue<SlideEvents>()
-
-
 
     SlideSection {
         TopStartH3 {
@@ -64,86 +54,71 @@ fun OrganizationPage(ctx: PageContext) {
             }
         }
     }
+
     SlideSection {
-        var phase by remember { mutableStateOf(0) }
-
-        DisposableEffect(Unit) {
-            val stepCallback = slideEvents.onStepRequested.add { evt ->
-                if (evt.forward && phase < 3) {
-                    phase++
-                    true
-                } else if (!evt.forward && phase > 0) {
-                    phase--
-                    true
-                } else {
-                    false
+        CodeBlock(
+            //language=kotlin
+            """
+                @App
+                @Composable
+                fun AppEntry(content: @Composable () -> Unit) {
+                    SilkApp {
+                        Surface(SmoothColorStyle.toModifier()) {
+                            content()
+                        }
+                    }
                 }
-            }
-            val enteredCallback = slideEvents.onEntered.add { evt ->
-                println("Entered")
-                phase = if (evt.forward) 0 else 3
-            }
-            onDispose {
-                slideEvents.onStepRequested -= stepCallback
-                slideEvents.onEntered -= enteredCallback
-            }
-        }
+            """.trimIndent(),
+            highlightLines = "0|1|3,6"
+        )
+    }
 
+    SlideSection {
         TopStartH3 {
-            when (phase) {
-                0 -> {
-                    Folders {
-                        Bullets {
-                            Item("components") {
-                                Item("layouts")
-                                Item("sections")
-                                Item("widgets")
-                            }
-                        }
+            Folders(Modifier.step(StepTypes.OneAtATime, auto = true)) {
+                Bullets {
+                    Item("components") {
+                        Item("layouts")
+                        Item("sections")
+                        Item("widgets")
                     }
                 }
+            }
 
-                1 -> {
-                    Folders {
-                        Bullets {
-                            Item("components") {
-                                Item("layouts") {
-                                    Item("PageLayout.kt")
-                                    Item("ArticleLayout.kt")
-                                }
-                                Item("sections")
-                                Item("widgets")
-                            }
+            Folders(Modifier.step(StepTypes.OneAtATime)) {
+                Bullets {
+                    Item("components") {
+                        Item("layouts") {
+                            Item("PageLayout.kt")
+                            Item("ArticleLayout.kt")
                         }
+                        Item("sections")
+                        Item("widgets")
                     }
                 }
+            }
 
-                2 -> {
-                    Folders {
-                        Bullets {
-                            Item("components") {
-                                Item("layouts")
-                                Item("sections") {
-                                    Item("NavHeader.kt")
-                                    Item("Footer.kt")
-                                }
-                                Item("widgets")
-                            }
+            Folders(Modifier.step(StepTypes.OneAtATime)) {
+                Bullets {
+                    Item("components") {
+                        Item("layouts")
+                        Item("sections") {
+                            Item("NavHeader.kt")
+                            Item("Footer.kt")
                         }
+                        Item("widgets")
                     }
                 }
+            }
 
-                3 -> {
-                    Folders {
-                        Bullets {
-                            Item("components") {
-                                Item("layouts")
-                                Item("sections")
-                                Item("widgets") {
-                                    Item("Button.kt")
-                                    Item("VisitorCounter.kt")
-                                }
-                            }
+            Folders(Modifier.step(StepTypes.OneAtATime)) {
+                Bullets {
+                    Item("components") {
+                        Item("layouts")
+                        Item("sections")
+                        Item("widgets") {
+                            Item("Button.kt")
+                            Item("VisitorCounter.kt")
                         }
                     }
                 }
@@ -158,6 +133,7 @@ fun OrganizationPage(ctx: PageContext) {
                 import com.mysite.components.sections.Footer
 
                 @Layout
+                @Composable
                 fun PageLayout(content: @Composable () -> Unit) {
                     Column {
                         NavHeader()
@@ -166,7 +142,7 @@ fun OrganizationPage(ctx: PageContext) {
                     }
                 }
             """.trimIndent(),
-                highlightLines = "0|5,8|1,2,7,9"
+                highlightLines = "0|4|6,9|1,2,8,10"
             )
         }
 
@@ -174,8 +150,6 @@ fun OrganizationPage(ctx: PageContext) {
             CodeBlock(
                 //language=kotlin
                 """
-                import com.mysite.components.layouts.PageLayout
-
                 @Page
                 @Composable
                 @Layout(".components.layouts.PageLayout")
@@ -183,7 +157,7 @@ fun OrganizationPage(ctx: PageContext) {
                     /*...*/
                 }
             """.trimIndent(),
-                highlightLines = "0|5|0"
+                highlightLines = "0|1|3|5"
             )
         }
     }
