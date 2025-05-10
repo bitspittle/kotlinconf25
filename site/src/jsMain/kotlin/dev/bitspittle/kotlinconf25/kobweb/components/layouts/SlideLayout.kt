@@ -42,8 +42,6 @@ import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.MutationObserver
-import org.w3c.dom.MutationObserverInit
 import org.w3c.dom.asList
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.math.min
@@ -138,6 +136,7 @@ class EventImpl<A : EventArgs, R> : Event<A, R>() {
 
 interface SlideUtils {
     fun cancelRunningSteps()
+    fun refreshSteps()
     fun deactivateAllSteps()
     fun activateAllSteps()
 
@@ -202,24 +201,6 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
     // Remember this handle so that later when we capture it in a closer, it's definitely the same handle
     var cancelHandle by remember { mutableStateOf<CancellableActionHandle?>(null) }
-    val slideUtils = remember {
-        object : SlideUtils {
-            override fun cancelRunningSteps() {
-                cancelHandle?.cancel()
-                cancelHandle = null
-            }
-
-            override fun deactivateAllSteps() {
-                containerElement!!.deactivateAllSteps()
-                Prism.highlightAllUnder(containerElement!!)
-            }
-
-            override fun activateAllSteps() {
-                containerElement!!.activateAllSteps()
-                Prism.highlightAllUnder(containerElement!!)
-            }
-        }
-    }
 
     fun enqueueWithDelay(delay: Duration, action: () -> Unit) {
         cancelHandle?.cancel()
@@ -238,8 +219,6 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
-    // If force is true, automatically activate / deactivate everything all at once. Useful if wanting to show all
-    // steps instantly while debugging, or if you accidentally go too far and want to go back
     fun tryStep(forward: Boolean): Boolean {
         if (stepElements.isEmpty()) return false
 
@@ -301,34 +280,48 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
-    DisposableEffect(containerElement) {
-        val containerElement = containerElement ?: return@DisposableEffect onDispose {}
+    fun repopulateStepElements() {
+        val containerElement = containerElement ?: return
         fun onStepsChanged() {
             stepElements.firstOrNull()?.let { stepElement ->
                 stepElement.enqueueWithDelayIfAuto { tryStep(true) }
             }
         }
-        fun requerySteps() {
-            stepElements.clear()
-            stepElements.addAll(
-                containerElement.getElementsByClassName("step")
-                    .asList()
-                    .filterIsInstance<HTMLElement>()
-            )
-            onStepsChanged()
-        }
-        requerySteps()
 
-        val observer = MutationObserver { mutations, observer ->
-            // We used to do fancy mutation events logic but we would occasionally get stale elements (e.g. an code
-            // block which added the "step" attribute to itself but the mutation observer missed it.) Instead, just
-            // requery steps every time, it's fine.
-            // NOTE: Presentations are generally static, but if someone tries to do something smart by programatically
-            // adding an element, we'll trigger this aggressive logic and we'll need to reconsider this approach.
-            requerySteps()
+        stepElements.clear()
+        stepElements.addAll(
+            containerElement.getElementsByClassName("step")
+                .asList()
+                .filterIsInstance<HTMLElement>()
+        )
+        onStepsChanged()
+    }
+
+    val slideUtils = remember {
+        object : SlideUtils {
+            override fun cancelRunningSteps() {
+                cancelHandle?.cancel()
+                cancelHandle = null
+            }
+
+            override fun refreshSteps() {
+                repopulateStepElements()
+            }
+
+            override fun deactivateAllSteps() {
+                containerElement!!.deactivateAllSteps()
+                Prism.highlightAllUnder(containerElement!!)
+            }
+
+            override fun activateAllSteps() {
+                containerElement!!.activateAllSteps()
+                Prism.highlightAllUnder(containerElement!!)
+            }
         }
-        observer.observe(containerElement, MutationObserverInit(childList = true, subtree = true))
-        onDispose { observer.disconnect() }
+    }
+
+    LaunchedEffect(containerElement) {
+        repopulateStepElements()
     }
 
     DisposableEffect(Unit) {
@@ -479,6 +472,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 slidingDirection = SlidingHorizDirection.HIDING
                                 window.invokeLater {
                                     (ctx.data.getValue<SlideEvents>().onEntered as EventImpl).invoke(DirectionArgs(forward = true))
+                                    repopulateStepElements()
                                     slidingDirection = SlidingHorizDirection.IN_FROM_RIGHT
                                 }
                             }
@@ -498,6 +492,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 slidingDirection = SlidingHorizDirection.HIDING
                                 window.invokeLater {
                                     (ctx.data.getValue<SlideEvents>().onEntered as EventImpl).invoke(DirectionArgs(forward = false))
+                                    repopulateStepElements()
                                     slidingDirection = SlidingHorizDirection.IN_FROM_LEFT
                                 }
                             }

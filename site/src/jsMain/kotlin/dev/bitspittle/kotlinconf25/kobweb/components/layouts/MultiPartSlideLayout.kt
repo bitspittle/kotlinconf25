@@ -315,6 +315,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 .setVariable(SlideVertFromOpacityVar, 0f)
                                 .setVariable(SlideVertToOpacityVar, 1f)
                                 .onAnimationStart {
+                                    slideUtils.refreshSteps()
                                     // We're returning to a previously visited slide, so ensure all steps are active
                                     containerElement!!.activateAllSteps()
                                 }
@@ -341,6 +342,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 .setVariable(SlideVertToOpacityVar, 1f)
                                 .setVariable(SlideVertFromTranslatePercentVar, 100.percent)
                                 .setVariable(SlideVertToTranslatePercentVar, 0.percent)
+                                .onAnimationStart { slideUtils.refreshSteps() }
                                 .onAnimationEnd { slidingDirection = null }
                                 .slidingAnimation()
                         },
