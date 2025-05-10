@@ -15,15 +15,13 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.step
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
-import org.jetbrains.compose.web.css.percent
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.css.px
-import kotlin.time.Duration.Companion.milliseconds
 
 @InitRoute
 fun initCreatePage(ctx: InitRouteContext) {

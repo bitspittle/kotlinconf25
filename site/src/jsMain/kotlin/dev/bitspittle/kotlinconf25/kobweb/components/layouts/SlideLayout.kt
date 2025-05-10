@@ -37,6 +37,8 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.substepCount
 import dev.bitspittle.kotlinconf25.kobweb.slides
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.activateAllSteps
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.deactivateAllSteps
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
@@ -224,13 +226,20 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
         return if (forward) {
             var stepActivated = false
+            var currentStepElement: HTMLElement? = null
             for (stepElement in stepElements) {
+                if (stepElement.classList.contains("current")) {
+                    currentStepElement = stepElement
+                }
                 if (!stepElement.classList.contains("active")) {
                     if (stepActivated) {
                         stepElement.enqueueWithDelayIfAuto { tryStep(forward) }
                         break
                     } else {
-                        stepElement.classList.add("active")
+                        stepElement.classList.add("active", "current")
+                        currentStepElement?.classList?.remove("current")
+                        currentStepElement = null
+
                         stepActivated = true
                     }
                 }
@@ -248,8 +257,13 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         } else {
             var stepDeactivated = false
             // Remove all grouped auto steps in one fell swoop
+            var stopOnNextActiveElement = false
             for (stepElement in stepElements.asReversed()) {
                 if (stepElement.classList.contains("active")) {
+                    if (stopOnNextActiveElement) {
+                        stepElement.classList.add("current")
+                        break
+                    }
                     // Handle multi-part steps if this is one
                     if (stepElement.substepCount > 1) {
                         if (stepElement.activeSubstepIndex > 0) {
@@ -260,11 +274,11 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                         }
                     }
 
-                    stepElement.classList.remove("active")
+                    stepElement.classList.remove("active", "current")
                     stepDeactivated = true
 
                     if (!stepElement.classList.contains("auto")) {
-                        break
+                        stopOnNextActiveElement = true
                     }
                 }
             }

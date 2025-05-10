@@ -1,6 +1,7 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -10,6 +11,8 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
@@ -21,7 +24,8 @@ fun initCodeExamplePage(ctx: InitRouteContext) {
 @Layout(".components.layouts.MultiPartSlideLayout")
 fun ShowcasePage() {
     SlideSection {
-        Video("/assets/showcase/yt-reimagined.mp4", scale = 0.6f)
+        Video("/assets/showcase/yt-reimagined.mp4", Modifier.step(StepTypes.OneAtATime, auto = true), loop = true, scale = 0.6f)
+        Video("/assets/showcase/yt-reimagined2.mp4", Modifier.step(StepTypes.OneAtATime), loop = true, scale = 0.6f)
     }
     SlideSection {
         Video("/assets/showcase/kotfolio.mp4", scale = 1.1f)

@@ -1,11 +1,8 @@
-package dev.bitspittle.kotlinconf25.kobweb.components.layouts
+package dev.bitspittle.kotlinconf25.kobweb.util.slides
 
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.attr
-import com.varabyte.kobweb.compose.ui.modifiers.classNames
-import com.varabyte.kobweb.compose.ui.modifiers.opacity
-import com.varabyte.kobweb.compose.ui.modifiers.transition
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.silk.init.InitSilk
 import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
@@ -13,6 +10,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.activeSubstepI
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.substepCount
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
+import org.jetbrains.compose.web.css.DisplayStyle
 import org.w3c.dom.HTMLElement
 import org.w3c.dom.asList
 import kotlin.time.Duration
@@ -23,16 +21,19 @@ import kotlin.time.Duration
 
 // See also: SlideLayout, which is responsible for managing steps
 
-private const val DEFAULT_STEP_TYPE = "fade-in"
+object StepTypes {
+    const val FadeIn = "fade-in"
+    const val OneAtATime = "one-at-a-time"
+}
 
-fun Modifier.step(stepType: String = DEFAULT_STEP_TYPE, auto: Boolean = false) =
+fun Modifier.step(stepType: String = StepTypes.FadeIn, auto: Boolean = false) =
     classNames(buildList {
         add("step")
         add(stepType)
         if (auto) add("auto")
     })
 
-fun Modifier.step(stepType: String = DEFAULT_STEP_TYPE, delay: Duration) =
+fun Modifier.step(stepType: String = StepTypes.FadeIn, delay: Duration) =
     attr("data-step-delay", "${delay.inWholeMilliseconds}")
         .step(stepType, auto = true)
 
@@ -50,35 +51,45 @@ fun initStepStyles(ctx: InitSilkContext) {
             Modifier
                 .opacity(1)
         }
+
+        registerStyleBase(".step.one-at-a-time:not(.current)") {
+            Modifier.display(DisplayStyle.None)
+        }
     }
 }
 
 fun HTMLElement.activateAllSteps(): Boolean {
     var anyActivated = false
-    getElementsByClassName("step").asList().filterIsInstance<HTMLElement>().forEach { step ->
+    val stepElements = getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
+    stepElements.forEach { step ->
         if (!step.classList.contains("active")) {
             step.classList.add("active")
             anyActivated = true
         }
+        step.classList.remove("current")
 
         if (step.substepCount > 0) {
             step.activeSubstepIndex = step.substepCount - 1
         }
     }
+    stepElements.lastOrNull()?.classList?.add("current")
     return anyActivated
 }
 
 fun HTMLElement.deactivateAllSteps(): Boolean {
     var anyDeactivated = false
-    getElementsByClassName("step").asList().filterIsInstance<HTMLElement>().forEach { step ->
+    val stepElements = getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
+    stepElements.forEach { step ->
         if (step.classList.contains("active")) {
             step.classList.remove("active")
             anyDeactivated = true
         }
+        step.classList.remove("current")
 
         if (step.substepCount > 0) {
             step.activeSubstepIndex = 0
         }
     }
+
     return anyDeactivated
 }
