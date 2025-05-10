@@ -4,6 +4,8 @@ package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.FontWeight
+import com.varabyte.kobweb.compose.css.TransformOrigin
+import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -15,6 +17,10 @@ import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
 import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.modifiers.height
+import com.varabyte.kobweb.compose.ui.modifiers.opacity
+import com.varabyte.kobweb.compose.ui.modifiers.scale
+import com.varabyte.kobweb.compose.ui.modifiers.transformOrigin
+import com.varabyte.kobweb.compose.ui.modifiers.transition
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
@@ -23,23 +29,47 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
+import com.varabyte.kobweb.silk.init.InitSilk
+import com.varabyte.kobweb.silk.init.InitSilkContext
+import com.varabyte.kobweb.silk.init.registerStyleBase
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
+import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.DefaultStepSpeed
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
+import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.H3
 import org.jetbrains.compose.web.dom.Span
+import kotlin.time.Duration.Companion.seconds
 
 @InitRoute
 fun initOrganizationPage(ctx: InitRouteContext) {
     ctx.data.add(SlideTitle("Project organization"))
+}
+
+private const val RESOURCE_FOLDERS_STEP_TYPE = "resource-folders-scaling"
+
+@InitSilk
+fun setupScalingStepEffect(ctx: InitSilkContext) {
+    ctx.stylesheet.apply {
+        registerStyleBase(".step.${RESOURCE_FOLDERS_STEP_TYPE}") {
+            Modifier
+                .transition(Transition.of("scale", DefaultStepSpeed))
+                .scale(2.5f)
+        }
+
+        registerStyleBase(".step.${RESOURCE_FOLDERS_STEP_TYPE}.active") {
+            Modifier.scale(1)
+        }
+    }
 }
 
 @Page
@@ -176,23 +206,9 @@ fun OrganizationPage() {
     }
 
     SlideSection {
-        TopStartH3 {
-            Folders {
-                Bullets {
-                    Item("resources/public") {
-                        Item("images") {
-                            Item("buster.jpg")
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    SlideSection {
         SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
             Column(Modifier.gap(2.cssRem)) {
-                Folders {
+                Folders(Modifier.step(RESOURCE_FOLDERS_STEP_TYPE).transformOrigin(TransformOrigin.TopLeft)) {
                     Bullets {
                         Item("resources/public") {
                             Item("images") {
@@ -202,7 +218,7 @@ fun OrganizationPage() {
                     }
                 }
 
-                Span(Modifier.step(StepTypes.FadeUp).toAttrs()) {
+                Span(Modifier.step(StepTypes.FadeUp, delay = AnimSpeeds.Fast).toAttrs()) {
                     CodeBlock(
                         //language=kotlin
                         """

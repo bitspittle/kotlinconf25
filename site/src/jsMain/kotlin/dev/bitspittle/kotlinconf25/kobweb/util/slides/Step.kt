@@ -53,15 +53,14 @@ fun Modifier.step(stepType: String = StepTypes.Default, delay: Duration, index: 
     attr("data-step-delay", "${delay.inWholeMilliseconds}")
         .step(stepType, auto = true, index = index)
 
+val DefaultStepSpeed = AnimSpeeds.Fast.toCssUnit()
 
 @InitSilk
 fun initStepStyles(ctx: InitSilkContext) {
-    val defaultStepSpeed = AnimSpeeds.Fast.toCssUnit()
-
     ctx.stylesheet.apply {
         registerStyleBase(".step.${StepTypes.FadeIn}") {
             Modifier
-                .transition(Transition.of("opacity", defaultStepSpeed))
+                .transition(Transition.of("opacity", DefaultStepSpeed))
                 .opacity(0)
         }
 
@@ -72,7 +71,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 
         registerStyleBase(".step.${StepTypes.FadeUp}") {
             Modifier
-                .transition(Transition.group(listOf("opacity", "translate"), defaultStepSpeed))
+                .transition(Transition.group(listOf("opacity", "translate"), DefaultStepSpeed))
                 .opacity(0)
                 .translateY(40.px)
         }
@@ -85,7 +84,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 
         registerStyleBase(".step.${StepTypes.FadeDown}") {
             Modifier
-                .transition(Transition.group(listOf("opacity", "translate"), defaultStepSpeed))
+                .transition(Transition.group(listOf("opacity", "translate"), DefaultStepSpeed))
                 .opacity(0)
                 .translateY((-40).px)
         }
@@ -98,7 +97,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 
         registerStyleBase(".step.${StepTypes.FadeLeft}") {
             Modifier
-                .transition(Transition.group(listOf("opacity", "translate"), defaultStepSpeed))
+                .transition(Transition.group(listOf("opacity", "translate"), DefaultStepSpeed))
                 .opacity(0)
                 .translateX(40.px)
         }
@@ -111,7 +110,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 
         registerStyleBase(".step.${StepTypes.FadeRight}") {
             Modifier
-                .transition(Transition.group(listOf("opacity", "translate"), defaultStepSpeed))
+                .transition(Transition.group(listOf("opacity", "translate"), DefaultStepSpeed))
                 .opacity(0)
                 .translateX((-40).px)
         }
@@ -124,7 +123,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 
         registerStyleBase(".step.${StepTypes.FadeInThenSemiOut}") {
             Modifier
-                .transition(Transition.of("opacity", defaultStepSpeed))
+                .transition(Transition.of("opacity", DefaultStepSpeed))
         }
 
         registerStyleBase(".step.${StepTypes.FadeInThenSemiOut}:not(.active)") {
