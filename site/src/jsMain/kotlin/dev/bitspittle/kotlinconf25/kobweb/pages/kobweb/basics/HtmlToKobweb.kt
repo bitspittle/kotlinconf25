@@ -69,19 +69,19 @@ fun initHtmlToKobwebPage(ctx: InitRouteContext) {
     })
 }
 
-// .red-rect {
+// .cyan-rect {
 //   width: 400px;
 //   height: 200px;
-//   background-color: red;
+//   background-color: cyan;
 //   border-radius: 10px;
 // }
 
-val RedRectStyle = CssStyle {
+val CyanRectStyle = CssStyle {
     base {
         Modifier
             .width(400.px)
             .height(200.px)
-            .backgroundColor(Colors.Red)
+            .backgroundColor(Colors.Cyan)
             .borderRadius(10.px)
     }
 }
@@ -101,7 +101,7 @@ fun HtmlToKobwebPage() {
                         id="example"
                         style="
                             width:400px; height:200px;
-                            background-color:red; border-radius:10px;
+                            background-color:cyan; border-radius:10px;
                         "
                     >
                     """.trimIndent(),
@@ -114,7 +114,7 @@ fun HtmlToKobwebPage() {
 //                style {
 //                    width(400.px)
 //                    height(200.px)
-//                    backgroundColor(Color.red)
+//                    backgroundColor(Color.cyan)
 //                    borderRadius(10.px)
 //                }
 //            })
@@ -123,7 +123,7 @@ fun HtmlToKobwebPage() {
                     .id("example")
                     .width(400.px)
                     .height(200.px)
-                    .backgroundColor(Colors.Red)
+                    .backgroundColor(Colors.Cyan)
                     .borderRadius(10.px)
                     .toAttrs()
             )
@@ -137,10 +137,10 @@ fun HtmlToKobwebPage() {
                 CodeBlock(
                     // language=css
                     """
-                        .red-rect {
+                        .cyan-rect {
                             width: 400px;
                             height: 200px;
-                            background-color: red;
+                            background-color: cyan;
                             border-radius: 10px;
                         }
                         """.trimIndent(),
@@ -152,7 +152,7 @@ fun HtmlToKobwebPage() {
 
                         <div
                             id="example"
-                            class="red-rect"
+                            class="cyan-rect"
                         >
 
 
@@ -165,9 +165,9 @@ fun HtmlToKobwebPage() {
             // Style(AppStyleSheet)
             // Div(attrs = {
             //    id("example")
-            //    classes(AppStyleSheet.redRect)
+            //    classes(AppStyleSheet.cyanRect)
             // })
-            Div(RedRectStyle.toModifier().id("example").toAttrs())
+            Div(CyanRectStyle.toModifier().id("example").toAttrs())
         }
     }
 
@@ -180,7 +180,7 @@ fun HtmlToKobwebPage() {
                     """
                         <div
                             id="example"
-                            class="red-rect"
+                            class="cyan-rect"
                         >
                         """.trimIndent(),
                     lang = "css",
@@ -200,14 +200,14 @@ fun HtmlToKobwebPage() {
 //            Style(AppStyleSheet)
 //            Div(attrs = {
 //                id("example")
-//                classes(AppStyleSheet.redRect)
+//                classes(AppStyleSheet.cyanRect)
 //                ref { element ->
 //                    element.style.opacity = "0.5"
 //                    onDispose { }
 //                }
 //            })
 
-            Div(RedRectStyle.toModifier().id("example").toAttrs {
+            Div(CyanRectStyle.toModifier().id("example").toAttrs {
                 ref { element ->
                     element.style.opacity = "0.5"
                     onDispose { }

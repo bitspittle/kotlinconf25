@@ -52,18 +52,18 @@ fun initHtmlToKotlinPage(ctx: InitRouteContext) {
     })
 }
 
-// .red-rect {
+// .cyan-rect {
 //   width: 400px;
 //   height: 200px;
-//   background-color: red;
+//   background-color: cyan;
 //   border-radius: 10px;
 // }
 
 object AppStyleSheet : StyleSheet() {
-    val redRect by style {
+    val cyanRect by style {
         width(400.px)
         height(200.px)
-        backgroundColor(Colors.Red)
+        backgroundColor(Color.cyan)
         borderRadius(10.px)
     }
 }
@@ -83,7 +83,7 @@ fun HtmlToKotlinPage() {
                         id="example"
                         style="
                             width:400px; height:200px;
-                            background-color:red; border-radius:10px;
+                            background-color:cyan; border-radius:10px;
                         "
                     >
                     """.trimIndent(),
@@ -96,7 +96,7 @@ fun HtmlToKotlinPage() {
             //    style="
             //        width:400px;
             //        height:200px;
-            //        background-color:red;
+            //        background-color:cyan;
             //        border-radius:10px;
             //    "
             // >
@@ -105,7 +105,7 @@ fun HtmlToKotlinPage() {
                 style {
                     width(400.px)
                     height(200.px)
-                    backgroundColor(Color.red)
+                    backgroundColor(Color.cyan)
                     borderRadius(10.px)
                 }
             })
@@ -119,10 +119,10 @@ fun HtmlToKotlinPage() {
                 CodeBlock(
                     // language=css
                     """
-                        .red-rect {
+                        .cyan-rect {
                             width: 400px;
                             height: 200px;
-                            background-color: red;
+                            background-color: cyan;
                             border-radius: 10px;
                         }
                         """.trimIndent(),
@@ -134,7 +134,7 @@ fun HtmlToKotlinPage() {
 
                         <div
                             id="example"
-                            class="red-rect"
+                            class="cyan-rect"
                         >
 
 
@@ -143,22 +143,22 @@ fun HtmlToKotlinPage() {
                 )
             }
 
-            // .red-rect {
+            // .cyan-rect {
             //   width: 400px;
             //   height: 200px;
-            //   background-color: red;
+            //   background-color: cyan;
             //   border-radius: 10px;
             // }
             //
             // <div
             //   id="example"
-            //   class="red-rect"
+            //   class="cyan-rect"
             // >
 
             Style(AppStyleSheet)
             Div(attrs = {
                 id("example")
-                classes(AppStyleSheet.redRect)
+                classes(AppStyleSheet.cyanRect)
             })
         }
     }
@@ -173,7 +173,7 @@ fun HtmlToKotlinPage() {
                     """
                         <div
                             id="example"
-                            class="red-rect"
+                            class="cyan-rect"
                         >
                         """.trimIndent(),
                     lang = "css",
@@ -192,7 +192,7 @@ fun HtmlToKotlinPage() {
 
             // <div
             //   id="example"
-            //   class="red-rect"
+            //   class="cyan-rect"
             // >
             //
             // document.getElementById('example')
@@ -204,7 +204,7 @@ fun HtmlToKotlinPage() {
             // Approach #1
 //             Div(attrs = {
 //                id("example")
-//                classes(AppStyleSheet.redRect)
+//                classes(AppStyleSheet.cyanRect)
 //            })
 //            LaunchedEffect(Unit) {
 //                (document.getElementById("example") as? HTMLElement)
@@ -214,7 +214,7 @@ fun HtmlToKotlinPage() {
             // Approach #2
             Div(attrs = {
                 id("example")
-                classes(AppStyleSheet.redRect)
+                classes(AppStyleSheet.cyanRect)
                 ref { element ->
                     element.style.opacity = "0.5"
                     onDispose { }
