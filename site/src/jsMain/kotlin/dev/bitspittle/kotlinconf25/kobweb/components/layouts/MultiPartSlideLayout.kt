@@ -211,13 +211,13 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             when ((event as KeyboardEvent).key) {
                 "ArrowUp" -> {
                     slideUtils.cancelRunningSteps()
-                    if (!containerElement!!.deactivateAllSteps()) {
+                    if (!containerElement!!.deactivateAllSteps() || event.shiftKey) {
                         tryNavigateToSection(-1)
                     }
                 }
                 "ArrowDown" -> {
                     slideUtils.cancelRunningSteps()
-                    if (!containerElement!!.activateAllSteps()) {
+                    if (!containerElement!!.activateAllSteps() || event.shiftKey) {
                         tryNavigateToSection(+1)
                     }
                 }
