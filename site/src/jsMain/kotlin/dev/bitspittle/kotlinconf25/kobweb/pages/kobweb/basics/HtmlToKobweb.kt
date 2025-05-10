@@ -64,7 +64,7 @@ fun initHtmlToKobwebPage(ctx: InitRouteContext) {
 //   width: 400px;
 //   height: 200px;
 //   background-color: red;
-//   border-radius: 5px;
+//   border-radius: 10px;
 // }
 
 val RedRectStyle = CssStyle {
@@ -73,7 +73,7 @@ val RedRectStyle = CssStyle {
             .width(400.px)
             .height(200.px)
             .backgroundColor(Colors.Red)
-            .borderRadius(5.px)
+            .borderRadius(10.px)
     }
 }
 
@@ -92,7 +92,7 @@ fun HtmlToKobwebPage() {
                         id="example"
                         style="
                             width:400px; height:200px;
-                            background-color:red; border-radius:5px;
+                            background-color:red; border-radius:10px;
                         "
                     >
                     """.trimIndent(),
@@ -106,7 +106,7 @@ fun HtmlToKobwebPage() {
 //                    width(400.px)
 //                    height(200.px)
 //                    backgroundColor(Color.red)
-//                    borderRadius(5.px)
+//                    borderRadius(10.px)
 //                }
 //            })
             Div(
@@ -115,7 +115,7 @@ fun HtmlToKobwebPage() {
                     .width(400.px)
                     .height(200.px)
                     .backgroundColor(Colors.Red)
-                    .borderRadius(5.px)
+                    .borderRadius(10.px)
                     .toAttrs()
             )
         }
@@ -132,7 +132,7 @@ fun HtmlToKobwebPage() {
                             width: 400px;
                             height: 200px;
                             background-color: red;
-                            border-radius: 5px;
+                            border-radius: 10px;
                         }
                         """.trimIndent(),
                     lang = "css",

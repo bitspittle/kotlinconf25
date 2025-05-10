@@ -56,7 +56,7 @@ fun initHtmlToKotlinPage(ctx: InitRouteContext) {
 //   width: 400px;
 //   height: 200px;
 //   background-color: red;
-//   border-radius: 5px;
+//   border-radius: 10px;
 // }
 
 object AppStyleSheet : StyleSheet() {
@@ -64,7 +64,7 @@ object AppStyleSheet : StyleSheet() {
         width(400.px)
         height(200.px)
         backgroundColor(Colors.Red)
-        borderRadius(5.px)
+        borderRadius(10.px)
     }
 }
 
@@ -83,7 +83,7 @@ fun HtmlToKotlinPage() {
                         id="example"
                         style="
                             width:400px; height:200px;
-                            background-color:red; border-radius:5px;
+                            background-color:red; border-radius:10px;
                         "
                     >
                     """.trimIndent(),
@@ -97,7 +97,7 @@ fun HtmlToKotlinPage() {
             //        width:400px;
             //        height:200px;
             //        background-color:red;
-            //        border-radius:5px;
+            //        border-radius:10px;
             //    "
             // >
             Div(attrs = {
@@ -106,7 +106,7 @@ fun HtmlToKotlinPage() {
                     width(400.px)
                     height(200.px)
                     backgroundColor(Color.red)
-                    borderRadius(5.px)
+                    borderRadius(10.px)
                 }
             })
         }
@@ -123,7 +123,7 @@ fun HtmlToKotlinPage() {
                             width: 400px;
                             height: 200px;
                             background-color: red;
-                            border-radius: 5px;
+                            border-radius: 10px;
                         }
                         """.trimIndent(),
                     lang = "css",
@@ -147,7 +147,7 @@ fun HtmlToKotlinPage() {
             //   width: 400px;
             //   height: 200px;
             //   background-color: red;
-            //   border-radius: 5px;
+            //   border-radius: 10px;
             // }
             //
             // <div
