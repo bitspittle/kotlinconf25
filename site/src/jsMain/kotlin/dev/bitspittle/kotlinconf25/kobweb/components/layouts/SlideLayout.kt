@@ -120,15 +120,18 @@ class HeaderBackground(val path: String)
 interface EventArgs
 
 abstract class Event<A : EventArgs, R> {
-    abstract fun add(callback: (A) -> R)
-    operator fun plusAssign(callback: (A) -> R) = add(callback)
+    abstract fun add(callback: (A) -> R): (A) -> R
+    abstract fun remove(callback: (A) -> R)
+    operator fun plusAssign(callback: (A) -> R) { add(callback) }
+    operator fun minusAssign(callback: (A) -> R) { remove(callback) }
 }
 
 class EventImpl<A : EventArgs, R> : Event<A, R>() {
     private val callbacks = mutableListOf<(A) -> R>()
-    override fun add(callback: (A) -> R) { callbacks.add(callback) }
+    override fun add(callback: (A) -> R): (A) -> R { callbacks.add(callback); return callback }
+    override fun remove(callback: (A) -> R) { callbacks.remove(callback) }
 
-    fun asSequence(param: A): Sequence<R> = callbacks.asSequence().map { it(param) }
+    fun asSequence(param: A): Sequence<R> = callbacks.asReversed().asSequence().map { it(param) }
 
     operator fun invoke(param: A) {
         // Convert to list which consumes the sequence as a side effect
@@ -161,7 +164,12 @@ class SlideEvents {
     val onExiting: Event<DirectionArgs, Unit> = EventImpl()
     /** Fired when we JUST entered a new slide (still transitioning in) */
     val onEntered: Event<DirectionArgs, Unit> = EventImpl()
-    /** Fired by the parent layout giving children a chance to handle a request to step. If they don't take it, we will. */
+    /**
+     * Fired by the parent layout giving children a chance to handle a request to step.
+     *
+     * Children should return true to indicate they handled the step; false otherwise. If they don't handle the step
+     * action, we will.
+     * */
     val onStepRequested: Event<DirectionArgs, Boolean> = EventImpl()
 }
 

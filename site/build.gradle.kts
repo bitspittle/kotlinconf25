@@ -29,6 +29,7 @@ kobweb {
                 "kobweb/basics/create",
                 "kobweb/basics/run",
                 "kobweb/basics/export",
+                "kobweb/basics/organization",
             ).joinToString()
         )
 
