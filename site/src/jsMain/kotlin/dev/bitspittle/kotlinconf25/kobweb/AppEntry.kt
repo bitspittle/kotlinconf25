@@ -47,7 +47,7 @@ fun initSilk(ctx: InitSilkContext) {
 
         registerStyleBase("code, pre") {
             Modifier.fontFamily("Roboto Mono", "monospace")
-                .fontSize(32.px)
+                .fontSize(28.px)
         }
 
         val headerCommon = Modifier
