@@ -226,7 +226,6 @@ fun HtmlToKobwebPage() {
             SimpleGrid(numColumns(3), Modifier.gap(1.cssRem)) {
                 Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
                     CodeBlock(
-                        // language=kotlin
                         """
                             Modifier
                               .padding(20.px)
@@ -238,7 +237,6 @@ fun HtmlToKobwebPage() {
                 }
                 Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
                     CodeBlock(
-                        // language=kotlin
                         """
                             Modifier
                               .fillMaxWidth()
@@ -250,7 +248,6 @@ fun HtmlToKobwebPage() {
                 }
                 Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
                     CodeBlock(
-                        // language=kotlin
                         """
                             Modifier
                               .padding(20.px)

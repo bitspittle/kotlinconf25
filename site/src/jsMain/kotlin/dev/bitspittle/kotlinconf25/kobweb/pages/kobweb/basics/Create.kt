@@ -80,7 +80,6 @@ fun CreatePage() {
 
     SlideSection {
         CodeBlock(
-            //language=kotlin
             """
             plugins {
                 alias(libs.plugins.kotlin.multiplatform)

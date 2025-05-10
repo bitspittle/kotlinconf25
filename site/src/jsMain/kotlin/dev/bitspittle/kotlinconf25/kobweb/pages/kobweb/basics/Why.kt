@@ -80,7 +80,6 @@ fun WhyPage() {
     Reason("Routing") {
         UrlBar("https://example-site.com/[about]")
         CodeBlock(
-            //language=kotlin
             """
                 @Page
                 @Composable

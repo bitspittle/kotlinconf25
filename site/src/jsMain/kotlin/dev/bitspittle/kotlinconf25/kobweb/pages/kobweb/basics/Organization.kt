@@ -100,7 +100,6 @@ fun OrganizationPage() {
 
     SlideSection {
         CodeBlock(
-            //language=kotlin
             """
                 @App
                 @Composable
@@ -171,7 +170,6 @@ fun OrganizationPage() {
 
     SlideSection {
         CodeBlock(
-            //language=kotlin
             """
                 import com.mysite.components.sections.NavHeader
                 import com.mysite.components.sections.Footer
@@ -192,7 +190,6 @@ fun OrganizationPage() {
 
     SlideSection {
         CodeBlock(
-            //language=kotlin
             """
                 @Page
                 @Composable
@@ -220,7 +217,6 @@ fun OrganizationPage() {
 
                 Span(Modifier.step(StepTypes.FadeUp, delay = AnimSpeeds.Fast).toAttrs()) {
                     CodeBlock(
-                        //language=kotlin
                         """
                             Img(
                                 src = "/images/buster.jpg",

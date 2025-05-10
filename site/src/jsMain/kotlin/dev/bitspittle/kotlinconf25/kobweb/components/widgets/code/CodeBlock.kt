@@ -18,6 +18,7 @@ import com.varabyte.kobweb.silk.style.common.SmoothColorStyle
 import com.varabyte.kobweb.silk.style.toModifier
 import dev.bitspittle.kotlinconf25.kobweb.bindings.prismjs.Prism
 import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColorVar
+import org.intellij.lang.annotations.Language
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Code
 import org.jetbrains.compose.web.dom.Pre
@@ -74,7 +75,7 @@ fun initStepStyles(ctx: InitSilkContext) {
 // Note: To enable this widget to work, we needed to add PrismJs support to this project. See the kobweb
 // block in our build.gradle.kts file to see how this was done.
 @Composable
-fun CodeBlock(code: String, modifier: Modifier = Modifier, preModifier: Modifier = Modifier, lang: String? = "kotlin", highlightLines: String? = null) {
+fun CodeBlock(@Language("kotlin") code: String, modifier: Modifier = Modifier, preModifier: Modifier = Modifier, lang: String? = "kotlin", highlightLines: String? = null) {
     var preElement by remember { mutableStateOf<HTMLElement?>(null) }
     var codeElement by remember { mutableStateOf<HTMLElement?>(null) }
 
