@@ -141,7 +141,7 @@ fun initStepStyles(ctx: InitSilkContext) {
                 .opacity(0.5)
         }
 
-        registerStyleBase(".step.${StepTypes.OneAtATime}:not(.current)") {
+        registerStyleBase(".step.${StepTypes.OneAtATime}:not(.current):not(:has(.current))") {
             Modifier.display(DisplayStyle.None)
         }
     }

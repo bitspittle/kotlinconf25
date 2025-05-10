@@ -31,6 +31,7 @@ kobweb {
                 "kobweb/basics/export",
                 "kobweb/basics/organization",
                 "kobweb/basics/html-to-kobweb",
+                "kobweb/basics/routing",
             ).joinToString()
         )
 
@@ -64,10 +65,9 @@ kotlin {
     configAsKobwebApplication("kobweb", includeServer = true)
 
     sourceSets {
-//        commonMain.dependencies {
-//          // Add shared dependencies between JS and JVM here
-//        }
         jsMain.dependencies {
+            implementation(libs.jetbrains.annotations)
+
             implementation(libs.compose.runtime)
             implementation(libs.compose.html.core)
             implementation(libs.kobweb.core)

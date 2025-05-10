@@ -412,6 +412,10 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                             tryNavigateToSlide(if (args.forward) +1 else -1)
                         }
                     }
+
+                    if (handled) {
+                        window.invokeLater { Prism.highlightAllUnder(containerElement!!) }
+                    }
                 }
                 "Home" -> {
                     if (event.shiftKey) {

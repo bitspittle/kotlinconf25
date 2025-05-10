@@ -53,10 +53,10 @@ val DisabledUrlIconStyle = UrlIconStyle.extendedByBase {
 // www.example.com/[hello]/
 @Composable
 fun UrlBar(url: String, modifier: Modifier = Modifier, id: String? = null) {
-    Box(contentAlignment = Alignment.Center) {
+    Box(modifier, contentAlignment = Alignment.Center) {
         Row(
             UrlBarContainerStyle.toModifier().thenIf(id != null, Modifier.attrsModifier { attr("data-id", id!!) })
-                .then(modifier),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             FaArrowLeft(DisabledUrlIconStyle.toModifier())
