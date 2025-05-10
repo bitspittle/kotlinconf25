@@ -302,35 +302,32 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
     }
 
     DisposableEffect(containerElement) {
-        val contentContainer = containerElement ?: return@DisposableEffect onDispose {}
-        stepElements.clear()
-        stepElements.addAll(contentContainer.getElementsByClassName("step")
-            .asList()
-            .filterIsInstance<HTMLElement>()
-        )
-
+        val containerElement = containerElement ?: return@DisposableEffect onDispose {}
         fun onStepsChanged() {
             stepElements.firstOrNull()?.let { stepElement ->
                 stepElement.enqueueWithDelayIfAuto { tryStep(true) }
             }
         }
-        onStepsChanged()
+        fun requerySteps() {
+            stepElements.clear()
+            stepElements.addAll(
+                containerElement.getElementsByClassName("step")
+                    .asList()
+                    .filterIsInstance<HTMLElement>()
+            )
+            onStepsChanged()
+        }
+        requerySteps()
 
         val observer = MutationObserver { mutations, observer ->
-            mutations.forEach { mutation ->
-                stepElements.removeAll(mutation.removedNodes.asList().filterIsInstance<HTMLElement>().flatMap {
-                    it.getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
-                })
-                mutation.addedNodes.asList().filterIsInstance<HTMLElement>().flatMap {
-                    it.getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
-                }.forEach { stepElement ->
-                    // Some elements are repeated multiple times (by different parents I guess?)
-                    if (stepElement !in stepElements) stepElements.add(stepElement)
-                }
-                onStepsChanged()
-            }
+            // We used to do fancy mutation events logic but we would occasionally get stale elements (e.g. an code
+            // block which added the "step" attribute to itself but the mutation observer missed it.) Instead, just
+            // requery steps every time, it's fine.
+            // NOTE: Presentations are generally static, but if someone tries to do something smart by programatically
+            // adding an element, we'll trigger this aggressive logic and we'll need to reconsider this approach.
+            requerySteps()
         }
-        observer.observe(contentContainer, MutationObserverInit(childList = true, subtree = true))
+        observer.observe(containerElement, MutationObserverInit(childList = true, subtree = true))
         onDispose { observer.disconnect() }
     }
 
