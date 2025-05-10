@@ -32,19 +32,23 @@ class BulletsScope {
         RenderedItem(modifier) { Text(value) }
     }
 
-    fun RenderedItem(modifier: Modifier = Modifier, content: @Composable () -> Unit) {
-        RenderedItem(modifier, content) {}
-    }
-
-    fun Item(value: String, modifier: Modifier = Modifier, content: BulletsScope.() -> Unit) {
-        RenderedItem(modifier, { Text(value) }, content)
-    }
-
-    fun RenderedItem(modifier: Modifier = Modifier, content: @Composable () -> Unit, childrenContent: BulletsScope.() -> Unit) {
-        val subscope = BulletsScope().apply(childrenContent)
-        children.add {
+    fun RenderedItem(modifier: Modifier = Modifier, render: @Composable () -> Unit) {
+        children.add({
             Li(BulletsLiStyle.toModifier().then(modifier).toAttrs()) {
-                content()
+                render()
+            }
+        })
+    }
+
+    fun Item(value: String, modifier: Modifier = Modifier, children: BulletsScope.() -> Unit) {
+        RenderedItem(modifier, { Text(value) }, children)
+    }
+
+    fun RenderedItem(modifier: Modifier = Modifier, render: @Composable () -> Unit, children: BulletsScope.() -> Unit) {
+        val subscope = BulletsScope().apply(children)
+        this.children.add {
+            Li(BulletsLiStyle.toModifier().then(modifier).toAttrs()) {
+                render()
                 Ul(BulletsUlStyle.toAttrs()) { subscope.render() }
             }
         }
