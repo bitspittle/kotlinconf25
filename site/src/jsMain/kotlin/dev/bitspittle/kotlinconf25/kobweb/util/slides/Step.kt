@@ -3,6 +3,7 @@ package dev.bitspittle.kotlinconf25.kobweb.util.slides
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
+import com.varabyte.kobweb.compose.ui.thenIfNotNull
 import com.varabyte.kobweb.silk.init.InitSilk
 import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
@@ -26,16 +27,16 @@ object StepTypes {
     const val OneAtATime = "one-at-a-time"
 }
 
-fun Modifier.step(stepType: String = StepTypes.FadeIn, auto: Boolean = false) =
+fun Modifier.step(stepType: String = StepTypes.FadeIn, auto: Boolean = false, index: Int? = null) =
     classNames(buildList {
         add("step")
         add(stepType)
         if (auto) add("auto")
-    })
+    }).thenIfNotNull(index) { Modifier.attr("data-step-index", it.toString())}
 
-fun Modifier.step(stepType: String = StepTypes.FadeIn, delay: Duration) =
+fun Modifier.step(stepType: String = StepTypes.FadeIn, delay: Duration, index: Int? = null) =
     attr("data-step-delay", "${delay.inWholeMilliseconds}")
-        .step(stepType, auto = true)
+        .step(stepType, auto = true, index = index)
 
 
 @InitSilk

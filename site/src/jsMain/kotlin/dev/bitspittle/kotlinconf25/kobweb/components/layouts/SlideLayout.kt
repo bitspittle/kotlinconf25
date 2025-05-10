@@ -315,6 +315,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             containerElement.getElementsByClassName("step")
                 .asList()
                 .filterIsInstance<HTMLElement>()
+                .sortedBy { it.getAttribute("data-step-index")?.toIntOrNull() ?: 0 }
         )
         onStepsChanged()
     }
