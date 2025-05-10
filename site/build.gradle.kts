@@ -31,6 +31,7 @@ kobweb {
                 "kobweb/basics/export",
                 "kobweb/basics/organization",
                 "kobweb/basics/html-to-kobweb",
+                "kobweb/basics/css-style",
                 "kobweb/basics/routing",
             ).joinToString()
         )

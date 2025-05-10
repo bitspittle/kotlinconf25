@@ -9,6 +9,7 @@ object SiteColors {
     val Error = Colors.Red
     val HtmlOrange = Color.rgb(0xf16529)
     val OffWhite = Colors.SkyBlue
+    val OffBlack = Color.rgb(0x444444)
     val KobwebBlue = Color.rgb(0x4285f4)
     val KotlinPurple = Color.rgb(0x7f52ff)
     val Warning = Colors.Yellow
