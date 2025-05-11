@@ -305,14 +305,14 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         }
     }
 
+    fun takeFirstStepIfAuto() {
+        stepElements.firstOrNull()?.let { stepElement ->
+            stepElement.enqueueWithDelayIfAuto { tryStep(true) }
+        }
+    }
+
     fun repopulateStepElements() {
         val containerElement = containerElement ?: return
-        containerElement.focus()
-        fun onStepsChanged() {
-            stepElements.firstOrNull()?.let { stepElement ->
-                stepElement.enqueueWithDelayIfAuto { tryStep(true) }
-            }
-        }
 
         stepElements.clear()
         stepElements.addAll(
@@ -321,7 +321,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 .filterIsInstance<HTMLElement>()
                 .sortedBy { it.getAttribute("data-step-order")?.toIntOrNull() ?: 0 }
         )
-        onStepsChanged()
+        takeFirstStepIfAuto()
     }
 
     val slideUtils = remember {
@@ -394,6 +394,21 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
             var handled = true
             when ((event as KeyboardEvent).key) {
+                "ArrowUp" -> {
+                    if (stepElements.firstOrNull { it.classList.contains("active") && !it.classList.contains("auto") } != null) {
+                        containerElement.deactivateAllSteps()
+                        takeFirstStepIfAuto()
+                    } else {
+                        handled = false
+                    }
+                }
+                "ArrowDown" -> {
+                    if (stepElements.lastOrNull()?.classList?.contains("active") == false) {
+                        containerElement.activateAllSteps()
+                    } else {
+                        handled = false
+                    }
+                }
                 "ArrowLeft" -> {
                     containerElement.deactivateAllSteps()
                     tryNavigateToSlide(-1)
