@@ -39,6 +39,9 @@ kobweb {
                 "kobweb/markdown/frontmatter",
                 "kobweb/markdown/code",
                 "kobweb/markdown/markdown-slide",
+                "kobweb/fullstack/header",
+                "kobweb/fullstack/fullstack-vs-static",
+                "kobweb/fullstack/setup",
             ).joinToString()
         )
 
