@@ -28,14 +28,14 @@ import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.H4
 
 @InitRoute
-fun initMarkdownPage(ctx: InitRouteContext) {
+fun initSetupPage(ctx: InitRouteContext) {
     ctx.data.add(SlideTitle("Setup"))
 }
 
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun MarkdownPage() {
+fun SetupPage() {
     SlideSection {
         CodeBlock(
             """
