@@ -11,6 +11,7 @@ import com.varabyte.kobweb.compose.dom.svg.Path
 import com.varabyte.kobweb.compose.dom.svg.SVGFillRule
 import com.varabyte.kobweb.compose.dom.svg.ViewBox
 import com.varabyte.kobweb.compose.foundation.layout.Box
+import com.varabyte.kobweb.compose.foundation.layout.BoxScope
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -41,12 +42,12 @@ import org.w3c.dom.HTMLElement
 import org.w3c.dom.events.KeyboardEvent
 
 @Composable
-fun SlideSection(content: @Composable () -> Unit) {
+fun SlideSection(content: @Composable BoxScope.() -> Unit) {
     LocalSlideSections.current.add(content)
 }
 
 val LocalSlideSections =
-    compositionLocalOf<MutableList<@Composable () -> Unit>> { error("This should only be called under a MultiPartSlideLayout!") }
+    compositionLocalOf<MutableList<@Composable BoxScope.() -> Unit>> { error("This should only be called under a MultiPartSlideLayout!") }
 
 // Slide in from bottom: 100% -> 0%
 // Slide out to bottom: 0% -> 100%
@@ -136,7 +137,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         onDispose { }
     }
 
-    val slideSections = remember(ctx.route.path) { mutableListOf<@Composable () -> Unit>() }
+    val slideSections = remember(ctx.route.path) { mutableListOf<@Composable BoxScope.() -> Unit>() }
     var targetSection by remember { mutableStateOf<Int?>(null) }
     var slidingDirection by remember { mutableStateOf<SlidingVertDirection?>(null) }
     var navigatingOut by remember(ctx.route.path) {
@@ -346,7 +347,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (getCurrentSection() >= 0) {
                         // Should never be null but might happen in development if you remove a section and then a reload
                         // happens, or if someone manually enters an invalid hash fragment
-                        (slideSections.getOrNull(getCurrentSection()) ?: slideSections.last()).invoke()
+                        (slideSections.getOrNull(getCurrentSection()) ?: slideSections.last()).invoke(this)
                     }
                 }
             }
