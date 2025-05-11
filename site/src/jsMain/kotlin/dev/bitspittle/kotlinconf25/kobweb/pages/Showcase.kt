@@ -26,6 +26,7 @@ fun ShowcasePage() {
     SlideSection {
         Video("/assets/showcase/yt-reimagined.mp4", Modifier.step(StepTypes.OneAtATime, auto = true), loop = true, scale = 0.6f)
         Video("/assets/showcase/yt-reimagined2.mp4", Modifier.step(StepTypes.OneAtATime), loop = true, scale = 0.6f)
+        Image("/assets/showcase/yt-reimagined3.png", Modifier.step(StepTypes.OneAtATime), scale = 0.8f)
     }
     SlideSection {
         Video("/assets/showcase/kotfolio.mp4", scale = 1.1f)
@@ -44,9 +45,6 @@ fun ShowcasePage() {
     }
     SlideSection {
         Video("/assets/showcase/fluense.mp4", scale = 1.1f)
-    }
-    SlideSection {
-        Video("/assets/showcase/kobweb-docs.mp4", scale = 1.3f, loop = true)
     }
     SlideSection {
         Image("/assets/showcase/presentation-title.png", scale = 0.7f)
