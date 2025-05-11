@@ -29,6 +29,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.browser.UrlBar
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.intellij.lang.annotations.Language
@@ -53,7 +54,7 @@ fun RoutingPage(ctx: PageContext) {
         highlightLines: String? = null,
         extraContent: (@Composable () -> Unit)? = null,
     ) {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
             UrlBar(url)
             Box(Modifier.step(StepTypes.FadeIn).fillMaxWidth(70.percent)) {
                 CodeBlock(code, preModifier = Modifier.fillMaxWidth(), modifier = codeModifier, highlightLines = highlightLines)
@@ -211,7 +212,7 @@ fun RoutingPage(ctx: PageContext) {
 
     // Dynamic routes
     SlideSection {
-        Column(Modifier.fillMaxSize(85.percent).gap(0.3.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize(85.percent).gap(Gaps.Tiny), horizontalAlignment = Alignment.CenterHorizontally) {
             val urlModifier = Modifier.fillMaxWidth().step(StepTypes.FadeRight, auto = true)
             UrlBar("https://mysite.com/users/[binay]/post/[108]", urlModifier)
             UrlBar("https://mysite.com/users/[cabs]/post/[9]", urlModifier)
@@ -223,7 +224,7 @@ fun RoutingPage(ctx: PageContext) {
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize(85.percent).gap(1.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize(85.percent).gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
             UrlBar("https://mysite.com/users/[{user}]/post/[{post}]")
             SimpleGrid(numColumns(1), Modifier.step(StepTypes.OneAtATime)) {
                 CodeBlock(

@@ -20,6 +20,7 @@ import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.dom.H3
@@ -40,7 +41,7 @@ fun initArchitecturePage(ctx: InitRouteContext) {
 fun ArchitecturePage() {
     @Composable
     fun IconText(icon: @Composable () -> Unit, text: String) {
-        Column(Modifier.padding(2.cssRem).gap(1.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.padding(Gaps.Large).gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
             icon()
             SiteColors.OffWhite.Text(text)
         }

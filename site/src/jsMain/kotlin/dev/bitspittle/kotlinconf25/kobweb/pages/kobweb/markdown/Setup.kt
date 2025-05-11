@@ -10,6 +10,7 @@ import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
+import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
@@ -22,6 +23,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.browser.UrlBar
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.css.percent
@@ -66,7 +68,7 @@ fun SetupPage() {
                 }
             }
         }
-        Column(Modifier.step(StepTypes.OneAtATime).fillMaxSize()) {
+        Column(Modifier.step(StepTypes.OneAtATime).gap(Gaps.Normal).fillMaxSize()) {
             H4(Modifier.toAttrs()) {
                 Folders {
                     Bullets {
@@ -94,7 +96,7 @@ fun SetupPage() {
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
             UrlBar("https://mysite.com/[posts/kobweb]")
             CodeBlock(
                 """

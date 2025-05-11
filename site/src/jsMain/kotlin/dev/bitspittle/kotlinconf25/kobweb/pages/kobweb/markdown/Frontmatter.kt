@@ -6,6 +6,7 @@ import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
+import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -13,6 +14,7 @@ import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 
@@ -25,7 +27,7 @@ fun initFrontMatterPage(ctx: InitRouteContext) {
 @Composable
 @Layout(".components.layouts.TitledSlideLayout")
 fun FrontMatterPage() {
-    Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
         CodeBlock(
             //language=yaml
             """

@@ -27,6 +27,7 @@ import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import kotlinx.browser.document
 import org.jetbrains.compose.web.css.Color
@@ -75,7 +76,7 @@ fun HtmlToKotlinPage() {
 
     // Super basic HTML
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
             CodeBlock(
                 // language=html
                 """
@@ -114,8 +115,8 @@ fun HtmlToKotlinPage() {
 
     // A little bit of CSS
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
                 CodeBlock(
                     // language=css
                     """
@@ -166,8 +167,8 @@ fun HtmlToKotlinPage() {
 
     // Accessing the raw element
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
                 CodeBlock(
                     // language=html
                     """

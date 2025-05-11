@@ -39,6 +39,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.DefaultStepSpeed
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
@@ -203,8 +204,8 @@ fun OrganizationPage() {
     }
 
     SlideSection {
-        SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
-            Column(Modifier.gap(2.cssRem)) {
+        SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
+            Column(Modifier.gap(Gaps.Large)) {
                 Folders(Modifier.step(RESOURCE_FOLDERS_STEP_TYPE).transformOrigin(TransformOrigin.TopLeft)) {
                     Bullets {
                         Item("resources/public") {
@@ -230,7 +231,7 @@ fun OrganizationPage() {
                 }
             }
 
-            Image("/assets/images/buster.jpg", Modifier.borderRadius(10.px).step(StepTypes.FadeLeft), scale = 0.81f)
+            Image("/assets/images/buster.jpg", Modifier.borderRadius(10.px).step(StepTypes.FadeLeft), scale = 0.71f)
         }
     }
 }

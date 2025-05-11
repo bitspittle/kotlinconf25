@@ -13,6 +13,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fontFamily
 import com.varabyte.kobweb.compose.ui.modifiers.fontStyle
+import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
@@ -30,6 +31,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.kobweb.LiveReloadin
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.em
@@ -57,13 +59,12 @@ fun WhyPage() {
     fun Reason(title: @Composable () -> Unit, content: @Composable ColumnScope.() -> Unit) {
         SlideSection {
             Column(
-                Modifier.fillMaxSize(),
+                Modifier.fillMaxSize().gap(Gaps.Normal),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
-                H3(Modifier.color(SiteColors.OffWhite).margin(bottom = 1.cssRem).toAttrs()) { title() }
+                H3(Modifier.color(SiteColors.OffWhite).toAttrs()) { title() }
                 content()
-                Spacer()
             }
         }
     }
@@ -91,7 +92,6 @@ fun WhyPage() {
     }
 
     Reason("SEO") {
-        Spacer()
         Image("/assets/images/fluense-seo.png", scale = 2f)
     }
 

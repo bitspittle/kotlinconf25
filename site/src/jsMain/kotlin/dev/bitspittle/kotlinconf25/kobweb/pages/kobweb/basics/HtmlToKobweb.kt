@@ -40,6 +40,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
 import dev.bitspittle.kotlinconf25.kobweb.pages.html.AppStyleSheet
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
@@ -93,7 +94,7 @@ fun HtmlToKobwebPage() {
 
     // Super basic HTML
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
             CodeBlock(
                 // language=html
                 """
@@ -132,8 +133,8 @@ fun HtmlToKobwebPage() {
 
     // A little bit of CSS
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
                 CodeBlock(
                     // language=css
                     """
@@ -173,8 +174,8 @@ fun HtmlToKobwebPage() {
 
     // Accessing the raw element
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(2.cssRem)) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
                 CodeBlock(
                     // language=html
                     """
@@ -217,13 +218,13 @@ fun HtmlToKobwebPage() {
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             H3(Modifier.color(SiteColors.OffWhite).toAttrs()) {
                 FaCodeFork(Modifier.margin(right = 0.3.em))
                 Text("Modifiers are a fork!")
             }
 
-            SimpleGrid(numColumns(3), Modifier.gap(1.cssRem)) {
+            SimpleGrid(numColumns(3), Modifier.gap(Gaps.Normal)) {
                 Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
                     CodeBlock(
                         """

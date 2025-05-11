@@ -88,6 +88,7 @@ fun initSilk(ctx: InitSilkContext) {
             val disabledMarginBlock = Modifier.marginBlock(0.px)
             registerStyleBase("p") { disabledMarginBlock }
             registerStyleBase("ul") { disabledMarginBlock }
+            registerStyleBase("pre") { disabledMarginBlock }
             registerStyleBase("*:focus") {
                 Modifier
                     .outline(0.px)

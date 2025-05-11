@@ -45,6 +45,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
 import dev.bitspittle.kotlinconf25.kobweb.pages.html.AppStyleSheet
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
@@ -94,7 +95,7 @@ fun CssStylePage() {
     // CssStyle reminder
     SlideSection {
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime, auto = true)) {
-            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
                     val CyanRectStyle = CssStyle {
@@ -111,7 +112,7 @@ fun CssStylePage() {
             }
         }
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime)) {
-            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
                     val CyanRectStyle = CssStyle.base {
@@ -130,7 +131,7 @@ fun CssStylePage() {
     // Adding conditional styles / extended by
     SlideSection {
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime, auto = true)) {
-            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
                     val HoverRectStyle = CssStyle {
@@ -149,7 +150,7 @@ fun CssStylePage() {
             }
         }
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime)) {
-            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
                     val HoverRectStyle = CssStyle {
@@ -168,7 +169,7 @@ fun CssStylePage() {
             }
         }
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime)) {
-            Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
                     val CyanRectStyle = CssStyle.base { 
@@ -190,7 +191,7 @@ fun CssStylePage() {
 
     // css2kobweb
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(0.5.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Minor), horizontalAlignment = Alignment.CenterHorizontally) {
             Link("https://opletter.github.io/css2kobweb")
             Video("/assets/videos/css2kobweb.mp4", scale = 1.5f)
         }

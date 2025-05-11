@@ -12,6 +12,7 @@ import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobwebx.markdown.markdown
+import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import org.jetbrains.compose.web.css.cssRem
 
 @InitRoute
@@ -22,7 +23,7 @@ fun initMarkdownSlideLayout(ctx: InitRouteContext) {
 @Layout(".components.layouts.TitledSlideLayout")
 @Composable
 fun MarkdownSlideLayout(content: @Composable () -> Unit) {
-    Column(Modifier.fillMaxSize().gap(1.cssRem).padding(top = 1.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxSize().gap(Gaps.Normal).padding(top = Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
         content()
     }
 }
