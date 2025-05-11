@@ -33,6 +33,7 @@ kobweb {
                 "kobweb/basics/html-to-kobweb",
                 "kobweb/basics/css-style",
                 "kobweb/basics/routing",
+                "kobweb/basics/page-exercise",
             ).joinToString()
         )
 
