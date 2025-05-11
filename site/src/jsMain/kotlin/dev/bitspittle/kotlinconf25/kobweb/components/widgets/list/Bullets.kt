@@ -8,13 +8,13 @@ import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.toAttrs
 import com.varabyte.kobweb.silk.style.toModifier
-import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.dom.Li
 import org.jetbrains.compose.web.dom.Text
 import org.jetbrains.compose.web.dom.Ul
 
 val BulletsLiStyle = CssStyle.base {
-    Modifier.padding(topBottom = 0.1.cssRem)
+    Modifier.padding(topBottom = 0.1.em)
 }
 
 val BulletsUlStyle = CssStyle.base { Modifier }
