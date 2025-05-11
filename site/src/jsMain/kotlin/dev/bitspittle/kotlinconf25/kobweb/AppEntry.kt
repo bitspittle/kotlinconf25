@@ -82,9 +82,10 @@ fun initSilk(ctx: InitSilkContext) {
         }
 
         layer(SilkLayer.RESET) {
-            registerStyleBase("ul") {
-                Modifier.marginBlock(0.px)
-            }
+            // Agent styles put margin block on a bunch of elements but they don't apply to this presentation.
+            val disabledMarginBlock = Modifier.marginBlock(0.px)
+            registerStyleBase("p") { disabledMarginBlock }
+            registerStyleBase("ul") { disabledMarginBlock }
         }
     }
 }

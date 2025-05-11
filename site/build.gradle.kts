@@ -34,6 +34,11 @@ kobweb {
                 "kobweb/basics/css-style",
                 "kobweb/basics/routing",
                 "kobweb/basics/page-exercise",
+                "kobweb/markdown/header",
+                "kobweb/markdown/setup",
+                "kobweb/markdown/frontmatter",
+                "kobweb/markdown/code",
+                "kobweb/markdown/markdown-slide",
             ).joinToString()
         )
 

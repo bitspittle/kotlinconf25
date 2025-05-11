@@ -257,7 +257,10 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     if (stepElement.activeSubstepIndex < stepElement.substepCount - 1) {
                         stepElement.activeSubstepIndex++
                         stepActivated = true
-                        break
+                        // If we're on the last subset, don't break, as the next step might be an "auto" one
+                        if (stepElement.activeSubstepIndex < stepElement.substepCount - 1) {
+                            break
+                        }
                     }
                 }
             }
