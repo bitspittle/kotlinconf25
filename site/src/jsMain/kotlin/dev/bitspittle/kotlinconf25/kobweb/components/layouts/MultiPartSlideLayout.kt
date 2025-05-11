@@ -178,6 +178,8 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         Prism.highlightAllUnder(containerElement)
     }
 
+    val slideUtils = SlideUtils.Instance
+
     fun tryNavigateToSection(delta: Int): Boolean {
         if (delta == 0) return false
 
@@ -197,31 +199,26 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         return true
     }
 
-    LaunchedEffect(ctx.route.path) {
-        ctx.data.getValue<SlideEvents>().onStepRequested += { args ->
-            tryNavigateToSection(if (args.forward) +1 else -1)
-        }
-    }
-
-    val slideUtils = SlideUtils.Instance
-    DisposableEffect(Unit) {
-        val manager = EventListenerManager(window)
-
+    DisposableEffect(containerElement) {
+        val containerElement = containerElement ?: return@DisposableEffect onDispose {}
+        val manager = EventListenerManager(containerElement)
         manager.addEventListener("keydown") { event ->
             var handled = true
             when ((event as KeyboardEvent).key) {
                 "ArrowUp" -> {
                     slideUtils.cancelRunningSteps()
-                    if (!containerElement!!.deactivateAllSteps() || event.shiftKey) {
+                    if (!containerElement.deactivateAllSteps() || event.shiftKey) {
                         tryNavigateToSection(-1)
                     }
                 }
+
                 "ArrowDown" -> {
                     slideUtils.cancelRunningSteps()
-                    if (!containerElement!!.activateAllSteps() || event.shiftKey) {
+                    if (!containerElement.activateAllSteps() || event.shiftKey) {
                         tryNavigateToSection(+1)
                     }
                 }
+
                 "Home" -> {
                     if (!event.shiftKey) {
                         slideUtils.cancelRunningSteps()
@@ -230,6 +227,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                         handled = false
                     }
                 }
+
                 "End" -> {
                     if (!event.shiftKey) {
                         slideUtils.cancelRunningSteps()
@@ -242,6 +240,7 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                         handled = false
                     }
                 }
+
                 else -> handled = false
             }
             if (handled) {
@@ -250,6 +249,12 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             }
         }
         onDispose { manager.clearAllListeners() }
+    }
+
+    LaunchedEffect(ctx.route.path) {
+        ctx.data.getValue<SlideEvents>().onStepRequested += { args ->
+            tryNavigateToSection(if (args.forward) +1 else -1)
+        }
     }
 
     Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -342,7 +347,11 @@ fun MultiPartSlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 .slidingAnimation()
                         },
                     contentAlignment = Alignment.Center,
-                    ref = ref { containerElement = it },
+                    ref = ref {
+                        it.tabIndex = 0
+                        it.focus()
+                        containerElement = it
+                    },
                 ) {
                     if (getCurrentSection() >= 0) {
                         // Should never be null but might happen in development if you remove a section and then a reload

@@ -307,6 +307,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
 
     fun repopulateStepElements() {
         val containerElement = containerElement ?: return
+        containerElement.focus()
         fun onStepsChanged() {
             stepElements.firstOrNull()?.let { stepElement ->
                 stepElement.enqueueWithDelayIfAuto { tryStep(true) }
@@ -350,13 +351,13 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         repopulateStepElements()
     }
 
-    DisposableEffect(Unit) {
-        val manager = EventListenerManager(window)
+    DisposableEffect(containerElement) {
+        val containerElement = containerElement ?: return@DisposableEffect onDispose { }
 
+        val manager = EventListenerManager(containerElement)
         manager.addEventListener("resize") {
             scale = calculateScale()
         }
-
         manager.addEventListener("keydown") { event ->
             fun tryNavigateToSlide(delta: Int): Boolean {
                 if (delta == 0) return false
@@ -394,11 +395,11 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
             var handled = true
             when ((event as KeyboardEvent).key) {
                 "ArrowLeft" -> {
-                    containerElement!!.deactivateAllSteps()
+                    containerElement.deactivateAllSteps()
                     tryNavigateToSlide(-1)
                 }
                 "ArrowRight" -> {
-                    containerElement!!.activateAllSteps()
+                    containerElement.activateAllSteps()
                     tryNavigateToSlide(+1)
                 }
                 " " -> {
@@ -417,7 +418,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     }
 
                     if (handled) {
-                        window.invokeLater { Prism.highlightAllUnder(containerElement!!) }
+                        window.invokeLater { Prism.highlightAllUnder(containerElement) }
                     }
                 }
                 "Home" -> {
@@ -461,7 +462,11 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         )
     )
 
-    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center, ref = ref { containerElement = it }) {
+    Box(SlideBackgroundStyle.toModifier(), contentAlignment = Alignment.Center, ref = ref {
+        it.tabIndex = 0
+        it.focus()
+        containerElement = it
+    }) {
         ctx.data.get<HeaderBackground>()?.let { headerBackground ->
             Box(
                 Modifier.fillMaxSize()
@@ -500,6 +505,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
                                 slidingDirection = SlidingHorizDirection.HIDING
+                                containerElement!!.focus()
                                 window.invokeLater {
                                     (ctx.data.getValue<SlideEvents>().onEntered as EventImpl).invoke(DirectionArgs(forward = true))
                                     repopulateStepElements()
@@ -520,6 +526,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                                 ctx.router.tryRoutingTo(targetSlide!!)
                                 targetSlide = null
                                 slidingDirection = SlidingHorizDirection.HIDING
+                                containerElement!!.focus()
                                 window.invokeLater {
                                     (ctx.data.getValue<SlideEvents>().onEntered as EventImpl).invoke(DirectionArgs(forward = false))
                                     repopulateStepElements()
