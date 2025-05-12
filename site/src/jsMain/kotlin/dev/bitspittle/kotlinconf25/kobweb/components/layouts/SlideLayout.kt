@@ -145,13 +145,9 @@ interface SlideUtils {
     fun deactivateAllSteps()
     fun activateAllSteps()
 
-    companion object {
-        @get:Composable
-        val Instance get() = SlideUtilsLocal.current
-    }
 }
 
-private val SlideUtilsLocal = compositionLocalOf<SlideUtils> { error("SlideUtils can only be accessed within a SlideLayout") }
+open class SlideLayoutScope(val slideUtils: SlideUtils)
 
 @Suppress("unused")
 object EmptyEventArgs : EventArgs
@@ -180,7 +176,7 @@ fun initSlideLayout(ctx: InitRouteContext) {
 
 @Layout
 @Composable
-fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
+fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Unit) {
     fun getCurrentSlidePath() = ctx.route.path.substringAfter("/")
     fun getCurrentSlideIndex() = AppGlobals.slides.indexOf(getCurrentSlidePath())
     fun getNumSlides() = AppGlobals.slides.size
@@ -324,8 +320,8 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
         takeFirstStepIfAuto()
     }
 
-    val slideUtils = remember {
-        object : SlideUtils {
+    val slideLayoutScope = remember {
+        SlideLayoutScope(object : SlideUtils {
             override fun cancelRunningSteps() {
                 cancelHandle?.cancel()
                 cancelHandle = null
@@ -344,8 +340,9 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                 containerElement!!.activateAllSteps()
                 Prism.highlightAllUnder(containerElement!!)
             }
-        }
+        })
     }
+    val slideUtils = slideLayoutScope.slideUtils
 
     LaunchedEffect(containerElement) {
         repopulateStepElements()
@@ -574,9 +571,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     },
                 contentAlignment = Alignment.Center,
             ) {
-                CompositionLocalProvider(SlideUtilsLocal provides slideUtils) {
-                    content()
-                }
+                content(slideLayoutScope)
             }
         }
     }

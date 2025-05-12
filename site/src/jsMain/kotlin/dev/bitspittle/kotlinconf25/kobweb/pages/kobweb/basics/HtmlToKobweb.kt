@@ -35,7 +35,7 @@ import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.components.text.SpanText
 import com.varabyte.kobweb.silk.style.CssStyle
 import com.varabyte.kobweb.silk.style.toModifier
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
@@ -90,7 +90,7 @@ val CyanRectStyle = CssStyle {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun HtmlToKobwebPage() {
+fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 
     // Super basic HTML
     SlideSection {

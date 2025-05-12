@@ -32,7 +32,7 @@ import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.init.InitSilk
 import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
@@ -76,7 +76,7 @@ fun setupScalingStepEffect(ctx: InitSilkContext) {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun OrganizationPage() {
+fun MultiPartSlideLayoutScope.OrganizationPage() {
     @Composable
     fun TopStartH3(content: @Composable () -> Unit) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.TopStart) {

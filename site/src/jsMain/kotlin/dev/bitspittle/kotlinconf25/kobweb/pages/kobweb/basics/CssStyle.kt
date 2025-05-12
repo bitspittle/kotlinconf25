@@ -39,7 +39,7 @@ import com.varabyte.kobweb.silk.style.extendedBy
 import com.varabyte.kobweb.silk.style.selectors.hover
 import com.varabyte.kobweb.silk.style.toAttrs
 import com.varabyte.kobweb.silk.style.toModifier
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
@@ -84,7 +84,7 @@ val HoverRectStyle = CyanRectStyle.extendedBy {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun CssStylePage() {
+fun MultiPartSlideLayoutScope.CssStylePage() {
     @Composable
     fun HoverBox(modifier: Modifier = Modifier) {
         Box(HoverRectStyle.toModifier().then(modifier), contentAlignment = Alignment.Center) {

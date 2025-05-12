@@ -24,7 +24,7 @@ import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.components.text.SpanText
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
@@ -72,7 +72,7 @@ object AppStyleSheet : StyleSheet() {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun HtmlToKotlinPage() {
+fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
 
     // Super basic HTML
     SlideSection {

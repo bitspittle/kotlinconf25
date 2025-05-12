@@ -21,7 +21,7 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
@@ -41,7 +41,7 @@ fun initApiRoutesPage(ctx: InitRouteContext) {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun ApiRoutesPage() {
+fun MultiPartSlideLayoutScope.ApiRoutesPage() {
 
     // Basic API route
     SlideSection {

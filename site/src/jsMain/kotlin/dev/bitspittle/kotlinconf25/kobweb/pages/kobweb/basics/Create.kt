@@ -13,7 +13,7 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
@@ -31,7 +31,7 @@ fun initCreatePage(ctx: InitRouteContext) {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun CreatePage() {
+fun MultiPartSlideLayoutScope.CreatePage() {
 
     SlideSection {
         Video("/assets/cli/kobweb-create-app.mp4", Modifier.fillMaxSize())

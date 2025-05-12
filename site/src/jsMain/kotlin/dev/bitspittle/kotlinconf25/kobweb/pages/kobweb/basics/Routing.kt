@@ -3,7 +3,6 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -11,20 +10,16 @@ import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
 import com.varabyte.kobweb.compose.ui.modifiers.gap
-import com.varabyte.kobweb.compose.ui.modifiers.margin
 import com.varabyte.kobweb.compose.ui.modifiers.translateX
 import com.varabyte.kobweb.core.Page
-import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.core.data.add
-import com.varabyte.kobweb.core.data.getValue
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideUtils
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.browser.UrlBar
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
@@ -44,7 +39,7 @@ fun initRoutingPage(ctx: InitRouteContext) {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun RoutingPage(ctx: PageContext) {
+fun MultiPartSlideLayoutScope.RoutingPage() {
 
     @Composable
     fun UrlAndCode(

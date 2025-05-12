@@ -7,7 +7,7 @@ import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
-import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideSection
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
@@ -22,7 +22,7 @@ fun initCodeExamplePage(ctx: InitRouteContext) {
 @Page
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
-fun ShowcasePage() {
+fun MultiPartSlideLayoutScope.ShowcasePage() {
     SlideSection {
         Video("/assets/showcase/yt-reimagined.mp4", Modifier.step(StepTypes.OneAtATime, auto = true), loop = true, scale = 0.6f)
         Video("/assets/showcase/yt-reimagined2.mp4", Modifier.step(StepTypes.OneAtATime), loop = true, scale = 0.6f)
