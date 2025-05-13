@@ -4,6 +4,7 @@ package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.grid
 import com.varabyte.kobweb.compose.ui.modifiers.height
 import com.varabyte.kobweb.compose.ui.modifiers.id
 import com.varabyte.kobweb.compose.ui.modifiers.margin
+import com.varabyte.kobweb.compose.ui.modifiers.overflow
 import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
@@ -144,7 +146,8 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                         hover { Modifier.backgroundColor(Colors.Orange) }
                     }
                     """.trimIndent(),
-                    highlightLines = "0|8"
+                    highlightLines = "0|8",
+                    preModifier = Modifier.overflow { y(Overflow.Hidden) }
                 )
                 HoverBox(Modifier.step())
             }
@@ -163,7 +166,8 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                         hover { Modifier.backgroundColor(Colors.Orange) }
                     }
                     """.trimIndent(),
-                    highlightLines = "3-5,8"
+                    highlightLines = "3-5,8",
+                    preModifier = Modifier.overflow { y(Overflow.Hidden) }
                 )
                 HoverBox()
             }
@@ -182,7 +186,8 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                         hover { Modifier.backgroundColor(Colors.Orange) }
                     }
                     """.trimIndent(),
-                    highlightLines = "2-4,8|1,7"
+                    highlightLines = "2-4,8|1,7",
+                    preModifier = Modifier.overflow { y(Overflow.Hidden) }
                 )
                 HoverBox()
             }
