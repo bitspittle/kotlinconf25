@@ -1,7 +1,11 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.dom.svg.Svg
 import com.varabyte.kobweb.compose.ui.Modifier
+import com.varabyte.kobweb.compose.ui.graphics.Colors
+import com.varabyte.kobweb.compose.ui.modifiers.border
+import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -11,8 +15,12 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayou
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
+import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
+import org.jetbrains.compose.web.css.LineStyle
+import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.Iframe
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {
@@ -47,7 +55,11 @@ fun MultiPartSlideLayoutScope.ShowcasePage() {
         Video("/assets/showcase/fluense.mp4", scale = 1.1f)
     }
     SlideSection {
-        Image("/assets/showcase/presentation-title.png", scale = 0.7f)
+        Image(
+            "/assets/showcase/presentation-title.png",
+            Modifier.border(2.px, LineStyle.Solid, SiteColors.Accent).borderRadius(10.px),
+            scale = 0.7f
+        )
     }
 }
 
