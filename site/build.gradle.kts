@@ -43,6 +43,7 @@ kobweb {
                 "kobweb/fullstack/fullstack-vs-static",
                 "kobweb/fullstack/setup",
                 "kobweb/fullstack/api-routes",
+                "thanks",
             ).joinToString()
         )
 
