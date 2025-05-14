@@ -347,7 +347,7 @@ fun SlideLayoutScope.MultiPartSlideLayout(ctx: PageContext, content: @Composable
                             .slidingAnimation()
                     },
                 contentAlignment = Alignment.Center,
-                ref = ref {
+                ref = ref(ctx.route.path) {
                     it.tabIndex = 0
                     it.focus()
                     containerElement = it
