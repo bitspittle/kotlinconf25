@@ -390,7 +390,24 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
             }
 
             var handled = true
-            when ((event as KeyboardEvent).key) {
+            when (val key = (event as KeyboardEvent).key) {
+                "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" -> {
+                    // 1 -> 0%
+                    // 2 -> 11.1%
+                    // ...
+                    // 0 -> 100%
+                    val keyNum = key.toInt()
+                    val percent = if (keyNum == 0) 1f else (keyNum - 1) * .111f
+
+                    val targetSlide = ((getNumSlides() - 1) * percent).roundToInt()
+                    val delta = targetSlide - getCurrentSlideIndex()
+
+                    if (delta != 0) {
+                        slideUtils.cancelRunningSteps()
+                        tryNavigateToSlide(delta)
+                    }
+                }
+
                 "ArrowUp" -> {
                     if (stepElements.firstOrNull { it.classList.contains("active") && !it.classList.contains("auto") } != null) {
                         containerElement.deactivateAllSteps()
