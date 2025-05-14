@@ -47,7 +47,7 @@ fun ArchitecturePage() {
     H4 {
         SimpleGrid(numColumns(2)) {
             IconText({ FaTerminal() }, "CLI")
-            IconText({ FaScrewdriverWrench() }, "Gradle plugins | KSP")
+            IconText({ FaScrewdriverWrench() }, "Gradle / KSP")
             IconText({ FaServer() }, "Server")
             IconText({ FaCode() }, "Library")
         }
