@@ -45,6 +45,7 @@ kobweb {
                 "kobweb/fullstack/api-routes",
                 "conclusion/header",
                 "conclusion/recap",
+                "conclusion/docs",
                 "conclusion/community",
                 "thanks",
             ).joinToString()
