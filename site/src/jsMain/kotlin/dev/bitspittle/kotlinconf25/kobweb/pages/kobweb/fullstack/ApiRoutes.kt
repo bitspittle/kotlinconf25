@@ -4,23 +4,12 @@ package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.fullstack
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.css.FontWeight
-import com.varabyte.kobweb.compose.css.MinWidth
 import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxHeight
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
-import com.varabyte.kobweb.compose.ui.modifiers.fontWeight
-import com.varabyte.kobweb.compose.ui.modifiers.gap
-import com.varabyte.kobweb.compose.ui.modifiers.minWidth
-import com.varabyte.kobweb.compose.ui.modifiers.opacity
-import com.varabyte.kobweb.compose.ui.modifiers.size
-import com.varabyte.kobweb.compose.ui.modifiers.transition
-import com.varabyte.kobweb.compose.ui.modifiers.translateY
-import com.varabyte.kobweb.compose.ui.modifiers.width
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
@@ -39,11 +28,8 @@ import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
 import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.DefaultStepSpeed
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
-import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes.OneAtATime
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
-import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.H3
 
 @InitRoute

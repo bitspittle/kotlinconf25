@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.toAttrs
 import org.jetbrains.compose.web.dom.Img
-import org.jetbrains.compose.web.dom.Source
-import org.jetbrains.compose.web.dom.Video
 import kotlin.math.roundToInt
 
 @Composable

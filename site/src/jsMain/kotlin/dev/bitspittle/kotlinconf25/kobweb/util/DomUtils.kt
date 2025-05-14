@@ -1,6 +1,5 @@
 package dev.bitspittle.kotlinconf25.kobweb.util
 
-import kotlinx.browser.window
 import org.w3c.dom.*
 
 fun HTMLCollection.walkWhile(onEach: (Element) -> Boolean) {

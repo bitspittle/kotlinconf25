@@ -3,7 +3,6 @@ package dev.bitspittle.kotlinconf25.kobweb
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.compose.css.FontWeight
-import com.varabyte.kobweb.compose.css.Outline
 import com.varabyte.kobweb.compose.css.OverflowWrap
 import com.varabyte.kobweb.compose.css.UserSelect
 import com.varabyte.kobweb.compose.ui.Modifier
@@ -25,7 +24,6 @@ import com.varabyte.kobweb.silk.theme.colors.ColorMode
 import com.varabyte.kobweb.silk.theme.colors.loadFromLocalStorage
 import com.varabyte.kobweb.silk.theme.colors.saveToLocalStorage
 import dev.bitspittle.kotlinconf25.kobweb.style.vars.DividerColorVar
-import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.css.vh

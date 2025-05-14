@@ -3,19 +3,12 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.html
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import com.varabyte.kobweb.compose.foundation.layout.Column
-import com.varabyte.kobweb.compose.foundation.layout.Row
-import com.varabyte.kobweb.compose.foundation.layout.Spacer
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
 import com.varabyte.kobweb.compose.ui.modifiers.gap
-import com.varabyte.kobweb.compose.ui.modifiers.grid
-import com.varabyte.kobweb.compose.ui.modifiers.width
-import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add
 import com.varabyte.kobweb.core.init.InitRoute
@@ -29,20 +22,9 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
-import kotlinx.browser.document
-import org.jetbrains.compose.web.css.Color
-import org.jetbrains.compose.web.css.Style
-import org.jetbrains.compose.web.css.StyleSheet
-import org.jetbrains.compose.web.css.backgroundColor
-import org.jetbrains.compose.web.css.borderRadius
-import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.css.fr
-import org.jetbrains.compose.web.css.height
-import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.css.width
+import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
-import org.w3c.dom.HTMLElement
 
 @InitRoute
 fun initHtmlToKotlinPage(ctx: InitRouteContext) {

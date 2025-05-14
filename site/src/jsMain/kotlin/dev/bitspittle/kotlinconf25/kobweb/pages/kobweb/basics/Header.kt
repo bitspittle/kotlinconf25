@@ -2,7 +2,6 @@ package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.color
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.data.add

@@ -12,15 +12,8 @@ import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
-import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
-import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
-import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.dom.H4
-import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initCommunityPage(ctx: InitRouteContext) {

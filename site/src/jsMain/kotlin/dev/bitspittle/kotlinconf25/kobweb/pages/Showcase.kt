@@ -1,9 +1,7 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
-import com.varabyte.kobweb.compose.dom.svg.Svg
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.graphics.Colors
 import com.varabyte.kobweb.compose.ui.modifiers.border
 import com.varabyte.kobweb.compose.ui.modifiers.borderRadius
 import com.varabyte.kobweb.core.Page
@@ -20,7 +18,6 @@ import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.css.LineStyle
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.dom.Iframe
 
 @InitRoute
 fun initCodeExamplePage(ctx: InitRouteContext) {

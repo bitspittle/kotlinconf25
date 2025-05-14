@@ -1,25 +1,18 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages
 
 import androidx.compose.runtime.Composable
-import com.varabyte.kobweb.compose.css.height
-import com.varabyte.kobweb.compose.css.width
 import com.varabyte.kobweb.compose.foundation.layout.Box
-import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
-import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
+import com.varabyte.kobweb.compose.ui.modifiers.width
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.layout.Layout
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.kotlinconf.KotlinConfLogo
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
-import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
-import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
-import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
-import org.jetbrains.compose.web.css.cssRem
-import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.percent
-import org.jetbrains.compose.web.dom.*
+import org.jetbrains.compose.web.dom.H2
+import org.jetbrains.compose.web.dom.H6
+import org.jetbrains.compose.web.dom.Text
 
 @Page
 @Composable

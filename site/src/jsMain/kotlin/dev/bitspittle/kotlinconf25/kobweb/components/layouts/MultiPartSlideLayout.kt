@@ -4,7 +4,6 @@ import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.events.EventListenerManager
 import com.varabyte.kobweb.browser.util.invokeLater
 import com.varabyte.kobweb.compose.css.*
-import com.varabyte.kobweb.compose.css.Transition
 import com.varabyte.kobweb.compose.css.TransitionTimingFunction
 import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.dom.svg.Path
