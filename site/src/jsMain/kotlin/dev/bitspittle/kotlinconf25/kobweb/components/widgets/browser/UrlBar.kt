@@ -19,6 +19,7 @@ import com.varabyte.kobweb.silk.style.toModifier
 import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import org.jetbrains.compose.web.css.cssRem
+import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Span as JbSpan
 
@@ -27,7 +28,8 @@ val UrlBarContainerStyle = CssStyle.base {
         .borderRadius(5.px)
         .backgroundColor(SiteColors.KobwebBlue)
         .gap(Gaps.Normal)
-        .padding(leftRight = Gaps.Normal, topBottom = Gaps.Minor)
+        .padding(leftRight = 0.4.em, topBottom = 0.4.em)
+        .fontSize(0.8.cssRem)
 }
 
 val UrlAreaStyle = CssStyle.base {
@@ -35,7 +37,6 @@ val UrlAreaStyle = CssStyle.base {
         .borderRadius(10.px)
         .backgroundColor(Colors.DarkSlateGrey)
         .fontFamily("monospace")
-        .fontSize(0.9.cssRem)
         .padding(leftRight = Gaps.Minor, topBottom = Gaps.Miniscule)
         .flexGrow(1)
 }
@@ -43,7 +44,7 @@ val UrlAreaStyle = CssStyle.base {
 val UrlIconStyle = CssStyle.base {
     Modifier
         .color(Colors.White.copyf(alpha = 0.8f))
-        .fontSize(1.1.cssRem)
+        .fontSize(1.1.em)
 }
 
 val DisabledUrlIconStyle = UrlIconStyle.extendedByBase {
