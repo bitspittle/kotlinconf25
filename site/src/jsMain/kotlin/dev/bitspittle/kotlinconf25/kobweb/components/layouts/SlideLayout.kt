@@ -406,7 +406,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
                 }
 
                 "ArrowUp" -> {
-                    if (stepElements.firstOrNull { it.classList.contains("active") && !it.classList.contains("auto") } != null) {
+                    if (stepElements.isNotEmpty() && stepElements.firstOrNull { it.classList.contains("active") && !it.classList.contains("auto") } != null) {
                         containerElement.deactivateAllSteps()
                         takeFirstStepIfAuto()
                     } else {
@@ -414,7 +414,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
                     }
                 }
                 "ArrowDown" -> {
-                    if (stepElements.lastOrNull()?.classList?.contains("active") == false) {
+                    if (stepElements.isNotEmpty() && !stepElements.last().classList.contains("active")) {
                         containerElement.activateAllSteps()
                     } else {
                         handled = false
