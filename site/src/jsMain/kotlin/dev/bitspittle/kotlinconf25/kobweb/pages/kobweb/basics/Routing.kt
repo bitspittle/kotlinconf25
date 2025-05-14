@@ -221,7 +221,7 @@ fun MultiPartSlideLayoutScope.RoutingPage() {
     SlideSection {
         Column(Modifier.fillMaxSize(85.percent).gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
             UrlBar("https://mysite.com/users/[{user}]/post/[{post}]")
-            SimpleGrid(numColumns(1), Modifier.step(StepTypes.OneAtATime)) {
+            SimpleGrid(numColumns(1), Modifier.step(StepTypes.OneAtATime).gap(Gaps.Minor)) {
                 CodeBlock(
                     """
                         @file:PackageMapping("{user}")
@@ -237,7 +237,7 @@ fun MultiPartSlideLayoutScope.RoutingPage() {
                     highlightLines = "2"
                 )
             }
-            SimpleGrid(numColumns(1), Modifier.step(StepTypes.OneAtATime)) {
+            SimpleGrid(numColumns(1), Modifier.step(StepTypes.OneAtATime).gap(Gaps.Minor)) {
                 CodeBlock(
                     """
                         @file:PackageMapping("{}")
