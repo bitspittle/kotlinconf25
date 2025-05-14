@@ -20,6 +20,7 @@ import com.varabyte.kobweb.silk.components.text.SpanText
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.shape.StippledRect
 import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import org.jetbrains.compose.web.css.*
@@ -83,15 +84,18 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             //        border-radius:10px;
             //    "
             // >
-            Div(attrs = {
-                id("example")
-                style {
-                    width(400.px)
-                    height(200.px)
-                    backgroundColor(Color.cyan)
-                    borderRadius(10.px)
-                }
-            })
+
+
+            StippledRect(400.px, 200.px)
+//            Div(attrs = {
+//                id("example")
+//                style {
+//                    width(400.px)
+//                    height(200.px)
+//                    backgroundColor(Color.cyan)
+//                    borderRadius(10.px)
+//                }
+//            })
         }
     }
 
@@ -138,11 +142,12 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             //   class="cyan-rect"
             // >
 
-            Style(AppStyleSheet)
-            Div(attrs = {
-                id("example")
-                classes(AppStyleSheet.cyanRect)
-            })
+            StippledRect(400.px, 200.px)
+//            Style(AppStyleSheet)
+//            Div(attrs = {
+//                id("example")
+//                classes(AppStyleSheet.cyanRect)
+//            })
         }
     }
 
@@ -159,7 +164,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                             class="cyan-rect"
                         >
                         """.trimIndent(),
-                    lang = "css",
+                    lang = "html",
                 )
                 CodeBlock(
                     // language=javascript
@@ -184,6 +189,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
 
             Style(AppStyleSheet)
 
+            StippledRect(400.px, 200.px)
             // Approach #1
 //             Div(attrs = {
 //                id("example")
@@ -195,14 +201,14 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
 //            }
 
             // Approach #2
-            Div(attrs = {
-                id("example")
-                classes(AppStyleSheet.cyanRect)
-                ref { element ->
-                    element.style.opacity = "0.5"
-                    onDispose { }
-                }
-            })
+//            Div(attrs = {
+//                id("example")
+//                classes(AppStyleSheet.cyanRect)
+//                ref { element ->
+//                    element.style.opacity = "0.5"
+//                    onDispose { }
+//                }
+//            })
         }
     }
 }

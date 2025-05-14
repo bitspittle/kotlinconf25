@@ -53,6 +53,9 @@ fun Modifier.step(stepType: String = StepTypes.Default, delay: Duration, order: 
     attr("data-step-delay", "${delay.inWholeMilliseconds}")
         .step(stepType, auto = true, order = order)
 
+// Useful for elements that already have step information set up (i.e. code blocks with highlight lines)
+fun Modifier.stepOrder(order: Int) = attr("data-step-order", order.toString())
+
 val DefaultStepSpeed = AnimSpeeds.Fast.toCssUnit()
 
 @InitSilk
