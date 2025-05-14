@@ -27,35 +27,108 @@ fun initFrontMatterPage(ctx: InitRouteContext) {
 @Composable
 @Layout(".components.layouts.TitledSlideLayout")
 fun FrontMatterPage() {
-    Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
-        CodeBlock(
-            //language=yaml
-            """
-            ---
-            layout: .components.layouts.ArticleLayout
-            author: BitSpittle
-            tags:
-              - Web Dev
-              - Kotlin
-            ---
-            """.trimIndent(),
-            lang = "yaml",
-            highlightLines = "0|2|3-6|0"
-        )
+    Box(Modifier.fillMaxSize()) {
+        Column(
+            Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime, auto = true),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CodeBlock(
+                //language=yaml
+                """
+                ---
+                layout: .components.layouts.ArticleLayout
+                author: BitSpittle
+                tags:
+                  - Web Dev
+                  - Kotlin
+                ---
+                """.trimIndent(),
+                lang = "yaml",
+                highlightLines = "0|2|3-6"
+            )
 
-        Box(Modifier.step(StepTypes.FadeUp, auto = true)) {
+            Box(Modifier.step(StepTypes.FadeUp)) {
+                CodeBlock(
+                    """
+                    @Layout
+                    @Composable
+                    fun ArticleLayout(ctx: PageContext, content: @Composable () -> Unit) {
+                        val fm = ctx.markdown!!.frontMatter
+                        val author = fm.getValue("author").single()
+                        val tags = markdown.frontMatter.getValue("tags")
+                    }
+                    """.trimIndent(),
+                    lang = "yaml",
+                    highlightLines = "0|4"
+                )
+            }
+        }
+
+        Column(
+            Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CodeBlock(
+                //language=yaml
+                """
+                ---
+                layout: .components.layouts.ArticleLayout
+                author: BitSpittle
+                tags:
+                  - Web Dev
+                  - Kotlin
+                ---
+                """.trimIndent(),
+                lang = "yaml",
+                highlightLines = "3"
+            )
+
             CodeBlock(
                 """
                 @Layout
                 @Composable
                 fun ArticleLayout(ctx: PageContext, content: @Composable () -> Unit) {
                     val fm = ctx.markdown!!.frontMatter
-                    val title = fm.getValue("author").single()
+                    val author = fm.getValue("author").single()
                     val tags = markdown.frontMatter.getValue("tags")
                 }
                 """.trimIndent(),
                 lang = "yaml",
-                highlightLines = "0|4|5|6"
+                highlightLines = "5"
+            )
+        }
+
+        Column(
+            Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            CodeBlock(
+                //language=yaml
+                """
+                ---
+                layout: .components.layouts.ArticleLayout
+                author: BitSpittle
+                tags:
+                  - Web Dev
+                  - Kotlin
+                ---
+                """.trimIndent(),
+                lang = "yaml",
+                highlightLines = "4-6"
+            )
+
+            CodeBlock(
+                """
+                @Layout
+                @Composable
+                fun ArticleLayout(ctx: PageContext, content: @Composable () -> Unit) {
+                    val fm = ctx.markdown!!.frontMatter
+                    val author = fm.getValue("author").single()
+                    val tags = markdown.frontMatter.getValue("tags")
+                }
+                """.trimIndent(),
+                lang = "yaml",
+                highlightLines = "6"
             )
         }
     }

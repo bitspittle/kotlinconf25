@@ -90,6 +90,7 @@ fun MultiPartSlideLayoutScope.SetupPage() {
                 created by JetBrains.
                 """.trimIndent(),
                 lang = "markdown",
+                highlightLines = "0|0|1-5",
                 preModifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(70.percent).step(StepTypes.FadeUp, auto = true)
             )
         }
@@ -105,9 +106,12 @@ fun MultiPartSlideLayoutScope.SetupPage() {
                 @Composable
                 fun KobwebPage() {
                     H1 { Text("Kobweb") }
-                    /*...*/
+                    
+                    Link("https://github.com/varabyte/kobweb", Kobweb)
+                    Text(" is built on top of Compose HTML...")
                 }
                 """.trimIndent(),
+                highlightLines = "0|1,5-8",
                 preModifier = Modifier.align(Alignment.CenterHorizontally).fillMaxWidth(70.percent).step(StepTypes.FadeUp, auto = true)
             )
         }
