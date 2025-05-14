@@ -39,6 +39,7 @@ import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.activateAllSteps
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.deactivateAllSteps
+import dev.bitspittle.kotlinconf25.kobweb.util.slides.getOrderedSteps
 import dev.bitspittle.kotlinconf25.kobweb.util.toCssUnit
 import kotlinx.browser.window
 import org.jetbrains.compose.web.css.*
@@ -311,12 +312,8 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
         val containerElement = containerElement ?: return
 
         stepElements.clear()
-        stepElements.addAll(
-            containerElement.getElementsByClassName("step")
-                .asList()
-                .filterIsInstance<HTMLElement>()
-                .sortedBy { it.getAttribute("data-step-order")?.toIntOrNull() ?: 0 }
-        )
+        stepElements.addAll(containerElement.getOrderedSteps())
+
         takeFirstStepIfAuto()
     }
 

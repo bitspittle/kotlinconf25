@@ -147,9 +147,25 @@ fun initStepStyles(ctx: InitSilkContext) {
     }
 }
 
+fun HTMLElement.getOrderedSteps(): List<HTMLElement> {
+    fun HTMLElement.getInheritedStepOrder(): Int? {
+        var current: HTMLElement? = this
+        while (current != null) {
+            current.getAttribute("data-step-order")?.toIntOrNull()?.let { return it }
+            current = current.parentElement as? HTMLElement
+        }
+        return null
+    }
+
+    return getElementsByClassName("step")
+        .asList()
+        .filterIsInstance<HTMLElement>()
+        .sortedBy { it.getInheritedStepOrder() ?: 0 }
+}
+
 fun HTMLElement.activateAllSteps(): Boolean {
     var anyActivated = false
-    val stepElements = getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
+    val stepElements = getOrderedSteps()
     stepElements.forEach { step ->
         if (!step.classList.contains("active")) {
             step.classList.add("active")
@@ -167,7 +183,7 @@ fun HTMLElement.activateAllSteps(): Boolean {
 
 fun HTMLElement.deactivateAllSteps(): Boolean {
     var anyDeactivated = false
-    val stepElements = getElementsByClassName("step").asList().filterIsInstance<HTMLElement>()
+    val stepElements = getOrderedSteps()
     stepElements.forEach { step ->
         if (step.classList.contains("active")) {
             step.classList.remove("active")
