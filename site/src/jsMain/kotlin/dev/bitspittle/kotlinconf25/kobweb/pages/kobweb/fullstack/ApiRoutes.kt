@@ -188,7 +188,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                     if (ctx.req.method != HttpMethod.POST) return
     
                     val message = ctx.req.readBody()
-                    ctx.data.getValue<MessageStore>().add(message)
+                    ctx.data.getValue<Messages>().add(message)
     
                     ctx.res.setBodyText("OK")
                     // Side effect: sets res code to 200
