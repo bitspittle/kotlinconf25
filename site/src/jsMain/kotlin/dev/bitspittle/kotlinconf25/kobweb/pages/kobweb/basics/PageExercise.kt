@@ -7,7 +7,9 @@ import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.navigation.Link
+import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import org.jetbrains.compose.web.dom.H3
 
 @InitRoute
@@ -17,10 +19,15 @@ fun initDemoPage(ctx: InitRouteContext) {
 
 @Page
 @Composable
-@Layout(".components.layouts.TitledSlideLayout")
-fun DemoPage() {
-    H3 {
-        Link("/demo/guestbook")
+@Layout(".components.layouts.MultiPartSlideLayout")
+fun MultiPartSlideLayoutScope.DemoPage() {
+    SlideSection {
+        Image("/assets/images/guestbook.png", scale = 1.5f)
+    }
+    SlideSection {
+        H3 {
+            Link("/demo/guestbook")
+        }
     }
 }
 
