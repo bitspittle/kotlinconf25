@@ -47,6 +47,7 @@ kobweb {
                 "conclusion/recap",
                 "conclusion/docs",
                 "conclusion/community",
+                "conclusion/kilua",
                 "thanks",
             ).joinToString()
         )
