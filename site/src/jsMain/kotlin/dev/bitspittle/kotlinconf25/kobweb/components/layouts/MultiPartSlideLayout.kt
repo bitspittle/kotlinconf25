@@ -129,7 +129,7 @@ fun SlideLayoutScope.MultiPartSlideLayout(ctx: PageContext, content: @Composable
     val slideSections = multiPartSlideLayoutScope.sections
 
     fun getCurrentSection() = currentSections[ctx.route.path] ?: -1
-    fun setCurrentSection(section: Int) { currentSections[ctx.route.path] = section }
+    fun setCurrentSection(section: Int) { currentSections[ctx.route.path] = section.coerceAtMost(slideSections.lastIndex) }
 
     DisposableEffect(ctx.route.path) {
         if (!currentSections.containsKey(ctx.route.path)) {
