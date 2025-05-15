@@ -28,4 +28,4 @@ gradle.settingsEvaluated {
 rootProject.name = "kotlinconf25"
 
 include(":site")
-include(":worker")
+
