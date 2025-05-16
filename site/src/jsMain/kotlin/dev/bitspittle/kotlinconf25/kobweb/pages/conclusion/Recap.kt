@@ -32,8 +32,8 @@ fun RecapPage() {
                 Item("Compose HTML", Modifier.step(auto = true))
                 Item("Why Kobweb", Modifier.step(auto = true))
                 Item("Kobweb CLI", Modifier.step(auto = true))
-                Item("Project Organization", Modifier.step(auto = true))
                 Item("Layouts & Pages", Modifier.step(auto = true))
+                Item("Assets", Modifier.step(auto = true))
             }
         }
         H4 {

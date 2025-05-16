@@ -46,6 +46,7 @@ kobweb {
                 "kobweb/fullstack/api-routes",
                 "conclusion/header",
                 "conclusion/recap",
+                "conclusion/additional",
                 "conclusion/docs",
                 "conclusion/community",
                 "conclusion/kilua",
