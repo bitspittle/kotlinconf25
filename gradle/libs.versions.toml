@@ -1,8 +1,9 @@
 [versions]
-jetbrains-compose = "1.7.3"
+jetbrains-compose = "1.8.0"
 jetbrains-annotations = "26.0.2"
-kobweb = "0.21.2-SNAPSHOT"
-kotlin = "2.1.20"
+kobweb = "0.22.0-SNAPSHOT"
+kotlin = "2.1.21"
+kotlinx-serialization = "1.8.1"
 
 [libraries]
 compose-html-core = { module = "org.jetbrains.compose.html:html-core", version.ref = "jetbrains-compose" }
@@ -14,6 +15,7 @@ kobweb-silk = { module = "com.varabyte.kobweb:kobweb-silk", version.ref = "kobwe
 kobweb-worker = { module = "com.varabyte.kobweb:kobweb-worker", version.ref = "kobweb" }
 kobwebx-markdown = { module = "com.varabyte.kobwebx:kobwebx-markdown", version.ref = "kobweb" }
 kobwebx-serialization-kotlinx = { module = "com.varabyte.kobwebx:kobwebx-serialization-kotlinx", version.ref = "kobweb" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 silk-foundation = { module = "com.varabyte.kobweb:silk-foundation", version.ref = "kobweb" }
 silk-icons-fa = { module = "com.varabyte.kobwebx:silk-icons-fa", version.ref = "kobweb" }
 silk-icons-mdi = { module = "com.varabyte.kobwebx:silk-icons-mdi", version.ref = "kobweb" }
@@ -25,3 +27,4 @@ kobweb-library = { id = "com.varabyte.kobweb.library", version.ref = "kobweb" }
 kobweb-worker = { id = "com.varabyte.kobweb.worker", version.ref = "kobweb" }
 kobwebx-markdown = { id = "com.varabyte.kobwebx.markdown", version.ref = "kobweb" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

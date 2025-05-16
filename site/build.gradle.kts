@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.kobweb.application)
     alias(libs.plugins.kobwebx.markdown)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 group = "dev.bitspittle.kotlinconf25.kobweb"
@@ -82,6 +83,11 @@ kotlin {
     configAsKobwebApplication("kobweb", includeServer = true)
 
     sourceSets {
+        commonMain.dependencies {
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kobwebx.serialization.kotlinx)
+        }
+
         jsMain.dependencies {
             implementation(libs.jetbrains.annotations)
 
@@ -93,7 +99,7 @@ kotlin {
             implementation(libs.kobwebx.markdown)
         }
         jvmMain.dependencies {
-            compileOnly(libs.kobweb.api) // Provided by Kobweb backend at runtime
+            compileOnly(libs.kobweb.api)
         }
     }
 }

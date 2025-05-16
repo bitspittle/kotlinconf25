@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.varabyte.kobweb.browser.dom.ElementTarget
+import com.varabyte.kobweb.browser.api
+import com.varabyte.kobweb.browser.get
+import com.varabyte.kobweb.browser.post
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
@@ -19,22 +22,22 @@ import com.varabyte.kobweb.compose.ui.modifiers.gap
 import com.varabyte.kobweb.compose.ui.modifiers.left
 import com.varabyte.kobweb.compose.ui.modifiers.position
 import com.varabyte.kobweb.compose.ui.modifiers.top
-import com.varabyte.kobweb.compose.ui.thenIf
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.silk.components.forms.Button
 import com.varabyte.kobweb.silk.components.forms.Input
 import com.varabyte.kobweb.silk.components.icons.fa.FaArrowRightFromBracket
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
-import com.varabyte.kobweb.silk.components.navigation.Link
-import com.varabyte.kobweb.silk.components.overlay.Tooltip
 import com.varabyte.kobweb.silk.components.text.SpanText
+import dev.bitspittle.kotilnconf25.kobweb.model.GuestbookEntries
+import dev.bitspittle.kotilnconf25.kobweb.model.GuestbookEntry
+import kotlinx.browser.window
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.dom.Text
 
 @Composable
 private fun LabeledInput(label: String, value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -88,9 +91,43 @@ private fun LabeledInput(label: String, value: String, onValueChange: (String) -
 
 
 
+//@Page
+//@Composable
+//fun GuestbookPage() {
+//    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+//        Column(Modifier.gap(2.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+//            var firstName by remember { mutableStateOf("") }
+//            var lastName by remember { mutableStateOf("") }
+//            var subject by remember { mutableStateOf("") }
+//            var message by remember { mutableStateOf("") }
+//
+//            SpanText("Contact Me:", Modifier.align(Alignment.Start))
+//            SimpleGrid(numColumns(2), Modifier.gap(1.cssRem)) {
+//                LabeledInput("First Name", firstName, onValueChange = { firstName = it })
+//                LabeledInput("Last Name", lastName, onValueChange = { lastName = it })
+//            }
+//            LabeledInput("Subject", subject, onValueChange = { subject = it })
+//            LabeledInput("Message", message, onValueChange = { message = it })
+//
+//            Button(
+//                onClick = {
+//                    // TODO: Revisit this later in the talk
+//                },
+//                enabled = firstName.isNotBlank() && lastName.isNotBlank() && subject.isNotBlank() && message.isNotBlank(),
+//            ) {
+//                SpanText("Send message ")
+//                FaArrowRightFromBracket()
+//            }
+//        }
+//    }
+//}
+
+
 @Page
 @Composable
 fun GuestbookPage() {
+    val coroutineScope = rememberCoroutineScope()
+
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(Modifier.gap(2.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
             var firstName by remember { mutableStateOf("") }
@@ -106,23 +143,30 @@ fun GuestbookPage() {
             LabeledInput("Subject", subject, onValueChange = { subject = it })
             LabeledInput("Message", message, onValueChange = { message = it })
 
-            val allValuesFilledOut = firstName.isNotBlank() && lastName.isNotBlank() && subject.isNotBlank() && message.isNotBlank()
-
             Button(
                 onClick = {
-                    // TODO: Revisit this later in the talk
+                    coroutineScope.launch {
+                        window.api.post<GuestbookEntry>("/guestbook/entries", body = GuestbookEntry(firstName, lastName, subject, message))
+
+                        window.alert(
+                            buildString {
+                                appendLine("Testing the guestbook post...")
+                                appendLine()
+
+                                val entry = window.api.get<GuestbookEntries>("/guestbook/entries").items.last()
+                                appendLine("First name: ${entry.firstName}")
+                                appendLine("Last name: ${entry.lastName}")
+                                appendLine("Subject: ${entry.subject}")
+                                appendLine("Message: ${entry.message}")
+                            }
+                        )
+                    }
                 },
-                enabled = allValuesFilledOut,
+                enabled = firstName.isNotBlank() && lastName.isNotBlank() && subject.isNotBlank() && message.isNotBlank(),
             ) {
                 SpanText("Send message ")
                 FaArrowRightFromBracket()
             }
-
-            if (!allValuesFilledOut) {
-                Tooltip(ElementTarget.PreviousSibling, "All fields must be filled out before you can send your message.")
-            }
-
-            Link("http://localhost:8080/kobweb/basics/page-exercise#999", "(Back to the talk!)")
         }
     }
 }
