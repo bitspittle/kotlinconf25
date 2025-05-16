@@ -421,12 +421,20 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
                     }
                 }
                 "ArrowLeft" -> {
-                    containerElement.deactivateAllSteps()
-                    tryNavigateToSlide(-1)
+                    if (!event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey) {
+                        containerElement.deactivateAllSteps()
+                        tryNavigateToSlide(-1)
+                    } else {
+                        handled = false
+                    }
                 }
                 "ArrowRight" -> {
-                    containerElement.activateAllSteps()
-                    tryNavigateToSlide(+1)
+                    if (!event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey) {
+                        containerElement.activateAllSteps()
+                        tryNavigateToSlide(+1)
+                    } else {
+                        handled = false
+                    }
                 }
                 " " -> {
                     val args = DirectionArgs(forward = !event.shiftKey)
