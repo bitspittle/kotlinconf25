@@ -31,6 +31,7 @@ import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.H3
+import org.jetbrains.compose.web.dom.Text
 
 @InitRoute
 fun initApiRoutesPage(ctx: InitRouteContext) {
@@ -127,7 +128,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
             CodeBlock(
                 """
                 @Api
-                suspend fun postMessage(ctx: ApiContext) {
+                suspend fun messages(ctx: ApiContext) {
                     if (ctx.req.method != HttpMethod.POST) return
     
                     // Get message from request
@@ -146,7 +147,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
             CodeBlock(
                 """
                 @Api
-                suspend fun postMessage(ctx: ApiContext) {
+                suspend fun messages(ctx: ApiContext) {
                     if (ctx.req.method != HttpMethod.POST) return
     
                     val message = ctx.req.readBody()
@@ -165,7 +166,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
             CodeBlock(
                 """
                 @Api
-                suspend fun postMessage(ctx: ApiContext) {
+                suspend fun messages(ctx: ApiContext) {
                     if (ctx.req.method != HttpMethod.POST) return
     
                     val message = ctx.req.readBody()
@@ -184,7 +185,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
             CodeBlock(
                 """
                 @Api
-                suspend fun postMessage(ctx: ApiContext) {
+                suspend fun messages(ctx: ApiContext) {
                     if (ctx.req.method != HttpMethod.POST) return
     
                     val message = ctx.req.readBody()
@@ -195,7 +196,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                 }
                 """.trimIndent(),
                 preModifier = Modifier.fillMaxWidth(),
-                highlightLines = "8|0"
+                highlightLines = "8"
             )
         }
     }
@@ -208,7 +209,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                 CodeBlock(
                     """
                     @Api
-                    suspend fun postMessage(ctx: ApiContext) {
+                    suspend fun messages(ctx: ApiContext) {
                         ctx.data.getValue<Messages>()
                     }
                     """.trimIndent(),
