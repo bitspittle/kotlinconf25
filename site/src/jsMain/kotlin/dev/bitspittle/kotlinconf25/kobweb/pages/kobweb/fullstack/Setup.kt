@@ -49,6 +49,7 @@ fun SetupPage() {
         
         
         
+        
 
         """.trimIndent(),
         preModifier = Modifier.step(StepTypes.OneAtATime, auto = true).codeWidth()
@@ -74,6 +75,7 @@ fun SetupPage() {
                 }
             }
             
+            
 
             """.trimIndent(),
             highlightLines = "8,13-15",
@@ -96,13 +98,14 @@ fun SetupPage() {
                 sourceSets {
                     commonMain.dependencies {
                         implementation(libs.kotlinx.serialization.json)
+                        implementation(libs.kobwebx.serialization.kotlinx)
                     }
                     jsMain.dependencies { /*...*/ }
                     jvmMain.dependencies { /*...*/ }
                 }
             }
             """.trimIndent(),
-            highlightLines = "2,12-14",
+            highlightLines = "2,13|14",
             preModifier = Modifier.fillMaxWidth()
         )
     }
