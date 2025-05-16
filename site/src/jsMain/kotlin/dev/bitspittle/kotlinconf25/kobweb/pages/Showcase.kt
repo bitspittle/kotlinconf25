@@ -84,11 +84,13 @@ fun MultiPartSlideLayoutScope.ShowcasePage() {
         }
     }
     SlideSection {
-        Image(
-            "/assets/showcase/presentation-title.png",
-            Modifier.border(2.px, LineStyle.Solid, SiteColors.Accent).borderRadius(10.px),
-            scale = 0.7f
-        )
+        UrlAndContent("https://github.com/bitspittle/kotlinconf25") {
+            Image(
+                "/assets/showcase/presentation-title.png",
+                Modifier.border(2.px, LineStyle.Solid, SiteColors.Accent).borderRadius(10.px),
+                scale = 0.6f
+            )
+        }
     }
 }
 
