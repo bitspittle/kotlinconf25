@@ -36,6 +36,7 @@ fun initHtmlToKotlinPage(ctx: InitRouteContext) {
     })
 }
 
+// TODO-BOOKMARK
 // .cyan-rect {
 //   width: 400px;
 //   height: 200px;
@@ -85,8 +86,10 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             //    "
             // >
 
-
+            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
+
+            // DOTHIS MANUALLY
 //            Div(attrs = {
 //                id("example")
 //                style {
@@ -142,6 +145,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             //   class="cyan-rect"
             // >
 
+            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
 //            Style(AppStyleSheet)
 //            Div(attrs = {
@@ -189,6 +193,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
 
             Style(AppStyleSheet)
 
+            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
             // Approach #1
 //             Div(attrs = {

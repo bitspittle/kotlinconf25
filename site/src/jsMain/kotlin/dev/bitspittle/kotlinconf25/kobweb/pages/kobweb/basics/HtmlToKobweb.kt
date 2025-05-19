@@ -65,6 +65,7 @@ fun initHtmlToKobwebPage(ctx: InitRouteContext) {
     })
 }
 
+// TODO-BOOKMARK
 // .cyan-rect {
 //   width: 400px;
 //   height: 200px;
@@ -155,6 +156,7 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 //            })
 
 
+            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
             // First pass -> switch to modifiers
 //            Div(
@@ -217,6 +219,7 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
             //    classes(AppStyleSheet.cyanRect)
             // })
 
+            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
 //            Box(CyanRectStyle.toModifier().id("example"))
         }
@@ -258,6 +261,7 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 //                }
 //            })
 
+            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
 //            Box(
 //                CyanRectStyle.toModifier().id("example"),
@@ -402,14 +406,16 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                 )
             }
 
+            // TODO-BOOKMARK
             StippledRect(300.px, 300.px)
+//            val squareModifier = Modifier.size(100.px)
 //            Box(Modifier.size(250.px).backgroundColor(Colors.White), contentAlignment = Alignment.Center) {
 //                Column {
 //                    Row {
-//                        Box(Modifier.size(100.px).backgroundColor(Colors.Red))
-//                        Box(Modifier.size(100.px).backgroundColor(Colors.Green))
+//                        Box(squareModifier.backgroundColor(Colors.Red))
+//                        Box(squareModifier.backgroundColor(Colors.Green))
 //                    }
-//                    Box(Modifier.size(100.px).backgroundColor(Colors.Blue))
+//                    Box(squareModifier.backgroundColor(Colors.Blue))
 //                }
 //            }
         }
