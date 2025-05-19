@@ -38,6 +38,15 @@ import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.px
+import org.jetbrains.compose.web.dom.Text
+
+//@Page
+//@Composable
+//fun GuestbookPage() {
+//    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+//        Text("TODO: Guestbook form")
+//    }
+//}
 
 @Composable
 private fun LabeledInput(label: String, value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
@@ -55,15 +64,6 @@ private fun LabeledInput(label: String, value: String, onValueChange: (String) -
         )
     }
 }
-
-//@Page
-//@Composable
-//fun GuestbookPage() {
-//    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-//        Text("TODO: Guestbook form")
-//    }
-//}
-
 
 //@Page
 //@Composable
