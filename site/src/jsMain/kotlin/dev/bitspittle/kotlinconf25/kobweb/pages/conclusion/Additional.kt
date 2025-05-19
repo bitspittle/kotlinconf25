@@ -10,6 +10,7 @@ import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
+import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.dom.H4
 
@@ -22,48 +23,51 @@ fun initAdditionalPage(ctx: InitRouteContext) {
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
 fun MultiPartSlideLayoutScope.AdditionalPage() {
+    fun Modifier.superQuickStep() = this.step(delay = AnimSpeeds.VeryQuick)
+
     SlideSection {
         H4 {
             Bullets {
-                Item("Silk widgets", Modifier.step(auto = true))
-                Item("Color mode", Modifier.step(auto = true))
-                Item("Responsive design", Modifier.step(auto = true))
-                Item("Transitions and animations", Modifier.step(auto = true))
-                Item("Integrating a JS library", Modifier.step(auto = true))
-                Item("Local and session storage", Modifier.step(auto = true))
-                Item("API streams (websockets)", Modifier.step(auto = true))
-                Item("Background workers", Modifier.step(auto = true))
-                Item("Style variables", Modifier.step(auto = true))
+                Item("Silk widgets", Modifier.superQuickStep())
+                Item("Color mode", Modifier.superQuickStep())
+                Item("Responsive design", Modifier.superQuickStep())
+                Item("Transitions and animations", Modifier.superQuickStep())
+                Item("Integrating a JS library", Modifier.superQuickStep())
+                Item("Local and session storage", Modifier.superQuickStep())
+                Item("API streams (websockets)", Modifier.superQuickStep())
+                Item("Background workers", Modifier.superQuickStep())
+                Item("Style variables", Modifier.superQuickStep())
             }
         }
     }
     SlideSection {
         H4 {
             Bullets {
-                Item("Custom fonts", Modifier.step(auto = true))
-                Item("AppGlobals", Modifier.step(auto = true))
-                Item("InitSilk / InitKobweb", Modifier.step(auto = true))
-                Item("Markdown handlers", Modifier.step(auto = true))
-                Item("Markdown processing", Modifier.step(auto = true))
-                Item("Deferred elements", Modifier.step(auto = true))
-                Item("Deploying to a service", Modifier.step(auto = true))
-                Item("kobweb { ... } Gradle config", Modifier.step(auto = true))
-                Item("Self-hosting", Modifier.step(auto = true))
+                Item("Custom fonts", Modifier.superQuickStep())
+                Item("AppGlobals", Modifier.superQuickStep())
+                Item("InitSilk / InitKobweb", Modifier.superQuickStep())
+                Item("Custom Markdown handlers", Modifier.superQuickStep())
+                Item("Markdown processing", Modifier.superQuickStep())
+                Item("Deferred elements", Modifier.superQuickStep())
+                Item("Advanced layouts", Modifier.superQuickStep())
+                Item("Self-hosting", Modifier.superQuickStep())
+                Item("Deploying to a service", Modifier.superQuickStep())
             }
         }
     }
     SlideSection {
         H4 {
             Bullets {
-                Item("Multi-module builds", Modifier.step(auto = true))
-                Item("Customizing the site palette", Modifier.step(auto = true))
-                Item("SVG elements", Modifier.step(auto = true))
-                Item("Overriding Silk styles", Modifier.step(auto = true))
-                Item("Creating custom UI widgets", Modifier.step(auto = true))
-                Item("Using databases on the backend", Modifier.step(auto = true))
-                Item("Using your own ktor backend", Modifier.step(auto = true))
-                Item("CSS tips and tricks", Modifier.step(auto = true))
-                Item("Advanced browser devtools", Modifier.step(auto = true))
+                Item("Multi-module builds", Modifier.superQuickStep())
+                Item("Customizing the site palette", Modifier.superQuickStep())
+                Item("SVG elements", Modifier.superQuickStep())
+                Item("Overriding Silk styles", Modifier.superQuickStep())
+                Item("Creating custom UI widgets", Modifier.superQuickStep())
+                Item("Multiplatform business logic", Modifier.superQuickStep())
+                Item("Using databases on the backend", Modifier.superQuickStep())
+                Item("Using your own ktor backend", Modifier.superQuickStep())
+                Item("CSS tips and tricks", Modifier.superQuickStep())
+                Item("Advanced browser devtools", Modifier.superQuickStep())
             }
         }
     }
