@@ -42,6 +42,6 @@ fun KiluaPage() {
         H3(Modifier.color(SiteColors.OffWhite).toAttrs()) { Text("Kilua") }
         H4 { Link("https://github.com/rjaros/kilua") }
         Box(Modifier.height(3.cssRem))
-        SpanText("Composable web framework for Kotlin/Wasm and Kotlin/JS.")
+        SpanText("Composable web framework for Kotlin/Wasm and Kotlin/JS")
     }
 }
