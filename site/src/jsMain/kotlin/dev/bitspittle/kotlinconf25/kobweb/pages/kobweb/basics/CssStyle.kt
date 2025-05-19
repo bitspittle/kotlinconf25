@@ -28,6 +28,7 @@ import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
+import org.jetbrains.compose.web.css.percent
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
 
@@ -59,6 +60,7 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
 
     // CssStyle reminder
     SlideSection {
+        val codeWidth = 63.percent
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime, auto = true)) {
             Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
@@ -71,7 +73,8 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                         }
                     }
                     """.trimIndent(),
-                    highlightLines = "0|2"
+                    highlightLines = "0|1,2",
+                    preModifier = Modifier.width(codeWidth)
                 )
                 Div(CyanRectStyle.toAttrs())
             }
@@ -80,13 +83,17 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
             Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
+
                     val CyanRectStyle = CssStyle.base {
                         Modifier
                             .width(400.px).height(200.px)
                             .backgroundColor(Colors.Cyan).borderRadius(10.px)
                     }
+
+
                     """.trimIndent(),
-                    highlightLines = "1|0"
+                    highlightLines = "2",
+                    preModifier = Modifier.width(codeWidth)
                 )
                 Div(CyanRectStyle.toAttrs())
             }
