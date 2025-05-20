@@ -46,12 +46,13 @@ fun MultiPartSlideLayoutScope.AdditionalPage() {
                 Item("Custom fonts", Modifier.superQuickStep())
                 Item("AppGlobals", Modifier.superQuickStep())
                 Item("InitSilk / InitKobweb", Modifier.superQuickStep())
-                Item("Custom Markdown handlers", Modifier.superQuickStep())
+                Item("Markdown", Modifier.superQuickStep())
                 Item("Markdown processing", Modifier.superQuickStep())
                 Item("Deferred elements", Modifier.superQuickStep())
                 Item("Advanced layouts", Modifier.superQuickStep())
                 Item("Self-hosting", Modifier.superQuickStep())
                 Item("Deploying to a service", Modifier.superQuickStep())
+                Item("Markdown handlers", Modifier.superQuickStep())
             }
         }
     }

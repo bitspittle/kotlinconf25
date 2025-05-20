@@ -39,9 +39,9 @@ fun RecapPage() {
         H4 {
             Bullets {
                 Item("Modifiers", Modifier.step(auto = true))
+                Item("Box, Row, Column", Modifier.step(auto = true))
                 Item("CssStyle", Modifier.step(auto = true))
                 Item("Routing", Modifier.step(auto = true))
-                Item("Markdown", Modifier.step(auto = true))
                 Item("API routes", Modifier.step(auto = true))
             }
         }
