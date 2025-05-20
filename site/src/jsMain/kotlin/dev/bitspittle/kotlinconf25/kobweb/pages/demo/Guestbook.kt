@@ -23,6 +23,7 @@ import com.varabyte.kobweb.compose.ui.modifiers.left
 import com.varabyte.kobweb.compose.ui.modifiers.position
 import com.varabyte.kobweb.compose.ui.modifiers.top
 import com.varabyte.kobweb.core.Page
+import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.forms.Button
 import com.varabyte.kobweb.silk.components.forms.Input
 import com.varabyte.kobweb.silk.components.icons.fa.FaArrowRightFromBracket
@@ -125,7 +126,7 @@ private fun LabeledInput(label: String, value: String, onValueChange: (String) -
 
 @Page
 @Composable
-fun GuestbookPage() {
+fun GuestbookPage(ctx: PageContext) {
     val coroutineScope = rememberCoroutineScope()
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -147,19 +148,7 @@ fun GuestbookPage() {
                 onClick = {
                     coroutineScope.launch {
                         window.api.post<GuestbookEntry>("/guestbook/entries", body = GuestbookEntry(firstName, lastName, subject, message))
-
-                        window.alert(
-                            buildString {
-                                appendLine("Testing the guestbook post...")
-                                appendLine()
-
-                                val entry = window.api.get<GuestbookEntries>("/guestbook/entries").items.last()
-                                appendLine("First name: ${entry.firstName}")
-                                appendLine("Last name: ${entry.lastName}")
-                                appendLine("Subject: ${entry.subject}")
-                                appendLine("Message: ${entry.message}")
-                            }
-                        )
+                        ctx.router.navigateTo("/admin/guestbook-viewer")
                     }
                 },
                 enabled = firstName.isNotBlank() && lastName.isNotBlank() && subject.isNotBlank() && message.isNotBlank(),
