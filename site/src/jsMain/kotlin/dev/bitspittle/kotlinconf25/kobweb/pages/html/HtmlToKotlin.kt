@@ -36,7 +36,6 @@ fun initHtmlToKotlinPage(ctx: InitRouteContext) {
     })
 }
 
-// TODO-BOOKMARK
 // .cyan-rect {
 //   width: 400px;
 //   height: 200px;
@@ -85,8 +84,6 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             //        border-radius:10px;
             //    "
             // >
-
-            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
 
             // DOTHIS MANUALLY
@@ -144,8 +141,6 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             //   id="example"
             //   class="cyan-rect"
             // >
-
-            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
 //            Style(AppStyleSheet)
 //            Div(attrs = {
@@ -190,11 +185,15 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
             // document.getElementById('example')
             //   .style
             //   .opacity = 0.5;
-
-            Style(AppStyleSheet)
-
-            // TODO-BOOKMARK
             StippledRect(400.px, 200.px)
+
+
+//            Style(AppStyleSheet)
+//            Div(attrs = {
+//                id("example")
+//                classes(AppStyleSheet.cyanRect)
+//            })
+
             // Approach #1
 //             Div(attrs = {
 //                id("example")
