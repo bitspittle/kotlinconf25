@@ -1,27 +1,14 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.demo
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import com.varabyte.kobweb.browser.api
-import com.varabyte.kobweb.browser.get
 import com.varabyte.kobweb.browser.post
 import com.varabyte.kobweb.compose.foundation.layout.Box
 import com.varabyte.kobweb.compose.foundation.layout.Column
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.graphics.Colors
-import com.varabyte.kobweb.compose.ui.modifiers.color
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxSize
-import com.varabyte.kobweb.compose.ui.modifiers.fillMaxWidth
-import com.varabyte.kobweb.compose.ui.modifiers.fontSize
-import com.varabyte.kobweb.compose.ui.modifiers.gap
-import com.varabyte.kobweb.compose.ui.modifiers.left
-import com.varabyte.kobweb.compose.ui.modifiers.position
-import com.varabyte.kobweb.compose.ui.modifiers.top
+import com.varabyte.kobweb.compose.ui.modifiers.*
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.PageContext
 import com.varabyte.kobweb.silk.components.forms.Button
@@ -30,7 +17,6 @@ import com.varabyte.kobweb.silk.components.icons.fa.FaArrowRightFromBracket
 import com.varabyte.kobweb.silk.components.layout.SimpleGrid
 import com.varabyte.kobweb.silk.components.layout.numColumns
 import com.varabyte.kobweb.silk.components.text.SpanText
-import dev.bitspittle.kotilnconf25.kobweb.model.GuestbookEntries
 import dev.bitspittle.kotilnconf25.kobweb.model.GuestbookEntry
 import kotlinx.browser.window
 import kotlinx.coroutines.launch
@@ -39,7 +25,6 @@ import org.jetbrains.compose.web.css.Position
 import org.jetbrains.compose.web.css.cssRem
 import org.jetbrains.compose.web.css.em
 import org.jetbrains.compose.web.css.px
-import org.jetbrains.compose.web.dom.Text
 
 //@Page
 //@Composable

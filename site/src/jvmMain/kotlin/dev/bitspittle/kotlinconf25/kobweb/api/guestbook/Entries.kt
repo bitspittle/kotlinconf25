@@ -6,7 +6,6 @@ import com.varabyte.kobweb.api.data.getValue
 import com.varabyte.kobweb.api.http.HttpMethod
 import com.varabyte.kobweb.api.http.readBody
 import com.varabyte.kobweb.api.http.setBody
-import dev.bitspittle.kotilnconf25.kobweb.model.GuestbookEntries
 import dev.bitspittle.kotilnconf25.kobweb.model.GuestbookEntry
 
 //@Api
@@ -29,6 +28,6 @@ fun entries(ctx: ApiContext) {
         }
     }
     else if (ctx.req.method == HttpMethod.GET) {
-        ctx.res.setBody(GuestbookEntries(ctx.data.getValue<Guestbook>().entries))
+        ctx.res.setBody(ctx.data.getValue<Guestbook>().entries)
     }
 }

@@ -9,8 +9,3 @@ class GuestbookEntry(
     val subject: String,
     val message: String,
 )
-
-@Serializable
-class GuestbookEntries(
-    val items: List<GuestbookEntry>
-)
