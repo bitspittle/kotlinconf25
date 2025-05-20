@@ -49,7 +49,7 @@ kobweb {
                 "conclusion/additional",
                 "conclusion/docs",
                 "conclusion/community",
-                "conclusion/kilua",
+                "conclusion/kobweb-link",
                 "thanks",
             ).joinToString()
         )
