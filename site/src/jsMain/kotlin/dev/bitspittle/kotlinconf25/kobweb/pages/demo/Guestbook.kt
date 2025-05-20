@@ -131,10 +131,10 @@ fun GuestbookPage(ctx: PageContext) {
 
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(Modifier.gap(2.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
-            var firstName by remember { mutableStateOf("") }
-            var lastName by remember { mutableStateOf("") }
-            var subject by remember { mutableStateOf("") }
-            var message by remember { mutableStateOf("") }
+            var firstName by remember { mutableStateOf(ctx.route.params["firstname"] ?: "") }
+            var lastName by remember { mutableStateOf(ctx.route.params["lastname"] ?: "") }
+            var subject by remember { mutableStateOf(ctx.route.params["subject"] ?: "") }
+            var message by remember { mutableStateOf(ctx.route.params["message"]?.replace("%20", " ") ?: "") }
 
             SpanText("Contact Me:", Modifier.align(Alignment.Start))
             SimpleGrid(numColumns(2), Modifier.gap(1.cssRem)) {

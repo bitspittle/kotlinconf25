@@ -233,7 +233,9 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
 
     SlideSection {
         H3 {
-            Link("/demo/guestbook")
+            // Add fields back so we don't have to retype for this demo; as the originals values would be
+            // lost to live reloading by now.
+            Link("/demo/guestbook?firstname=David&lastname=Herman&subject=Kotlinconf&message=Kobweb%20is%20neat,%20I%20guess", "/demo/guestbook")
         }
     }
 }
