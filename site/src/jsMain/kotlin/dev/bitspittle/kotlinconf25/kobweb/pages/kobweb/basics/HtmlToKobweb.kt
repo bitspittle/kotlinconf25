@@ -72,15 +72,7 @@ fun initHtmlToKobwebPage(ctx: InitRouteContext) {
 //   border-radius: 10px;
 // }
 
-val CyanRectStyle = CssStyle {
-    base {
-        Modifier
-            .width(400.px)
-            .height(200.px)
-            .backgroundColor(Colors.Cyan)
-            .borderRadius(10.px)
-    }
-}
+// kcKob2
 
 object FlexExampleStyleSheet : StyleSheet() {
     val outer by style {
@@ -144,6 +136,8 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
             )
 
 
+            // uncomment, kcKob1a
+            StippledRect(400.px, 200.px)
 //            Div(attrs = {
 //                id("example")
 //                style {
@@ -153,29 +147,6 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 //                    borderRadius(10.px)
 //                }
 //            })
-
-
-            StippledRect(400.px, 200.px)
-            // First pass -> switch to modifiers
-//            Div(
-//                Modifier
-//                    .id("example")
-//                    .width(400.px)
-//                    .height(200.px)
-//                    .backgroundColor(Colors.Cyan)
-//                    .borderRadius(10.px)
-//                    .toAttrs()
-//            )
-
-            // Second pass -> switch to Box
-//            Box(
-//                Modifier
-//                    .id("example")
-//                    .width(400.px)
-//                    .height(200.px)
-//                    .backgroundColor(Colors.Cyan)
-//                    .borderRadius(10.px)
-//            )
         }
     }
 
@@ -217,8 +188,8 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
             //    classes(AppStyleSheet.cyanRect)
             // })
 
+            // kcKob3
             StippledRect(400.px, 200.px)
-//            Box(CyanRectStyle.toModifier().id("example"))
         }
     }
 
@@ -258,13 +229,8 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 //                }
 //            })
 
+            // kcKob4
             StippledRect(400.px, 200.px)
-//            Box(
-//                CyanRectStyle.toModifier().id("example"),
-//                ref = ref { element ->
-//                    element.style.opacity = "0.5"
-//                }
-//            )
         }
     }
 
@@ -402,21 +368,10 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                 )
             }
 
+            // kcKob5a
             StippledRect(300.px, 300.px)
-//            val squareModifier = Modifier.size(100.px)
-//            Box(Modifier.size(250.px).backgroundColor(Colors.White), contentAlignment = Alignment.Center) {
-//                Column {
-//                    Row {
-//                        Box(squareModifier.backgroundColor(Colors.Red))
-//                        Box(squareModifier.backgroundColor(Colors.Green))
-//                    }
-//                    Box(squareModifier.backgroundColor(Colors.Blue))
-//                }
-//            }
         }
     }
-
-
 
     SlideSection {
         Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
