@@ -117,7 +117,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                         }
                     }
                     """.trimIndent(),
-                    highlightLines = "0|7|6-8",
+                    highlightLines = "0|7|4,6-8",
                     preModifier = Modifier.fillMaxWidth()
                 )
             }
