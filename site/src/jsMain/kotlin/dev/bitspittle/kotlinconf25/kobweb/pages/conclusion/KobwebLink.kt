@@ -36,6 +36,6 @@ fun initKobwebLinkPage(ctx: InitRouteContext) {
 fun KobwebLinkPage() {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         H3 { Text("Get out there and build your site!") }
-        H4(Modifier.align(Alignment.BottomCenter).toAttrs()) { Link("https://github.com/varabyte") }
+        H4(Modifier.align(Alignment.BottomCenter).toAttrs()) { Link("https://github.com/varabyte/kobweb") }
     }
 }
