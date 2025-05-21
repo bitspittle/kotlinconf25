@@ -16,6 +16,8 @@ import com.varabyte.kobweb.core.init.InitRoute
 import com.varabyte.kobweb.core.init.InitRouteContext
 import com.varabyte.kobweb.core.layout.Layout
 import com.varabyte.kobweb.silk.components.navigation.Link
+import com.varabyte.kobweb.silk.style.CssStyle
+import com.varabyte.kobweb.silk.style.base
 import com.varabyte.kobweb.silk.style.extendedBy
 import com.varabyte.kobweb.silk.style.selectors.hover
 import com.varabyte.kobweb.silk.style.toAttrs
@@ -29,6 +31,7 @@ import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.StepTypes
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
 import org.jetbrains.compose.web.css.percent
+import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
 
@@ -37,7 +40,14 @@ fun initCssStylePage(ctx: InitRouteContext) {
     ctx.data.add(SlideTitle("CssStyle"))
 }
 
-val HoverRectStyle = CyanRectStyle.extendedBy {
+// Make a copy because we have to create the original one as part of the talk
+val CyanRectStyleCopy = CssStyle.base {
+    Modifier
+        .width(400.px).height(200.px)
+        .backgroundColor(Colors.Cyan).borderRadius(10.px)
+}
+
+val HoverRectStyle = CyanRectStyleCopy.extendedBy {
     base {
         Modifier.color(SiteColors.OffBlack)
     }
@@ -76,7 +86,7 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                     highlightLines = "0|1,2",
                     preModifier = Modifier.width(codeWidth)
                 )
-                Div(CyanRectStyle.toAttrs())
+                Div(CyanRectStyleCopy.toAttrs())
             }
         }
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime)) {
@@ -95,7 +105,7 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                     highlightLines = "2",
                     preModifier = Modifier.width(codeWidth)
                 )
-                Div(CyanRectStyle.toAttrs())
+                Div(CyanRectStyleCopy.toAttrs())
             }
         }
     }
