@@ -75,7 +75,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                 // language=html
                 """
                     <div
-                        id="examaple"
+                        id="example"
                         style="
                             width:400px; height:200px;
                             background-color:cyan; border-radius:10px;
