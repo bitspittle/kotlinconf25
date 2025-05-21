@@ -18,6 +18,7 @@ import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Video
 import dev.bitspittle.kotlinconf25.kobweb.style.AnimSpeeds
 import dev.bitspittle.kotlinconf25.kobweb.util.slides.step
@@ -32,6 +33,10 @@ fun initCreatePage(ctx: InitRouteContext) {
 @Composable
 @Layout(".components.layouts.MultiPartSlideLayout")
 fun MultiPartSlideLayoutScope.CreatePage() {
+
+    SlideSection {
+        Image("/assets/cli/kobweb-list.png", scale = 1.5f)
+    }
 
     SlideSection {
         Video("/assets/cli/kobweb-create-app.mp4", Modifier.fillMaxSize())
