@@ -131,7 +131,7 @@ fun MultiPartSlideLayoutScope.CreatePage() {
                     prod:
                       script: "build/dist/js/productionExecutable/app.js"
                       siteRoot: ".kobweb/site"
-              """.trimIndent(), highlightLines = "0|6",
+              """.trimIndent(), highlightLines = "0|6|11,12,14",
             preModifier = Modifier.overflow { y(Overflow.Hidden) }
         )
     }
