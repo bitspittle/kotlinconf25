@@ -189,17 +189,33 @@ fun MultiPartSlideLayoutScope.OrganizationPage() {
 
 
     SlideSection {
+        Box(Modifier.step(StepTypes.OneAtATime, auto = true)) {
+            CodeBlock(
+                """
+                    @Page
+                    @Composable
+                    @Layout(".components.layouts.PageLayout")
+                    fun AboutPage() {
+                        /*...*/
+                    }
+                """.trimIndent(),
+                highlightLines = "0|1|3|4"
+            )
+        }
+
         CodeBlock(
             """
-                @Page
-                @Composable
-                @Layout(".components.layouts.PageLayout")
-                fun AboutPage() {
-                    /*...*/
-                }
+            @Page
+            @Composable
+            @Layout(".components.layouts.PageLayout")
+            fun AboutPage(ctx: PageContext) {
+                /*...*/
+            }
             """.trimIndent(),
-            highlightLines = "0|1|3|5"
+            highlightLines = "4",
+            preModifier = Modifier.step(StepTypes.OneAtATime)
         )
+
     }
 
     SlideSection {
