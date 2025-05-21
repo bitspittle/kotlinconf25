@@ -75,7 +75,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                 // language=html
                 """
                     <div
-                        id="example"
+                        id="examaple"
                         style="
                             width:400px; height:200px;
                             background-color:cyan; border-radius:10px;
@@ -83,12 +83,13 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                     >
                     """.trimIndent(),
                 lang = "html",
+                highlightLines = "0|1|2|3-6"
             )
         }
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime, auto = true), horizontalAlignment = Alignment.CenterHorizontally) {
             Row(Modifier.gap(Gaps.Normal)) {
                 CodeBlock(
                     // language=html
@@ -120,6 +121,80 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                     })
                     """.trimIndent(),
                     preModifier = Modifier.step(StepTypes.FadeLeft, auto = true)
+                )
+            }
+        }
+
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(Modifier.gap(Gaps.Normal)) {
+                CodeBlock(
+                    // language=html
+                    """                        
+                        
+                        <div
+                            id="example"
+                            style="
+                                width:400px; height:200px;
+                                background-color:cyan; border-radius:10px;
+                            "
+                        >
+                        
+                        
+                        """.trimIndent(),
+                    lang = "html",
+                    highlightLines = "3"
+                )
+
+                CodeBlock(
+                    """
+                    Div(attrs = {
+                        id("example")
+                        style {
+                            width(400.px)
+                            height(200.px)
+                            backgroundColor(Color.cyan)
+                            borderRadius(10.px)
+                        }
+                    })
+                    """.trimIndent(),
+                    highlightLines = "2"
+                )
+            }
+        }
+
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(Modifier.gap(Gaps.Normal)) {
+                CodeBlock(
+                    // language=html
+                    """                        
+                        
+                        <div
+                            id="example"
+                            style="
+                                width:400px; height:200px;
+                                background-color:cyan; border-radius:10px;
+                            "
+                        >
+                        
+                        
+                        """.trimIndent(),
+                    lang = "html",
+                    highlightLines = "4-7"
+                )
+
+                CodeBlock(
+                    """
+                    Div(attrs = {
+                        id("example")
+                        style {
+                            width(400.px)
+                            height(200.px)
+                            backgroundColor(Color.cyan)
+                            borderRadius(10.px)
+                        }
+                    })
+                    """.trimIndent(),
+                    highlightLines = "3-8"
                 )
             }
 
@@ -192,7 +267,7 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                     })
                     """.trimIndent(),
                     preModifier = Modifier.step(StepTypes.FadeLeft),
-                    highlightLines = "1,4"
+                    highlightLines = "0|1,4"
                 )
             }
         }

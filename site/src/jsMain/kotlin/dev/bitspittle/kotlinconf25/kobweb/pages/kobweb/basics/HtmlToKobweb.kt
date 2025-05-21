@@ -166,6 +166,22 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 
                 CodeBlock(
                     """
+                        Div(attrs = {
+                            id("example")
+                            style {
+                                width(400.px)
+                                height(200.px)
+                                backgroundColor(Color.cyan)
+                                borderRadius(10.px)
+                            }
+                        })
+                    """.trimIndent(),
+                    highlightLines = "2-8",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
                         Div(attrs = 
                             Modifier
                                 .id("example")
@@ -192,7 +208,23 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                                 .toAttrs()
                         )
                         """.trimIndent(),
-                        highlightLines = "3-6",
+                        highlightLines = "3",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
+                        Div(attrs = 
+                            Modifier
+                                .id("example")
+                                .width(400.px)
+                                .height(200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                                .toAttrs()
+                        )
+                        """.trimIndent(),
+                        highlightLines = "4-7",
                     preModifier = Modifier.step(StepTypes.OneAtATime)
                 )
 
@@ -429,7 +461,7 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                             classes(AppStyleSheet.cyanRect)
                             ref { element ->
                                 element.style.opacity = "0.5"
-                                onDispose { }
+                                onDispose {}
                             }
                         })
                         """.trimIndent(),
@@ -585,7 +617,7 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                     }
                 }
                 """.trimIndent(),
-                highlightLines = "2|3,4|5,6,8"
+                highlightLines = "0|2|3,4|5,6,8"
             )
 
             val squareModifier = Modifier.size(100.px)
