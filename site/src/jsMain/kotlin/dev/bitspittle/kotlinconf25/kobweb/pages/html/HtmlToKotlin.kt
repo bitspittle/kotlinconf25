@@ -142,6 +142,43 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                         
                         """.trimIndent(),
                     lang = "html",
+                    highlightLines = "2"
+                )
+
+                CodeBlock(
+                    """
+                    Div(attrs = {
+                        id("example")
+                        style {
+                            width(400.px)
+                            height(200.px)
+                            backgroundColor(Color.cyan)
+                            borderRadius(10.px)
+                        }
+                    })
+                    """.trimIndent(),
+                    highlightLines = "1"
+                )
+            }
+        }
+
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal).step(StepTypes.OneAtATime), horizontalAlignment = Alignment.CenterHorizontally) {
+            Row(Modifier.gap(Gaps.Normal)) {
+                CodeBlock(
+                    // language=html
+                    """                        
+                        
+                        <div
+                            id="example"
+                            style="
+                                width:400px; height:200px;
+                                background-color:cyan; border-radius:10px;
+                            "
+                        >
+                        
+                        
+                        """.trimIndent(),
+                    lang = "html",
                     highlightLines = "3"
                 )
 
