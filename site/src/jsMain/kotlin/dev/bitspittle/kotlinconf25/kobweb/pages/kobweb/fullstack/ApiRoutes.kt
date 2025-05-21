@@ -180,25 +180,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
 
                 """.trimIndent(),
                 preModifier = Modifier.fillMaxWidth(),
-                highlightLines = "6|8"
-            )
-        }
-        Box(Modifier.step(StepTypes.OneAtATime)) {
-            CodeBlock(
-                """
-                @Api
-                suspend fun messages(ctx: ApiContext) {
-                    if (ctx.req.method != HttpMethod.POST) return
-    
-                    val message = ctx.req.readBody()
-                    ctx.data.getValue<Messages>().add(message)
-    
-                    ctx.res.setBodyText("OK")
-                    // Side effect: sets res code to 200
-                }
-                """.trimIndent(),
-                preModifier = Modifier.fillMaxWidth(),
-                highlightLines = "8"
+                highlightLines = "6"
             )
         }
     }
