@@ -40,14 +40,7 @@ fun initCssStylePage(ctx: InitRouteContext) {
     ctx.data.add(SlideTitle("CssStyle"))
 }
 
-// Make a copy because we have to create the original one as part of the talk
-val CyanRectStyleCopy = CssStyle.base {
-    Modifier
-        .width(400.px).height(200.px)
-        .backgroundColor(Colors.Cyan).borderRadius(10.px)
-}
-
-val HoverRectStyle = CyanRectStyleCopy.extendedBy {
+val HoverRectStyle = CyanRectStyle.extendedBy {
     base {
         Modifier.color(SiteColors.OffBlack)
     }
@@ -86,7 +79,7 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                     highlightLines = "0|1,2",
                     preModifier = Modifier.width(codeWidth)
                 )
-                Div(CyanRectStyleCopy.toAttrs())
+                Div(CyanRectStyle.toAttrs())
             }
         }
         Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime)) {
@@ -105,7 +98,7 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                     highlightLines = "2",
                     preModifier = Modifier.width(codeWidth)
                 )
-                Div(CyanRectStyleCopy.toAttrs())
+                Div(CyanRectStyle.toAttrs())
             }
         }
     }

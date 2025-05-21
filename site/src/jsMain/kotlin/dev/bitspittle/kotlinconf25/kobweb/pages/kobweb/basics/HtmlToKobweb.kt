@@ -3,6 +3,7 @@
 package dev.bitspittle.kotlinconf25.kobweb.pages.kobweb.basics
 
 import androidx.compose.runtime.Composable
+import com.varabyte.kobweb.compose.css.Overflow
 import com.varabyte.kobweb.compose.dom.ref
 import com.varabyte.kobweb.compose.foundation.layout.Arrangement
 import com.varabyte.kobweb.compose.foundation.layout.Box
@@ -72,6 +73,15 @@ fun initHtmlToKobwebPage(ctx: InitRouteContext) {
 //   border-radius: 10px;
 // }
 
+val CyanRectStyle = CssStyle {
+    base {
+        Modifier
+            .size(400.px, 200.px)
+            .backgroundColor(Colors.Cyan)
+            .borderRadius(10.px)
+    }
+}
+
 // kcKob2
 
 object FlexExampleStyleSheet : StyleSheet() {
@@ -120,40 +130,145 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 
     // Super basic HTML
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
+        Row(Modifier.fillMaxSize().gap(Gaps.Normal)) {
             CodeBlock(
                 // language=html
                 """
-                    <div
-                        id="example"
-                        style="
-                            width:400px; height:200px;
-                            background-color:cyan; border-radius:10px;
-                        "
-                    >
-                    """.trimIndent(),
+
+                        <div
+                            id="example"
+                            style="
+                                width:400px; height:200px;
+                                background-color:cyan; border-radius:10px;
+                            "
+                        >
+
+
+                        """.trimIndent(),
                 lang = "html",
             )
 
+            Box(Modifier.step(StepTypes.FadeLeft)) {
+                CodeBlock(
+                    """
+                        Div(attrs = {
+                            id("example")
+                            style {
+                                width(400.px)
+                                height(200.px)
+                                backgroundColor(Color.cyan)
+                                borderRadius(10.px)
+                            }
+                        })
+                        """.trimIndent(),
+                    preModifier = Modifier.step(StepTypes.OneAtATime, auto = true)
+                )
 
-            // uncomment, kcKob1a
-            StippledRect(400.px, 200.px)
-//            Div(attrs = {
-//                id("example")
-//                style {
-//                    width(400.px)
-//                    height(200.px)
-//                    backgroundColor(Color.cyan)
-//                    borderRadius(10.px)
-//                }
-//            })
+                CodeBlock(
+                    """
+                        Div(attrs = 
+                            Modifier
+                                .id("example")
+                                .width(400.px)
+                                .height(200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                                .toAttrs()
+                        )
+                    """.trimIndent(),
+                    highlightLines = "2-7",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
+                        Div(attrs = 
+                            Modifier
+                                .id("example")
+                                .width(400.px)
+                                .height(200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                                .toAttrs()
+                        )
+                        """.trimIndent(),
+                        highlightLines = "3-6",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
+                        Div(attrs = 
+                            Modifier
+                                .id("example")
+                                .width(400.px)
+                                .height(200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                                .toAttrs()
+                        )
+                        """.trimIndent(),
+                        highlightLines = "4-5",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
+                        Div(attrs = 
+                            Modifier
+                                .id("example")
+                                .size(400.px, 200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                                .toAttrs()
+                        )
+
+
+                        """.trimIndent(),
+                        highlightLines = "4",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
+                        Div(attrs = 
+                            Modifier
+                                .id("example")
+                                .size(400.px, 200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                                .toAttrs()
+                        )
+
+
+                        """.trimIndent(),
+                        highlightLines = "1,7",
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+
+                CodeBlock(
+                    """
+                        Box( 
+                            Modifier
+                                .id("example")
+                                .size(400.px, 200.px)
+                                .backgroundColor(Colors.Cyan)
+                                .borderRadius(10.px)
+                        )
+
+
+
+                        """.trimIndent(),
+                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                )
+            }
         }
     }
 
     // A little bit of CSS
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Normal)) {
                 CodeBlock(
                     // language=css
                     """
@@ -180,23 +295,111 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                     lang = "html",
                 )
             }
+        }
+    }
+
+    SlideSection {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Normal)) {
+                CodeBlock(
+                    """
+                    object AppStyleSheet : StyleSheet() {
+                        val cyanRect by style {
+                            width(400.px)
+                            height(200.px)
+                            backgroundColor(Colors.Cyan)
+                            borderRadius(10.px)
+                        }
+                    }
+                    """.trimIndent(),
+                    highlightLines = "1,2"
+                )
+
+                CodeBlock(
+                    """
+                     Style(AppStyleSheet)
+                     Div(attrs = {
+                        id("example")
+                        classes(AppStyleSheet.cyanRect)
+                     })
+                    """.trimIndent(),
+                    highlightLines = "1,4"
+                )
+            }
+        }
+    }
+
+    SlideSection {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Normal)) {
+                CodeBlock(
+                    """
+                    object AppStyleSheet : StyleSheet() {
+                        val cyanRect by style {
+                            width(400.px)
+                            height(200.px)
+                            backgroundColor(Colors.Cyan)
+                            borderRadius(10.px)
+                        }
+                    }
+                    """.trimIndent(),
+                    highlightLines = "2-7"
+                )
+
+                Box(Modifier.step(StepTypes.FadeRight)) {
+                    CodeBlock(
+                        """
+                        val CyanRectStyle = CssStyle {
+                            base {
+                                Modifier
+                                    .size(400.px, 200.px)
+                                    .backgroundColor(Colors.Cyan)
+                                    .borderRadius(10.px)
+                            }
+                        }
+                        """.trimIndent(),
+                        highlightLines = "0|1|2,7|3-6"
+                    )
+                }
+            }
+        }
+    }
+
+    SlideSection {
+        Column(Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Normal)) {
+                CodeBlock(
+                    """
+                     Style(AppStyleSheet)
+                     Div(attrs = {
+                        id("example")
+                        classes(AppStyleSheet.cyanRect)
+                     })
+                    """.trimIndent(),
+                    highlightLines = "1,4"
+                )
+
+                Box(Modifier.step(StepTypes.FadeRight)) {
+                    CodeBlock(
+                        """
+                        Box(
+                            CyanRectStyle.toModifier()
+                                .id("example")
+                        )
 
 
-            // Style(AppStyleSheet)
-            // Div(attrs = {
-            //    id("example")
-            //    classes(AppStyleSheet.cyanRect)
-            // })
-
-            // kcKob3
-            StippledRect(400.px, 200.px)
+                        """.trimIndent(),
+                        highlightLines = "0|2|3"
+                    )
+                }
+            }
         }
     }
 
     // Accessing the raw element
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Large)) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally) {
+            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Normal)) {
                 CodeBlock(
                     // language=html
                     """
@@ -218,26 +421,44 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                 )
             }
 
+            Box(Modifier.step(StepTypes.FadeRight)) {
+                SimpleGrid(numColumns(2), Modifier.gap(Gaps.Normal)) {
+                    CodeBlock(
+                        """
+                        Div(attrs = {
+                            classes(AppStyleSheet.cyanRect)
+                            ref { element ->
+                                element.style.opacity = "0.5"
+                                onDispose { }
+                            }
+                        })
+                        """.trimIndent(),
+                        highlightLines = "3-6"
+                    )
+                    Box(Modifier.step(StepTypes.FadeLeft)) {
+                        CodeBlock(
+                            """
+                            Box(                        
+                                CyanRectStyle.toModifier(),
+                                ref = ref { element ->
+                                    element.style.opacity = "0.5"
+                                },
+                            )
 
-//            Style(AppStyleSheet)
-//            Div(attrs = {
-//                id("example")
-//                classes(AppStyleSheet.cyanRect)
-//                ref { element ->
-//                    element.style.opacity = "0.5"
-//                    onDispose { }
-//                }
-//            })
 
-            // kcKob4
-            StippledRect(400.px, 200.px)
+                            """.trimIndent(),
+                            highlightLines = "0|3-5"
+                        )
+                    }
+                }
+            }
         }
     }
 
     // Box, Row, and Column
     SlideSection {
         Column(Modifier.fillMaxSize().gap(Gaps.Minor), horizontalAlignment = Alignment.CenterHorizontally) {
-            SimpleGrid(numColumns(2), Modifier.gap(Gaps.Minor).height(62.percent)) {
+            SimpleGrid(numColumns(1), Modifier.gap(Gaps.Minor).height(62.percent)) {
                 CodeBlock(
                     // language=html
                     """
@@ -252,46 +473,8 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                         </div> 
                         """.trimIndent(),
                     lang = "html",
-                )
-
-                CodeBlock(
-                    // language=css
-                    """
-                    .outer {
-                        width: 250px;
-                        height: 250px;
-                        background-color: gray;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                    .column {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    .row {
-                        display: flex;
-                        flex-direction: row;
-                    }
-                    .red-square {
-                        width: 100px;
-                        height: 100px;
-                        background-color: red;
-                    }
-                    .green-square {
-                        width: 100px;
-                        height: 100px;
-                        background-color: green;
-                    }
-                    .blue-square {
-                        width: 100px;
-                        height: 100px;
-                        background-color: blue;
-                    }
-                    """.trimIndent(),
-                    lang = "css",
-                    highlightLines = "0|1-8|5-7|9-12|13-16|17-21|22-26|27-31",
-                    preModifier = Modifier.stepOrder(2)
+                    highlightLines = "0|2|3|4-5,7",
+                    preModifier = Modifier.stepOrder(order = 2)
                 )
             }
 
@@ -311,7 +494,10 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Minor), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            Modifier.fillMaxSize().gap(Gaps.Minor),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             SimpleGrid(numColumns(2), Modifier.gap(Gaps.Minor).height(62.percent)) {
                 CodeBlock(
                     // language=html
@@ -332,49 +518,91 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
                 CodeBlock(
                     // language=css
                     """
-                    .outer {
-                        width: 250px;
-                        height: 250px;
-                        background-color: gray;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                    .column {
-                        display: flex;
-                        flex-direction: column;
-                    }
-                    .row {
-                        display: flex;
-                        flex-direction: row;
-                    }
-                    .red-square {
-                        width: 100px;
-                        height: 100px;
-                        background-color: red;
-                    }
-                    .green-square {
-                        width: 100px;
-                        height: 100px;
-                        background-color: green;
-                    }
-                    .blue-square {
-                        width: 100px;
-                        height: 100px;
-                        background-color: blue;
-                    }
-                    """.trimIndent(),
+                        .outer {
+                            width: 250px;
+                            height: 250px;
+                            background-color: gray;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        .column {
+                            display: flex;
+                            flex-direction: column;
+                        }
+                        .row {
+                            display: flex;
+                            flex-direction: row;
+                        }
+                        .red-square {
+                            width: 100px;
+                            height: 100px;
+                            background-color: red;
+                        }
+                        .green-square {
+                            width: 100px;
+                            height: 100px;
+                            background-color: green;
+                        }
+                        .blue-square {
+                            width: 100px;
+                            height: 100px;
+                            background-color: blue;
+                        }
+                        """.trimIndent(),
                     lang = "css",
+                    highlightLines = "0|1-8|5-7|9-12|13-16",
                 )
             }
 
-            // kcKob5a
-            StippledRect(300.px, 300.px)
+            Style(FlexExampleStyleSheet)
+            Row(Modifier.gap(Gaps.Minor)) {
+                Div(attrs = { classes(FlexExampleStyleSheet.outer) }) {
+                    Div(attrs = { classes(FlexExampleStyleSheet.column) }) {
+                        Div(attrs = { classes(FlexExampleStyleSheet.row) }) {
+                            Div(attrs = { classes(FlexExampleStyleSheet.redSquare) })
+                            Div(attrs = { classes(FlexExampleStyleSheet.greenSquare) })
+                        }
+                        Div(attrs = { classes(FlexExampleStyleSheet.blueSquare) })
+                    }
+                }
+            }
         }
     }
 
     SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(Modifier.fillMaxSize().gap(Gaps.Minor), horizontalAlignment = Alignment.CenterHorizontally) {
+            CodeBlock(
+                """
+                val squareModifier = Modifier.size(100.px)
+                Box(Modifier.size(250.px).backgroundColor(Colors.White), contentAlignment = Alignment.Center) {
+                    Column {
+                        Row {
+                            Box(squareModifier.backgroundColor(Colors.Red))
+                            Box(squareModifier.backgroundColor(Colors.Green))
+                        }
+                        Box(squareModifier.backgroundColor(Colors.Blue))
+                    }
+                }
+                """.trimIndent(),
+                highlightLines = "2|3,4|5,6,8"
+            )
+
+            val squareModifier = Modifier.size(100.px)
+            Box(Modifier.size(250.px).backgroundColor(Colors.White), contentAlignment = Alignment.Center) {
+                Column {
+                    Row {
+                        Box(squareModifier.backgroundColor(Colors.Red))
+                        Box(squareModifier.backgroundColor(Colors.Green))
+                    }
+                    Box(squareModifier.backgroundColor(Colors.Blue))
+                }
+            }
+        }
+    }
+
+    SlideSection {
+        Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
             H3(Modifier.color(SiteColors.OffWhite).toAttrs()) {
                 FaCodeFork(Modifier.margin(right = 0.3.em))
                 Text("Modifiers are a fork!")
