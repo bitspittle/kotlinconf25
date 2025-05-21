@@ -320,6 +320,23 @@ fun MultiPartSlideLayoutScope.HtmlToKotlinPage() {
                         id("example")
                         classes(AppStyleSheet.cyanRect)
                     })
+                    // ❌
+                    (document.getElementById("example") as HTMLElement)
+                        .style.opacity = "0.5"
+
+
+                """.trimIndent(),
+                    preModifier = Modifier.fillMaxWidth().step(StepTypes.OneAtATime),
+                    highlightLines = "6-9"
+                )
+
+                CodeBlock(
+                    """
+                    Style(AppStyleSheet)
+                    Div(attrs = {
+                        id("example")
+                        classes(AppStyleSheet.cyanRect)
+                    })
                     LaunchedEffect(Unit) {
                         (document.getElementById("example") as HTMLElement)
                             .style.opacity = "0.5"
