@@ -76,10 +76,9 @@ fun MultiPartSlideLayoutScope.OrganizationPage() {
         TopStartH3 {
             Folders {
                 Bullets {
-                    Item("components") {
-                        Item("pages")
-                        Item("AppEntry.kt")
-                    }
+                    Item("components")
+                    Item("pages")
+                    Item("AppEntry.kt")
                 }
             }
         }
@@ -176,12 +175,26 @@ fun MultiPartSlideLayoutScope.OrganizationPage() {
     }
 
     SlideSection {
+        TopStartH3 {
+            Folders {
+                Bullets {
+                    Item("components")
+                    Item("pages") {
+                        Item("About.kt")
+                    }
+                }
+            }
+        }
+    }
+
+
+    SlideSection {
         CodeBlock(
             """
                 @Page
                 @Composable
                 @Layout(".components.layouts.PageLayout")
-                fun IndexPage() {
+                fun AboutPage() {
                     /*...*/
                 }
             """.trimIndent(),
