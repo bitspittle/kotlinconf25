@@ -22,6 +22,7 @@ import com.varabyte.kobweb.silk.init.InitSilkContext
 import com.varabyte.kobweb.silk.init.registerStyleBase
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.MultiPartSlideLayoutScope
 import dev.bitspittle.kotlinconf25.kobweb.components.layouts.SlideTitle
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.browser.UrlBar
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.code.CodeBlock
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Bullets
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.list.Folders
@@ -72,7 +73,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                     }
                 }
             }
-            Box(Modifier.step(StepTypes.FadeUp)) {
+            Column(Modifier.step(StepTypes.FadeUp).gap(Gaps.Tiny), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
                     // jvmMain/com/mysite/api/hello.kt
@@ -81,8 +82,9 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                         ctx.res.setBodyText("hello world")
                     }
                     """.trimIndent(),
-                    highlightLines = "0|1|2|3"
+                    highlightLines = "0|1|2|3|4|1"
                 )
+                UrlBar("https://mysite.com/[api/hello]", Modifier.step(StepTypes.FadeDown, auto = true))
             }
         }
     }
