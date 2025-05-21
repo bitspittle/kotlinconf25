@@ -67,7 +67,7 @@ fun MultiPartSlideLayoutScope.ShowcasePage() {
     }
     SlideSection {
         UrlAndContent("https://chess-playground.fly.dev/") {
-            Video("/assets/showcase/chess-playground.mp4", scale = 1.3f)
+            Video("/assets/showcase/chess-playground.mp4", scale = 1f, loop = true)
         }
     }
     SlideSection {
