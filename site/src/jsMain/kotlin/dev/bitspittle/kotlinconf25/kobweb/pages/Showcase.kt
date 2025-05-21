@@ -79,11 +79,6 @@ fun MultiPartSlideLayoutScope.ShowcasePage() {
         Video("/assets/showcase/rodrigo-wedding.mp4", scale = 1.1f)
     }
     SlideSection {
-        UrlAndContent("https://fluen.se/en/") {
-            Video("/assets/showcase/fluense.mp4", scale = 1.1f)
-        }
-    }
-    SlideSection {
         UrlAndContent("https://github.com/bitspittle/kotlinconf25") {
             Image(
                 "/assets/showcase/presentation-title.png",
