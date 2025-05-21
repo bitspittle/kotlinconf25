@@ -117,7 +117,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                         }
                     }
                     """.trimIndent(),
-                    highlightLines = "0|7",
+                    highlightLines = "0|7|6-8",
                     preModifier = Modifier.fillMaxWidth()
                 )
             }
@@ -216,6 +216,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                     }
                     """.trimIndent(),
                     preModifier = Modifier.fillMaxWidth(),
+                    highlightLines = "3"
                 )
             }
         }
@@ -235,9 +236,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
 
     SlideSection {
         H3 {
-            // Add fields back so we don't have to retype for this demo; as the originals values would be
-            // lost to live reloading by now.
-            Link("/demo/guestbook?firstname=David&lastname=Herman&subject=Kotlinconf&message=Kobweb%20is%20neat,%20I%20guess", "/demo/guestbook")
+            Link("/demo/guestbook")
         }
     }
 }
