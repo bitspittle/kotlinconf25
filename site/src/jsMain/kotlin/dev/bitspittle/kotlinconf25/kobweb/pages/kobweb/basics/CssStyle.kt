@@ -145,26 +145,6 @@ fun MultiPartSlideLayoutScope.CssStylePage() {
                 HoverBox()
             }
         }
-        Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime)) {
-            Column(Modifier.fillMaxSize().gap(Gaps.Large), horizontalAlignment = Alignment.CenterHorizontally) {
-                CodeBlock(
-                    """
-                    val CyanRectStyle = CssStyle.base { 
-                        Modifier
-                            .width(400.px).height(200.px)
-                            .backgroundColor(Colors.Cyan).borderRadius(10.px)
-                    }
-                    
-                    val HoverRectStyle = CyanRectStyle.extendedBy {
-                        hover { Modifier.backgroundColor(Colors.Orange) }
-                    }
-                    """.trimIndent(),
-                    highlightLines = "2-4,8|1,7",
-                    preModifier = Modifier.overflow { y(Overflow.Hidden) }
-                )
-                HoverBox()
-            }
-        }
     }
 
     // css2kobweb
