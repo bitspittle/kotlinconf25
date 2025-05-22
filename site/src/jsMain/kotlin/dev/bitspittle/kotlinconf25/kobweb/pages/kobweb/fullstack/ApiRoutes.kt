@@ -76,15 +76,15 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
             Column(Modifier.step(StepTypes.FadeUp).gap(Gaps.Tiny), horizontalAlignment = Alignment.CenterHorizontally) {
                 CodeBlock(
                     """
-                    // jvmMain/com/mysite/api/hello.kt
+                    // jvmMain/com/mysite/api/greeting.kt
                     @Api
-                    suspend fun hello(ctx: ApiContext) {
+                    suspend fun greeting(ctx: ApiContext) {
                         ctx.res.setBodyText("hello world")
                     }
                     """.trimIndent(),
                     highlightLines = "0|1|2|3|4|1"
                 )
-                UrlBar("https://mysite.com/[api/hello]", Modifier.step(StepTypes.FadeDown, auto = true))
+                UrlBar("https://mysite.com/[api/greeting]", Modifier.step(StepTypes.FadeDown, auto = true))
             }
         }
     }
@@ -97,7 +97,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                 CodeBlock(
                     """
                     @Api
-                    suspend fun hello(ctx: ApiContext) { /*...*/ }
+                    suspend fun greeting(ctx: ApiContext) { /*...*/ }
                     """.trimIndent(),
                     preModifier = Modifier.fillMaxWidth()
                 )
@@ -112,7 +112,7 @@ fun MultiPartSlideLayoutScope.ApiRoutesPage() {
                         var fetchedText by remember { mutableStateOf("") }
                         LaunchedEffect(Unit) {
                             fetchedText = 
-                                window.api.get("hello")
+                                window.api.get("greeting")
                                     .decodeToString()
                         }
                     }
