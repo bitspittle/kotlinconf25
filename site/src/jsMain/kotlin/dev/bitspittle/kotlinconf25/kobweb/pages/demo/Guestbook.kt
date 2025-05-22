@@ -32,11 +32,51 @@ import org.jetbrains.compose.web.css.px
 import org.jetbrains.compose.web.dom.Div
 import org.jetbrains.compose.web.dom.Text
 
-// kcFe2
+@Composable
+private fun LabeledInput(label: String, value: String, onValueChange: (String) -> Unit, modifier: Modifier = Modifier) {
+    Box(Modifier.fillMaxWidth().position(Position.Relative)) {
+        Input(
+            InputType.Text, value, onValueChange,
+            Modifier.fillMaxWidth().then(modifier),
+            placeholder = label
+        )
+        SpanText(
+            label,
+            Modifier
+                .position(Position.Absolute).left(0.px).top(((-1).cssRem))
+                .fontSize(0.7.em).color(Colors.Gray)
+        )
+    }
+}
+
+// kcFe3(api)
 @Page
 @Composable
 fun GuestbookPage() {
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text("TODO: Guestbook form")
+        Column(Modifier.gap(2.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
+            var firstName by remember { mutableStateOf("") }
+            var lastName by remember { mutableStateOf("") }
+            var subject by remember { mutableStateOf("") }
+            var message by remember { mutableStateOf("") }
+
+            SpanText("Contact Me:", Modifier.align(Alignment.Start))
+            SimpleGrid(numColumns(2), Modifier.gap(1.cssRem)) {
+                LabeledInput("First Name", firstName, onValueChange = { firstName = it })
+                LabeledInput("Last Name", lastName, onValueChange = { lastName = it })
+            }
+            LabeledInput("Subject", subject, onValueChange = { subject = it })
+            LabeledInput("Message", message, onValueChange = { message = it })
+
+            Button(
+                onClick = {
+                    // TODO: Revisit this later in the talk
+                },
+                enabled = firstName.isNotBlank() && lastName.isNotBlank() && subject.isNotBlank() && message.isNotBlank(),
+            ) {
+                SpanText("Send message ")
+                FaArrowRightFromBracket()
+            }
+        }
     }
 }
