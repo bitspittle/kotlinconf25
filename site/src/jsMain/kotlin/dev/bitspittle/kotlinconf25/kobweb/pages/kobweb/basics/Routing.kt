@@ -252,10 +252,11 @@ fun MultiPartSlideLayoutScope.RoutingPage() {
                     """.trimIndent(),
                 )
             }
+
             Box(Modifier.fillMaxSize().step(StepTypes.OneAtATime), contentAlignment = Alignment.TopCenter) {
                 CodeBlock(
                     """
-                        @Page
+                        @Page("{}")
                         fun PostPage(ctx: PageContext) {
                             val user = ctx.route.params.getValue("user")
                             val post = ctx.route.params.getValue("post")
