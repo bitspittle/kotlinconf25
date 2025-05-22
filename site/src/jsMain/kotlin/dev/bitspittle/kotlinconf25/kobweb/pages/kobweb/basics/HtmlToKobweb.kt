@@ -291,7 +291,8 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
 
 
                         """.trimIndent(),
-                    preModifier = Modifier.step(StepTypes.OneAtATime)
+                    preModifier = Modifier.step(StepTypes.OneAtATime),
+                    highlightLines = "1,7"
                 )
             }
         }
