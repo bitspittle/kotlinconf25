@@ -49,16 +49,17 @@ private fun LabeledInput(label: String, value: String, onValueChange: (String) -
     }
 }
 
-// kcFe3(api)
 @Page
 @Composable
-fun GuestbookPage() {
+fun GuestbookPage(ctx: PageContext) {
+    val coroutineScope = rememberCoroutineScope()
+
     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Column(Modifier.gap(2.cssRem), horizontalAlignment = Alignment.CenterHorizontally) {
-            var firstName by remember { mutableStateOf("") }
-            var lastName by remember { mutableStateOf("") }
-            var subject by remember { mutableStateOf("") }
-            var message by remember { mutableStateOf("") }
+            var firstName by remember { mutableStateOf(ctx.route.params["firstname"] ?: "") }
+            var lastName by remember { mutableStateOf(ctx.route.params["lastname"] ?: "") }
+            var subject by remember { mutableStateOf(ctx.route.params["subject"] ?: "") }
+            var message by remember { mutableStateOf(ctx.route.params["message"]?.replace("%20", " ") ?: "") }
 
             SpanText("Contact Me:", Modifier.align(Alignment.Start))
             SimpleGrid(numColumns(2), Modifier.gap(1.cssRem)) {
@@ -70,13 +71,49 @@ fun GuestbookPage() {
 
             Button(
                 onClick = {
-                    // TODO: Revisit this later in the talk
+                    coroutineScope.launch {
+                        window.api.post<GuestbookEntry>("/guestbook/entries", body = GuestbookEntry(firstName, lastName, subject, message))
+                        ctx.router.navigateTo("/admin/guestbook-viewer")
+                    }
                 },
                 enabled = firstName.isNotBlank() && lastName.isNotBlank() && subject.isNotBlank() && message.isNotBlank(),
             ) {
                 SpanText("Send message ")
                 FaArrowRightFromBracket()
             }
+        }
+    }
+}
+
+
+
+
+
+
+@Page("/admin/guestbook-viewer")
+@Composable
+fun GuestbookViewerPage() {
+    var guestbookEntries by remember { mutableStateOf<List<GuestbookEntry>?>(null) }
+    LaunchedEffect(Unit) {
+        guestbookEntries = window.api.get<List<GuestbookEntry>>("/guestbook/entries")
+    }
+
+    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        Column(Modifier.gap(1.cssRem)) {
+            Div(Modifier.grid {
+                columns {
+                    fitContent(100.percent)
+                    fitContent(100.percent)
+                }
+            }.columnGap(1.cssRem).toAttrs()) {
+                guestbookEntries?.last()?.let { lastGuestbookEntry ->
+                    SpanText("Subject:"); SpanText(lastGuestbookEntry.subject)
+                    SpanText("First Name:"); SpanText(lastGuestbookEntry.firstName)
+                    SpanText("Last Name:"); SpanText(lastGuestbookEntry.lastName)
+                    SpanText("Message:"); SpanText(lastGuestbookEntry.message)
+                }
+            }
+            Link("/conclusion/header", "Proceed to Conclusion")
         }
     }
 }
