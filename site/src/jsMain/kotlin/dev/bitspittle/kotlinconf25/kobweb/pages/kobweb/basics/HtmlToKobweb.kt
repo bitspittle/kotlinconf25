@@ -633,56 +633,6 @@ fun MultiPartSlideLayoutScope.HtmlToKobwebPage() {
             }
         }
     }
-
-    SlideSection {
-        Column(Modifier.fillMaxSize().gap(Gaps.Normal), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
-            H3(Modifier.color(SiteColors.OffWhite).toAttrs()) {
-                FaCodeFork(Modifier.margin(right = 0.3.em))
-                Text("Modifiers are a fork!")
-            }
-
-            SimpleGrid(numColumns(3), Modifier.gap(Gaps.Normal)) {
-                Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
-                    CodeBlock(
-                        """
-                            Modifier
-                              .padding(20.px)
-                              .fillMaxWidth()
-
-
-                        """.trimIndent(),
-                    )
-                }
-                Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
-                    CodeBlock(
-                        """
-                            Modifier
-                              .fillMaxWidth()
-                              .padding(20.px)
-
-
-                        """.trimIndent(),
-                    )
-                }
-                Box(Modifier.step(StepTypes.FadeDown, auto = true)) {
-                    CodeBlock(
-                        """
-                            Modifier
-                              .padding(20.px)
-                              .fillMaxWidth()
-                              .padding(20.px)
-                        """.trimIndent(),
-                    )
-                }
-            }
-
-            H3(Modifier.step().toAttrs()) {
-                SiteColors.KobwebBlue.Text("Kobweb")
-                Text( " != ")
-                SiteColors.Android.Text("Jetpack Compose")
-            }
-        }
-    }
 }
 
 
