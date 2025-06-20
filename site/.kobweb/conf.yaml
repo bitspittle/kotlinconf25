@@ -1,5 +1,6 @@
 site:
   title: "KotlinConf 2025 - Kobweb"
+  basePath: "kotlinconf25"
 
 server:
   files:

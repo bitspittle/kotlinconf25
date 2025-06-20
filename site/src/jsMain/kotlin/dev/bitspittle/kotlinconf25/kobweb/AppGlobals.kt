@@ -1,6 +1,7 @@
 package dev.bitspittle.kotlinconf25.kobweb
 
 import com.varabyte.kobweb.core.AppGlobals
+import com.varabyte.kobweb.navigation.BasePath
 
 class Slides(private val slideList: List<String>) {
     private val slideIndices = slideList.mapIndexed { i, v -> v to i }.toMap()
@@ -23,7 +24,7 @@ class Slides(private val slideList: List<String>) {
 }
 
 private val _slides: Slides by lazy {
-    Slides(AppGlobals["slides"]?.split(",")?.map { it.trim() } ?: listOf())
+    Slides(AppGlobals["slides"]?.split(",")?.map { BasePath.prependTo("/" + it.trim()) } ?: listOf())
 }
 
 val AppGlobals.slides: Slides get() { return _slides }

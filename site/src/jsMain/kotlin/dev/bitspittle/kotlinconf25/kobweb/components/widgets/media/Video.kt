@@ -3,6 +3,7 @@ package dev.bitspittle.kotlinconf25.kobweb.components.widgets.media
 import androidx.compose.runtime.Composable
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.toAttrs
+import com.varabyte.kobweb.navigation.BasePath
 import org.jetbrains.compose.web.dom.Source
 import org.jetbrains.compose.web.dom.Video
 import kotlin.math.roundToInt
@@ -28,7 +29,7 @@ fun Video(src: String, modifier: Modifier = Modifier, autoplay: Boolean = true, 
         }
     ) {
         Source(attrs = {
-            this.attr("src", src)
+            this.attr("src", BasePath.prependTo(src))
             this.attr("type", "video/mp4")
         })
     }

@@ -8,10 +8,10 @@ import com.varabyte.kobweb.compose.foundation.layout.Row
 import com.varabyte.kobweb.compose.ui.Alignment
 import com.varabyte.kobweb.compose.ui.Modifier
 import com.varabyte.kobweb.compose.ui.modifiers.*
-import com.varabyte.kobweb.compose.ui.toAttrs
 import com.varabyte.kobweb.core.Page
 import com.varabyte.kobweb.core.layout.Layout
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.kotlinconf.KotlinConfLogo
+import dev.bitspittle.kotlinconf25.kobweb.components.widgets.media.Image
 import dev.bitspittle.kotlinconf25.kobweb.components.widgets.text.Text
 import dev.bitspittle.kotlinconf25.kobweb.style.Gaps
 import dev.bitspittle.kotlinconf25.kobweb.style.SiteColors
@@ -35,10 +35,7 @@ fun TitlePage() {
         Box(
             Modifier.align(Alignment.CenterEnd)
         ) {
-            Img("/assets/images/kotlinconf-line-art.png", attrs = Modifier.toAttrs {
-                width(900)
-                height(900)
-            })
+            Image("/assets/images/kotlinconf-line-art.png", scale = 1.2f)
         }
 
         Box(

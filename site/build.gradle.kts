@@ -51,29 +51,30 @@ kobweb {
                 "conclusion/community",
                 "conclusion/kobweb-link",
                 "thanks",
-            ).joinToString()
+            )
+                .joinToString()
         )
 
         index {
             description.set("KotlinConf 2025 - Build Websites in Kotlin & Compose HTML with Kobweb")
-            faviconPath.set("favicon.svg")
+            faviconPath.set(basePath.prependTo("favicon.svg"))
 
             head.add {
                 link {
                     rel = "stylesheet"
-                    href = "/fonts/css2.css"
+                    href = basePath.prependTo("/fonts/css2.css")
                 }
                 link {
                     rel = "stylesheet"
-                    href = "/prism/prism.css"
+                    href = basePath.prependTo("/prism/prism.css")
                 }
                 script {
-                    src = "/prism/prism.js"
+                    src = basePath.prependTo("/prism/prism.js")
                 }
             }
 
             interceptUrls {
-                replace("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css", "/font-awesome/css/all.min.css")
+                replace("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css", basePath.prependTo("/font-awesome/css/all.min.css"))
                 enableSelfHosting()
             }
         }

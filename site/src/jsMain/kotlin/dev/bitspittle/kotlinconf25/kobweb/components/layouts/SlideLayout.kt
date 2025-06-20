@@ -358,7 +358,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
                 val origDelta = delta
                 var delta = delta
                 // If we request to navigate while mid-navigation, use the next target slide as the starting point
-                var desiredSlide: String? = targetSlide ?: ctx.route.path.substringAfter("/")
+                var desiredSlide: String? = targetSlide ?: "/${ctx.route.path.substringAfter("/")}"
                 while (delta > 0 && desiredSlide != null) {
                     desiredSlide = AppGlobals.slides.next(desiredSlide)
                     --delta
@@ -368,7 +368,7 @@ fun SlideLayout(ctx: PageContext, content: @Composable SlideLayoutScope.() -> Un
                     ++delta
                 }
                 return if (desiredSlide != null) {
-                    targetSlide = "/$desiredSlide"
+                    targetSlide = desiredSlide
                     if (slidingDirection != null) slidingDirection = SlidingHorizDirection.HIDING
 
                     val args = DirectionArgs(forward = origDelta > 0)
